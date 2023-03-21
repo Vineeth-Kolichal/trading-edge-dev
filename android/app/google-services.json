@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "915254355155",
+    "project_id": "my-tradebook",
+    "storage_bucket": "my-tradebook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915254355155:android:e2f71d8341c161a193e026",
+        "android_client_info": {
+          "package_name": "com.vineethkolichal.my_tradebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm458xHP4s-sS74QwzZGNyOlOMhwxyu5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
