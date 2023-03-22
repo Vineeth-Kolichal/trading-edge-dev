@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 
 Widget sizedBoxTen = SizedBox(
@@ -11,6 +12,7 @@ class Screen_login extends StatelessWidget {
   Screen_login({super.key});
   final _phoneController = TextEditingController();
   final contryCode = '+91';
+  String completePhone = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,24 +50,45 @@ class Screen_login extends StatelessWidget {
                               fontSize: 17, fontWeight: FontWeight.w300),
                         ),
                         sizedBoxTen,
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextFormField(
-                            controller: _phoneController,
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: IntlPhoneField(
+                            style: TextStyle(fontSize: 17),
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
-                              prefixText: '+91 ',
-                              contentPadding: EdgeInsets.only(
-                                  left: 10, right: 10, top: 4, bottom: 4),
+                              hintText: 'Phone Number',
+                              //labelText: 'Phone Number',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(),
                               ),
                             ),
+                            initialCountryCode: 'IN',
+                            onChanged: (phone) {
+                              completePhone = phone.completeNumber;
+                              print(phone.completeNumber);
+                            },
                           ),
                         ),
+                        // Card(
+                        //   elevation: 5,
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   child:
+                        //   // child: TextFormField(
+                        //   //   controller: _phoneController,
+                        //   //   keyboardType: TextInputType.phone,
+                        //   //   decoration: InputDecoration(
+                        //   //     prefixText: '+91 ',
+                        //   //     contentPadding: EdgeInsets.only(
+                        //   //         left: 10, right: 10, top: 4, bottom: 4),
+                        //   //     border: OutlineInputBorder(
+                        //   //       borderRadius: BorderRadius.circular(10),
+                        //   //     ),
+                        //   //   ),
+                        //   // ),
+                        // ),
                         sizedBoxTen,
                         SizedBox(
                           width: double.infinity,
@@ -80,9 +103,7 @@ class Screen_login extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
-                                await sendOtp(
-                                    contryCode + _phoneController.text,
-                                    context);
+                                await sendOtp(completePhone, context);
                               },
                               child: Text(
                                 'Send OTP',
