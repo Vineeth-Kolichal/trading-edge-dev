@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:my_tradebook/authentication/phone_authentication.dart';
 
 Widget sizedBoxTen = SizedBox(
   height: 10,
@@ -9,6 +10,7 @@ Widget sizedBoxTen = SizedBox(
 class Screen_login extends StatelessWidget {
   Screen_login({super.key});
   final _phoneController = TextEditingController();
+  final contryCode = '+91';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +79,10 @@ class Screen_login extends StatelessWidget {
                                       10), // the radius of the button
                                 ),
                               ),
-                              onPressed: () {
-                                print(_phoneController.text);
+                              onPressed: () async {
+                                await sendOtp(
+                                    contryCode + _phoneController.text,
+                                    context);
                               },
                               child: Text(
                                 'Send OTP',
@@ -125,7 +129,10 @@ class Screen_login extends StatelessWidget {
                                           width: 20,
                                           child: Image.asset(
                                               'assets/images/google.png')),
-                                      Text('Contitue with google',style: TextStyle(color: Colors.black),)
+                                      Text(
+                                        'Contitue with google',
+                                        style: TextStyle(color: Colors.black),
+                                      )
                                     ],
                                   ),
                                 ),

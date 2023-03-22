@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         //brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
       ),
-      home: ScreenOtpVerification(),
+      home: Screen_login(),
     );
   }
 }
