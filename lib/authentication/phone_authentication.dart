@@ -22,5 +22,8 @@ Future<void> sendOtp(String phoneNumber, BuildContext context) async {
 Future<void> verifyOtp(String otp) async {
   PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationIdenty, smsCode: otp);
-  await auth.signInWithCredential(credential);
+  final UserCredential userCredential =
+      await auth.signInWithCredential(credential);
+  final User? user = userCredential.user;
+  print(user?.uid);
 }

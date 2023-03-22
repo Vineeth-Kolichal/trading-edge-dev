@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
-import 'package:my_tradebook/screens/dashboard/screen_dashboard.dart';
+import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:pinput/pinput.dart';
 
@@ -94,13 +94,12 @@ class ScreenOtpVerification extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            try {
-                              await verifyOtp(_pinController.text);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: ((ctx) => ScreenDashboard())));
-                            } catch (e) {
-                              print('Wrong otp');
-                            }
+                            await verifyOtp(_pinController.text);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: ((ctx) => ScreenHome()),
+                              ),
+                            );
                           },
                           child: Text(
                             'Verify Phone Number',

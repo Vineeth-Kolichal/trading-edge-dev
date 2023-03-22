@@ -33,10 +33,12 @@ dependencies:
   firebase_core: ^2.8.0
   flutter:
     sdk: flutter
+  flutter_feather_icons: ^2.0.0+1
   font_awesome_flutter: ^10.4.0
   google_sign_in: ^6.0.2
   intl_phone_field: ^3.1.0
   pinput: ^2.2.31
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -57,6 +59,7 @@ flutter:
     - assets/images/login.png
     - assets/images/google.png
     - assets/images/otp.png
+    - assets/images/drawer_header_bg.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

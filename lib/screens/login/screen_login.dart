@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:provider/provider.dart';
 
 Widget sizedBoxTen = SizedBox(
   height: 10,
@@ -139,7 +141,12 @@ class Screen_login extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               color: Color.fromARGB(255, 226, 223, 223),
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  final provider =
+                                      Provider.of<GoogleSignInProvider>(context,
+                                          listen: false);
+                                  provider.googleLogin();
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
