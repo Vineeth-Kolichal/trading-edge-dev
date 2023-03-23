@@ -1,16 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
+import 'package:my_tradebook/screens/login/screen_login.dart';
 
 class WidgetDrawer extends StatelessWidget {
   const WidgetDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: [
         Material(
           elevation: 5,
@@ -108,7 +111,32 @@ class WidgetDrawer extends StatelessWidget {
         drawerListTileItem(
           leadingIcon: FeatherIcons.logOut,
           title: 'Logout',
-          onTapFunction: () {},
+          onTapFunction: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (((context) => ScreenLogin()))));
+          },
+        ),
+        Expanded(
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 60,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Divider(),
+                        Text(
+                          'Made with ❤️ by Vineeth',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                        Text('Version :', style: TextStyle(fontSize: 11))
+                      ]),
+                ),
+              )),
         ),
       ],
     );

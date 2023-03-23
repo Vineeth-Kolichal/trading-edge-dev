@@ -4,17 +4,24 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:provider/provider.dart';
 
 Widget sizedBoxTen = SizedBox(
   height: 10,
 );
 
-class Screen_login extends StatelessWidget {
-  Screen_login({super.key});
-  final _phoneController = TextEditingController();
-  final contryCode = '+91';
+class ScreenLogin extends StatefulWidget {
+  ScreenLogin({super.key});
+
+  @override
+  State<ScreenLogin> createState() => _ScreenLoginState();
+}
+
+class _ScreenLoginState extends State<ScreenLogin> {
+  bool _isLoading = false;
   String completePhone = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,25 +79,6 @@ class Screen_login extends StatelessWidget {
                             },
                           ),
                         ),
-                        // Card(
-                        //   elevation: 5,
-                        //   shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(10),
-                        //   ),
-                        //   child:
-                        //   // child: TextFormField(
-                        //   //   controller: _phoneController,
-                        //   //   keyboardType: TextInputType.phone,
-                        //   //   decoration: InputDecoration(
-                        //   //     prefixText: '+91 ',
-                        //   //     contentPadding: EdgeInsets.only(
-                        //   //         left: 10, right: 10, top: 4, bottom: 4),
-                        //   //     border: OutlineInputBorder(
-                        //   //       borderRadius: BorderRadius.circular(10),
-                        //   //     ),
-                        //   //   ),
-                        //   // ),
-                        // ),
                         sizedBoxTen,
                         SizedBox(
                           width: double.infinity,
@@ -105,12 +93,31 @@ class Screen_login extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                await Future.delayed(
+                                    Duration(milliseconds: 2000));
                                 await sendOtp(completePhone, context);
+                                setState(() {
+                                  _isLoading = false;
+                                });
                               },
-                              child: Text(
-                                'Send OTP',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                              child: _isLoading
+                                  ? SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                                    )
+                                  : Text(
+                                      'Send OTP',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
                             ),
                           ),
                         ),
@@ -141,11 +148,15 @@ class Screen_login extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               color: Color.fromARGB(255, 226, 223, 223),
                               child: InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   final provider =
                                       Provider.of<GoogleSignInProvider>(context,
                                           listen: false);
-                                  provider.googleLogin();
+                                  await provider.googleLogin();
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (((context) =>
+                                              ScreenHome()))));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

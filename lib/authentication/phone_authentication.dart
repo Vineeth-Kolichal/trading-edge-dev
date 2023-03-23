@@ -9,7 +9,8 @@ Future<void> sendOtp(String phoneNumber, BuildContext context) async {
     phoneNumber: phoneNumber,
     verificationCompleted: (PhoneAuthCredential credential) {},
     verificationFailed: (FirebaseAuthException e) {},
-    codeSent: (String verificationId, int? resendToken) {
+    codeSent: (String verificationId, int? resendToken) async {
+      await Future.delayed(Duration(milliseconds: 4000));
       Navigator.of(context)
           .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
     },

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:pinput/pinput.dart';
 
-class ScreenOtpVerification extends StatelessWidget {
+class ScreenOtpVerification extends StatefulWidget {
   ScreenOtpVerification({super.key});
+
+  @override
+  State<ScreenOtpVerification> createState() => _ScreenOtpVerificationState();
+}
+
+class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   final _pinController = TextEditingController();
 
   final defaultPinTheme = PinTheme(
@@ -21,6 +28,7 @@ class ScreenOtpVerification extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
     ),
   );
+
   final focusedPinTheme = PinTheme(
     width: 50,
     height: 52,
@@ -34,11 +42,8 @@ class ScreenOtpVerification extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
     ),
   );
-//   final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-//   border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
-//   borderRadius: BorderRadius.circular(8),
-// );
 
+//   final focusedPinTheme = defaultPinTheme.copyDecorationWith(
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,9 +100,9 @@ class ScreenOtpVerification extends StatelessWidget {
                           ),
                           onPressed: () async {
                             await verifyOtp(_pinController.text);
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: ((ctx) => ScreenHome()),
+                                builder: ((ctx) => ScreenEnterName()),
                               ),
                             );
                           },
