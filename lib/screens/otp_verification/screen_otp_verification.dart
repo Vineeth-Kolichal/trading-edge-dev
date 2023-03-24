@@ -46,6 +46,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
 //   final focusedPinTheme = defaultPinTheme.copyDecorationWith(
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -58,14 +59,14 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                 width: 237,
               ),
               sizedBoxTen,
-              Text(
+              const Text(
                 'Phone Verification',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Text(
+              const Text(
                 'We need to verify your phone number \n before getting started !',
                 textAlign: TextAlign.center,
               ),
@@ -74,7 +75,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Enter OTP',
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -99,17 +100,36 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                             ),
                           ),
                           onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            await verifyOtp(_pinController.text);
+                            await Future.delayed(
+                                const Duration(milliseconds: 5000));
                             await verifyOtp(_pinController.text);
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: ((ctx) => ScreenEnterName()),
                               ),
                             );
+                            setState(() {
+                              _isLoading = false;
+                            });
                           },
-                          child: Text(
-                            'Verify Phone Number',
-                            style: TextStyle(fontSize: 16),
-                          ),
+                          child: _isLoading == true
+                              ? SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                )
+                              : Text(
+                                  'Verify Phone Number',
+                                  style: TextStyle(fontSize: 16),
+                                ),
                         ),
                       ),
                     ),

@@ -53,19 +53,37 @@ class _ScreenIntroState extends State<ScreenIntro> {
                     //     controller: _pageController,
                     //     count: 2),
                     (pageNumer == 0)
-                        ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {
-                              setState(() {
-                                _pageController.nextPage(
-                                    duration: Duration(microseconds: 300),
-                                    curve: Curves.ease);
-                              });
-                            },
-                            child: Text('Next'),
+                        ? Container(
+                            height: 50,
+                            width: 50,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(40))),
+                                onPressed: () {
+                                  setState(() {
+                                    _pageController.nextPage(
+                                        duration: Duration(microseconds: 300),
+                                        curve: Curves.ease);
+                                  });
+                                },
+                                child: Center(
+                                    child: Icon(Icons.arrow_forward_ios))),
                           )
+                        // ? ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //         shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(20))),
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         _pageController.nextPage(
+                        //             duration: Duration(microseconds: 300),
+                        //             curve: Curves.ease);
+                        //       });
+                        //     },
+                        //     child: Text('Next'),
+                        //   )
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -74,7 +92,7 @@ class _ScreenIntroState extends State<ScreenIntro> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: ((ctx) => ScreenLogin())));
                             },
-                            child: Text('Lets Start'),
+                            child: Text('Get started'),
                           ),
                   ]),
             ),

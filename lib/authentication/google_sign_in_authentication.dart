@@ -22,4 +22,16 @@ class GoogleSignInProvider extends ChangeNotifier {
     final User? user = userCredential.user;
     print(user?.uid);
   }
+
+  Future<void> googleSignOut()async{
+    await FirebaseAuth.instance.signOut();
+            final GoogleSignInAccount? googleSignInAccount =
+                googleSignIn.currentUser;
+            if (googleSignInAccount != null) {
+              await googleSignInAccount.clearAuthCache();
+            }
+            await googleSignIn.disconnect();
+
 }
+}
+

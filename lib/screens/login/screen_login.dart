@@ -5,6 +5,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
+import 'package:my_tradebook/screens/otp_verification/screen_otp_verification.dart';
 import 'package:provider/provider.dart';
 
 Widget sizedBoxTen = SizedBox(
@@ -99,12 +100,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 await Future.delayed(
                                     Duration(milliseconds: 2000));
                                 await sendOtp(completePhone, context);
-                                setState(() {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((ctx) =>
+                                        ScreenOtpVerification())));
+                                setState(() async {
                                   _isLoading = false;
                                 });
                               },
                               child: _isLoading
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       width: 16,
                                       height: 16,
                                       child: CircularProgressIndicator(
@@ -114,7 +118,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                                 Colors.white),
                                       ),
                                     )
-                                  : Text(
+                                  : const Text(
                                       'Send OTP',
                                       style: TextStyle(fontSize: 16),
                                     ),

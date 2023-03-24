@@ -5,11 +5,30 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
-class WidgetDrawer extends StatelessWidget {
-  const WidgetDrawer({super.key});
+class WidgetDrawer extends StatefulWidget {
+  WidgetDrawer({super.key});
+
+  @override
+  State<WidgetDrawer> createState() => _WidgetDrawerState();
+}
+
+class _WidgetDrawerState extends State<WidgetDrawer> {
+  final User? _auth = FirebaseAuth.instance.currentUser;
+  String? name = '';
+  String? mail = '';
+  String? imgPath = '';
+  @override
+  void initState() {
+    name = _auth?.displayName;
+    mail = _auth?.email;
+    imgPath = _auth?.photoURL;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +78,13 @@ class WidgetDrawer extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         height: 60,
                         width: 60,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(7),
+                          child: Image.network(
+                            imgPath!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -67,7 +93,7 @@ class WidgetDrawer extends StatelessWidget {
                   left: 25,
                   bottom: 20,
                   child: Text(
-                    'Vineeth Chandran',
+                    '' + name!,
                     style: TextStyle(fontSize: 17),
                   ),
                 ),
@@ -75,7 +101,7 @@ class WidgetDrawer extends StatelessWidget {
                   left: 25,
                   bottom: 7,
                   child: Text(
-                    'vineethchandra5898@gmail.com',
+                    mail!,
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w200),
                   ),
                 ),
@@ -112,7 +138,10 @@ class WidgetDrawer extends StatelessWidget {
           leadingIcon: FeatherIcons.logOut,
           title: 'Logout',
           onTapFunction: () async {
-            await FirebaseAuth.instance.signOut();
+            //await _googleSignIn.signOut();
+            GoogleSignInProvider provider = GoogleSignInProvider();
+            provider.googleSignOut();
+
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (((context) => ScreenLogin()))));
           },
