@@ -4,9 +4,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/otp_verification/screen_otp_verification.dart';
+import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget sizedBoxTen = SizedBox(
   height: 10,
@@ -94,18 +97,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 ),
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                await Future.delayed(
-                                    Duration(milliseconds: 2000));
-                                await sendOtp(completePhone, context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: ((ctx) =>
-                                        ScreenOtpVerification())));
-                                setState(() async {
-                                  _isLoading = false;
-                                });
+                                await signInWithMobile();
                               },
                               child: _isLoading
                                   ? const SizedBox(
@@ -153,14 +145,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                               color: Color.fromARGB(255, 226, 223, 223),
                               child: InkWell(
                                 onTap: () async {
-                                  final provider =
-                                      Provider.of<GoogleSignInProvider>(context,
-                                          listen: false);
-                                  await provider.googleLogin();
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (((context) =>
-                                              ScreenHome()))));
+                                  await signInWithGoogle();
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -172,7 +157,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                           width: 20,
                                           child: Image.asset(
                                               'assets/images/google.png')),
-                                      Text(
+                                      const Text(
                                         'Contitue with google',
                                         style: TextStyle(color: Colors.black),
                                       )
@@ -191,5 +176,38 @@ class _ScreenLoginState extends State<ScreenLogin> {
         ),
       ),
     );
+  }
+
+  Future<void> signInWithGoogle() async {
+    final SharedPreferences shared = await SharedPreferences.getInstance();
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    await provider.googleLogin();
+    await shared.setString('LoggedIn', google);
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const WidgetLoadingAlert(
+          duration: 3000,
+        );
+      },
+    );
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (((context) => ScreenHome())),
+      ),
+    );
+  }
+
+  Future<void> signInWithMobile() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await Future.delayed(Duration(milliseconds: 2000));
+    await sendOtp(completePhone, context);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
+    setState(() async {
+      _isLoading = false;
+    });
   }
 }

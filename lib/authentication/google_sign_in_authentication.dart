@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_tradebook/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -20,18 +22,20 @@ class GoogleSignInProvider extends ChangeNotifier {
         await FirebaseAuth.instance.signInWithCredential(credential);
     notifyListeners();
     final User? user = userCredential.user;
+    String? userId = user?.uid;
+    final SharedPreferences shared = await SharedPreferences.getInstance();
+
+    await shared.setString(currentUserId, userId!);
+
     print(user?.uid);
   }
 
-  Future<void> googleSignOut()async{
+  Future<void> googleSignOut() async {
     await FirebaseAuth.instance.signOut();
-            final GoogleSignInAccount? googleSignInAccount =
-                googleSignIn.currentUser;
-            if (googleSignInAccount != null) {
-              await googleSignInAccount.clearAuthCache();
-            }
-            await googleSignIn.disconnect();
-
+    final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
+    if (googleSignInAccount != null) {
+      await googleSignInAccount.clearAuthCache();
+    }
+    await googleSignIn.disconnect();
+  }
 }
-}
-

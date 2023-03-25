@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
-import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenOtpVerification extends StatefulWidget {
-  ScreenOtpVerification({super.key});
+  const ScreenOtpVerification({super.key});
 
   @override
   State<ScreenOtpVerification> createState() => _ScreenOtpVerificationState();
@@ -18,13 +20,13 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   final defaultPinTheme = PinTheme(
     width: 50,
     height: 52,
-    textStyle: TextStyle(
+    textStyle: const TextStyle(
         fontSize: 20,
         color: Color.fromRGBO(30, 60, 87, 1),
         fontWeight: FontWeight.w600),
     decoration: BoxDecoration(
-      color: Color.fromARGB(31, 148, 144, 144),
-      border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+      color: const Color.fromARGB(31, 148, 144, 144),
+      border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
       borderRadius: BorderRadius.circular(10),
     ),
   );
@@ -32,21 +34,19 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   final focusedPinTheme = PinTheme(
     width: 50,
     height: 52,
-    textStyle: TextStyle(
+    textStyle: const TextStyle(
         fontSize: 20,
         color: Color.fromRGBO(30, 60, 87, 1),
         fontWeight: FontWeight.w600),
     decoration: BoxDecoration(
-      color: Color.fromARGB(31, 148, 144, 144),
-      border: Border.all(color: Color.fromRGBO(1, 80, 145, 1)),
+      color: const Color.fromARGB(31, 148, 144, 144),
+      border: Border.all(color: const Color.fromRGBO(1, 80, 145, 1)),
       borderRadius: BorderRadius.circular(10),
     ),
   );
 
-//   final focusedPinTheme = defaultPinTheme.copyDecorationWith(
   @override
   Widget build(BuildContext context) {
-    bool _isLoading = false;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -93,53 +93,49 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                         padding: const EdgeInsets.all(4.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            elevation: 3, // the elevation of the button
+                            elevation: 3,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  10), // the radius of the button
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           onPressed: () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            await verifyOtp(_pinController.text);
-                            await Future.delayed(
-                                const Duration(milliseconds: 5000));
-                            await verifyOtp(_pinController.text);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: ((ctx) => ScreenEnterName()),
-                              ),
-                            );
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            await veryfyOtpRecieved();
                           },
-                          child: _isLoading == true
-                              ? SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 3,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                  ),
-                                )
-                              : Text(
-                                  'Verify Phone Number',
-                                  style: TextStyle(fontSize: 16),
-                                ),
+                          child: const Text(
+                            'Verify Phone Number',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
                     ),
-                    InkWell(onTap: () {}, child: Text('Edit Phone Number?')),
+                    InkWell(
+                        onTap: () {}, child: const Text('Edit Phone Number?')),
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> veryfyOtpRecieved() async {
+    final SharedPreferences shared = await SharedPreferences.getInstance();
+
+    // ignore: use_build_context_synchronously
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const WidgetLoadingAlert(duration: 8000,);
+      },
+    );
+    await verifyOtp(_pinController.text);
+    await shared.setString('LoggedIn', mobile);
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: ((ctx) => ScreenEnterName()),
       ),
     );
   }

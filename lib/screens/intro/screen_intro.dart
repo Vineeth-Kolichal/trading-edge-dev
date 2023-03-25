@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:my_tradebook/screens/intro/pages/page_one.dart';
 import 'package:my_tradebook/screens/intro/pages/page_two.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ScreenIntro extends StatefulWidget {
@@ -88,7 +89,10 @@ class _ScreenIntroState extends State<ScreenIntro> {
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {
+                            onPressed: () async {
+                              final SharedPreferences login =
+                                  await SharedPreferences.getInstance();
+                              await login.setBool('not_a_first_user', true);
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: ((ctx) => ScreenLogin())));
                             },

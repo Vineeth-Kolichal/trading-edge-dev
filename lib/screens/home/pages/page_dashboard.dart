@@ -158,13 +158,6 @@ class _PageDashboardState extends State<PageDashboard> {
           selected: _selectedIdex == i,
           selectedColor: Colors.deepPurple,
           onSelected: (value) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SuccessDialog();
-              },
-            );
-
             setState(() {
               _selectedIdex = i;
             });

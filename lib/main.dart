@@ -1,28 +1,27 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/check_adapter_registered.dart';
 import 'package:my_tradebook/firebase_options.dart';
-import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
-import 'package:my_tradebook/screens/home/screen_home.dart';
-import 'package:my_tradebook/screens/intro/screen_intro.dart';
-import 'package:my_tradebook/screens/loading/screen_loading.dart';
-import 'package:my_tradebook/screens/login/screen_login.dart';
-import 'package:my_tradebook/screens/no_internet/screen_no_internet.dart';
-import 'package:my_tradebook/screens/otp_verification/screen_otp_verification.dart';
 import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
+const mobile = 'mobile';
+const google = 'google';
+const String currentUserId='current_user_id';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  Hive.initFlutter();
+  checkAdapterRegistered();
+  runApp(const MyTradeBookApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyTradeBookApp extends StatelessWidget {
+  const MyTradeBookApp({super.key});
 
   @override
   Widget build(BuildContext context) {

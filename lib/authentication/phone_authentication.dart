@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/otp_verification_dialoges/success_otp_dialoge.dart';
+import 'package:my_tradebook/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 String verificationIdenty = '';
@@ -29,5 +31,9 @@ Future<void> verifyOtp(String otp) async {
   final UserCredential userCredential =
       await auth.signInWithCredential(credential);
   final User? user = userCredential.user;
+  //currentUserId = user?.uid;
+  String? userId = user?.uid;
+  final SharedPreferences shared = await SharedPreferences.getInstance();
+  await shared.setString(currentUserId, userId!);
   print(user?.uid);
 }

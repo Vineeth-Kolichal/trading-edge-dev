@@ -1,17 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WidgetDrawer extends StatefulWidget {
-  WidgetDrawer({super.key});
+  const WidgetDrawer({super.key});
 
   @override
   State<WidgetDrawer> createState() => _WidgetDrawerState();
@@ -37,8 +34,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         Material(
           elevation: 5,
           child: DrawerHeader(
-            padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(0),
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
                     fit: BoxFit.fill,
@@ -55,7 +52,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       onTap: () {
                         scaffoldKey.currentState!.closeDrawer();
                       },
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 15,
                         backgroundColor: Color.fromARGB(255, 235, 232, 232),
                         child: Icon(Icons.arrow_back),
@@ -74,7 +71,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       padding: const EdgeInsets.all(4.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 235, 232, 232),
+                            color: const Color.fromARGB(255, 235, 232, 232),
                             borderRadius: BorderRadius.circular(10)),
                         height: 60,
                         width: 60,
@@ -93,8 +90,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                   left: 25,
                   bottom: 20,
                   child: Text(
-                    '' + name!,
-                    style: TextStyle(fontSize: 17),
+                    name!,
+                    style: const TextStyle(fontSize: 17),
                   ),
                 ),
                 Positioned(
@@ -102,7 +99,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                   bottom: 7,
                   child: Text(
                     mail!,
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w200),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w200),
                   ),
                 ),
               ],
@@ -141,7 +139,9 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             //await _googleSignIn.signOut();
             GoogleSignInProvider provider = GoogleSignInProvider();
             provider.googleSignOut();
-
+            final SharedPreferences shared =
+                await SharedPreferences.getInstance();
+            shared.remove(currentUserId);
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (((context) => ScreenLogin()))));
           },

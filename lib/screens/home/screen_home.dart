@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_tradebook/screens/home/pages/page_dashboard.dart';
+import 'package:my_tradebook/screens/home/pages/page_fund.dart';
+import 'package:my_tradebook/screens/home/pages/page_trades_log.dart';
 import 'package:my_tradebook/widgets/widget_drawer.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -20,8 +22,8 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   List _pages = [
     PageDashboard(),
-    Text("Order"),
-    Text("Notfication"),
+    PageTradesLog(),
+    PageFund(),
   ];
 
   _changeIndex(int index) {
@@ -67,7 +69,11 @@ class _ScreenHomeState extends State<ScreenHome> {
       floatingActionButton: Visibility(
         visible: (_selectedTabIndex != 0) ? true : false,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            if (_selectedTabIndex == 1) {
+              showTradeLogInputBottomSheet();
+            }
+          },
           child: Icon(Icons.add),
         ),
       ),
@@ -112,6 +118,70 @@ class _ScreenHomeState extends State<ScreenHome> {
               label: 'Fund',
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void showTradeLogInputBottomSheet() {
+    showModalBottomSheet<void>(
+      //useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      elevation: 4,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.height,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Add Trade',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.close),
+                      )
+                    ],
+                  ),
+                ),
+                Divider(),
+                // DatePickerDialog(
+                //     initialDate: DateTime.now(),
+                //     firstDate: DateTime(2022),
+                //     lastDate: DateTime(2024)),
+                // textFormFieldWIdget(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget textFormFieldWIdget() {
+    return SizedBox(
+      width: 100,
+      height: 40,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: TextFormField(
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         ),
       ),
     );
