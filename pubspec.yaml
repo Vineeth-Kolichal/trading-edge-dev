@@ -39,8 +39,10 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   flutter_spinkit: ^5.1.0
   font_awesome_flutter: ^10.4.0
+  get: ^4.6.5
   google_sign_in: ^6.0.2
   hive_flutter: ^1.1.0
+  image_picker: ^0.8.7
   intl_phone_field: ^3.1.0
   pinput: ^2.2.31
   provider: ^6.0.5
@@ -75,6 +77,7 @@ flutter:
     - assets/images/name_page_image.png
     - assets/images/splash_logo.png
     - assets/images/no_internet.png
+    - assets/images/user_image_drawer.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

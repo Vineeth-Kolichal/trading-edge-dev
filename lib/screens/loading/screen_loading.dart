@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/intro/screen_intro.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -23,12 +25,11 @@ class _ScreenLoadingState extends State<ScreenLoading> {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
       checkSharedPreferences();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => (user == null)
-                  ? ((newUser) ? ScreenIntro() : ScreenLogin())
-                  : ScreenHome()));
+      Get.to(
+          (user == null)
+              ? ((newUser) ? ScreenIntro() : ScreenLogin())
+              : ScreenHome(),
+          transition: Transition.leftToRight);
     });
   }
 
@@ -36,10 +37,10 @@ class _ScreenLoadingState extends State<ScreenLoading> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: SpinKitThreeBounce(
+        child: SpinKitCubeGrid(
           duration: Duration(milliseconds: 3500),
           color: Colors.deepPurple,
-          size: 60,
+          size: 80,
         ),
       ),
     );

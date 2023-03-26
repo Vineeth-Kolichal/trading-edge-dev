@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
+import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -16,14 +20,15 @@ class WidgetDrawer extends StatefulWidget {
 
 class _WidgetDrawerState extends State<WidgetDrawer> {
   final User? _auth = FirebaseAuth.instance.currentUser;
+
   String? name = '';
   String? mail = '';
-  String? imgPath = '';
+  String? imgPath = 'assets/images/user_image_drawer.png';
   @override
   void initState() {
-    name = _auth?.displayName;
-    mail = _auth?.email;
-    imgPath = _auth?.photoURL;
+    name = (_auth?.displayName == null) ? name : _auth?.displayName;
+    mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
+    imgPath = (_auth?.photoURL == null) ? imgPath : _auth?.photoURL;
     super.initState();
   }
 
@@ -69,17 +74,27 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                     elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 235, 232, 232),
-                            borderRadius: BorderRadius.circular(10)),
-                        height: 60,
-                        width: 60,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(7),
-                          child: Image.network(
-                            imgPath!,
-                            fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: () async {
+                          final ImagePicker _picker = ImagePicker();
+                          final XFile? image = await _picker.pickImage(
+                              source: ImageSource.gallery);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 235, 232, 232),
+                              borderRadius: BorderRadius.circular(10)),
+                          height: 60,
+                          width: 60,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(7),
+                            child: (_auth?.photoURL == null)
+                                ? Image.asset(
+                                    'assets/images/user_image_drawer.png')
+                                : Image.network(
+                                    imgPath!,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                       ),
@@ -142,8 +157,9 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             final SharedPreferences shared =
                 await SharedPreferences.getInstance();
             shared.remove(currentUserId);
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (((context) => ScreenLogin()))));
+            openDialog();
+            // Navigator.of(context).pushReplacement(
+            //     MaterialPageRoute(builder: (((context) => ScreenLogin()))));
           },
         ),
         Expanded(
@@ -168,6 +184,41 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               )),
         ),
       ],
+    );
+  }
+
+  void openDialog() {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        title: const Text('Confirm Logout'),
+        content: const Text('Are you sure want to logout?'),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text("Cancel"),
+            onPressed: () => Get.back(),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.deepPurple)))),
+            child: const Text(
+              "Confirm",
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () => Get.offAll(ScreenLogin()),
+          ),
+        ],
+      ),
     );
   }
 }

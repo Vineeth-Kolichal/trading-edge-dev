@@ -9,25 +9,29 @@ class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
 
-  Future googleLogin() async {
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return;
-    _user = googleUser;
-    final googleAuth = await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    final UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    notifyListeners();
-    final User? user = userCredential.user;
-    String? userId = user?.uid;
-    final SharedPreferences shared = await SharedPreferences.getInstance();
+  Future<bool> googleLogin() async {
+    try {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return false;
+      _user = googleUser;
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      notifyListeners();
+      final User? user = userCredential.user;
+      String? userId = user?.uid;
+      final SharedPreferences shared = await SharedPreferences.getInstance();
 
-    await shared.setString(currentUserId, userId!);
-
-    print(user?.uid);
+      // save current user id to shared preferences
+      await shared.setString(currentUserId, userId!);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> googleSignOut() async {

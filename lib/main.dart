@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/check_adapter_registered.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 
 const mobile = 'mobile';
 const google = 'google';
-const String currentUserId='current_user_id';
+const String currentUserId = 'current_user_id';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -27,7 +28,7 @@ class MyTradeBookApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'My TradeBook',
         theme: ThemeData(

@@ -28,7 +28,7 @@ class _SuccessDialogState extends State<SuccessDialog> {
           size: 60,
         ),
       ),
-      // content: Text('You have successfully verified your OTP.'),
+      content: Text('You have successfully verified your OTP.'),
     );
   }
 }

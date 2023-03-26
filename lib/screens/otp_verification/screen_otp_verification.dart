@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
@@ -127,16 +128,35 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const WidgetLoadingAlert(duration: 8000,);
+        return const WidgetLoadingAlert(
+          duration: 8000,
+        );
       },
     );
-    await verifyOtp(_pinController.text);
-    await shared.setString('LoggedIn', mobile);
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: ((ctx) => ScreenEnterName()),
-      ),
-    );
+    bool verify = await verifyOtp(_pinController.text);
+    if (verify) {
+      await shared.setString('LoggedIn', mobile);
+      Get.snackbar('OTP Verified Successfully!', '',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: const Color.fromARGB(255, 3, 182, 12),
+          margin: const EdgeInsets.all(10),
+          animationDuration: const Duration(milliseconds: 1500),
+          colorText: Colors.white);
+
+      Get.offAll(ScreenEnterName(),
+          transition: Transition.zoom, duration: Duration(milliseconds: 2000));
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: ((ctx) => ScreenEnterName()),
+      //   ),
+      // );
+    } else {
+      Get.snackbar('Ooops..', 'Wrong OTP, Please enter correct OTP',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          margin: const EdgeInsets.all(10),
+          animationDuration: const Duration(milliseconds: 2000),
+          colorText: Colors.white);
+    }
   }
 }

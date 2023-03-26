@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
@@ -180,9 +181,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
   Future<void> signInWithGoogle() async {
     final SharedPreferences shared = await SharedPreferences.getInstance();
+    // ignore: use_build_context_synchronously
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-    await provider.googleLogin();
+    bool validated = await provider.googleLogin();
     await shared.setString('LoggedIn', google);
+    // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -191,11 +194,17 @@ class _ScreenLoginState extends State<ScreenLogin> {
         );
       },
     );
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (((context) => ScreenHome())),
-      ),
-    );
+    if (validated) {
+      Get.offAll(ScreenHome(),
+          transition: Transition.zoom, duration: Duration(milliseconds: 1000));
+    } else {
+      Get.snackbar('Ooops..', 'Something went wrong, Please try again',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          margin: const EdgeInsets.all(10),
+          animationDuration: const Duration(milliseconds: 2000),
+          colorText: Colors.white);
+    }
   }
 
   Future<void> signInWithMobile() async {
@@ -203,7 +212,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
       _isLoading = true;
     });
     await Future.delayed(Duration(milliseconds: 2000));
-    await sendOtp(completePhone, context);
+    await sendOtp(completePhone);
+    Get.off(ScreenOtpVerification(),
+        transition: Transition.zoom, duration: Duration(milliseconds: 500));
     Navigator.of(context)
         .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
     setState(() async {
