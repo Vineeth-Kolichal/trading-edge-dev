@@ -135,7 +135,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     );
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
-      await shared.setString('LoggedIn', mobile);
+      await shared.setString(loginType, mobile);
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),
@@ -144,7 +144,8 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
           colorText: Colors.white);
 
       Get.offAll(ScreenEnterName(),
-          transition: Transition.zoom, duration: Duration(milliseconds: 2000));
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
       // Navigator.of(context).pushReplacement(
       //   MaterialPageRoute(
       //     builder: ((ctx) => ScreenEnterName()),

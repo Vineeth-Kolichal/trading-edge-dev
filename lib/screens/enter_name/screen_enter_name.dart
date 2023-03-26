@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/route_manager.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
+import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_login_button.dart';
@@ -71,10 +74,18 @@ class ScreenEnterName extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
-                              print(nameController.text);
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: ((ctx) => ScreenHome())));
+                              UserModel user = UserModel(
+                                  name: nameController.text,
+                                  imagePath:
+                                      'assets/images/user_image_drawer.png');
+
+                              await addName(user: user);
+                              Get.offAll(ScreenHome(),
+                                  transition: Transition.leftToRightWithFade,
+                                  duration: const Duration(milliseconds: 500));
+                              // Navigator.of(context).pushReplacement(
+                              //     MaterialPageRoute(
+                              //         builder: ((ctx) => ScreenHome())));
                             },
                             child: const Text(
                               'Submit',

@@ -138,35 +138,36 @@ class _ScreenLoginState extends State<ScreenLogin> {
                           ),
                         ),
                         SizedBox(
-                            width: double.infinity,
-                            child: Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Color.fromARGB(255, 226, 223, 223),
-                              child: InkWell(
-                                onTap: () async {
-                                  await signInWithGoogle();
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: Image.asset(
-                                              'assets/images/google.png')),
-                                      const Text(
-                                        'Contitue with google',
-                                        style: TextStyle(color: Colors.black),
-                                      )
-                                    ],
-                                  ),
+                          width: double.infinity,
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: Color.fromARGB(255, 226, 223, 223),
+                            child: InkWell(
+                              onTap: () async {
+                                await signInWithGoogle();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: Image.asset(
+                                            'assets/images/google.png')),
+                                    const Text(
+                                      'Contitue with google',
+                                      style: TextStyle(color: Colors.black),
+                                    )
+                                  ],
                                 ),
                               ),
-                            ))
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -184,7 +185,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     // ignore: use_build_context_synchronously
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     bool validated = await provider.googleLogin();
-    await shared.setString('LoggedIn', google);
+    await shared.setString(loginType, google);
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -211,12 +212,13 @@ class _ScreenLoginState extends State<ScreenLogin> {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     await sendOtp(completePhone);
-    Get.off(ScreenOtpVerification(),
-        transition: Transition.zoom, duration: Duration(milliseconds: 500));
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
+    Get.off(const ScreenOtpVerification(),
+        transition: Transition.leftToRightWithFade,
+        duration: const Duration(milliseconds: 500));
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
     setState(() async {
       _isLoading = false;
     });

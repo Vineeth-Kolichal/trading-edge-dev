@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 const mobile = 'mobile';
 const google = 'google';
+const loginType = 'LoggedIn';
 const String currentUserId = 'current_user_id';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

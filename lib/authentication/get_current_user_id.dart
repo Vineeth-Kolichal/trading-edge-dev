@@ -1,9 +1,8 @@
-import 'package:my_tradebook/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-dynamic returnCurrentUserId() async {
-  SharedPreferences shared = await SharedPreferences.getInstance();
-  final String? userid = shared.getString(currentUserId);
-  print(userid);
-  return;
+String returnCurrentUserId() {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
+  String? userId = user?.uid;
+  return userId!;
 }

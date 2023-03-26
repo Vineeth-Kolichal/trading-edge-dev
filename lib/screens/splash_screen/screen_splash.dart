@@ -74,7 +74,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
       ),
       nextScreen: checkInternet
           ? (user == null)
-              ? ((newUser) ? ScreenIntro() : ScreenLogin())
+              ? ((newUser) ? const ScreenIntro() : ScreenLogin())
               : ScreenHome()
           : const ScreenNoInternet(),
       //checkInternet ? const ScreenLoading() : const ScreenNoInternet(),

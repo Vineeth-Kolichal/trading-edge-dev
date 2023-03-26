@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
+import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -23,13 +27,26 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
 
   String? name = '';
   String? mail = '';
-  String? imgPath = 'assets/images/user_image_drawer.png';
+  String? imgPath = '';
   @override
   void initState() {
-    name = (_auth?.displayName == null) ? name : _auth?.displayName;
-    mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
-    imgPath = (_auth?.photoURL == null) ? imgPath : _auth?.photoURL;
+    setNameImage();
     super.initState();
+  }
+
+  void setNameImage() async {
+    UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+    if (_auth?.email == null) {
+      setState(() {
+        name = user?.name;
+        imgPath = user?.imagePath;
+        mail = _auth?.phoneNumber;
+      });
+    } else {
+      name = (_auth?.displayName == null) ? name : _auth?.displayName;
+      mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
+      imgPath = (_auth?.photoURL == null) ? imgPath : _auth?.photoURL;
+    }
   }
 
   @override
@@ -76,9 +93,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () async {
-                          final ImagePicker _picker = ImagePicker();
-                          final XFile? image = await _picker.pickImage(
-                              source: ImageSource.gallery);
+                          if (_auth?.email == null) {
+                            final ImagePicker _picker = ImagePicker();
+                            final XFile? image = await _picker.pickImage(
+                                source: ImageSource.gallery);
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -104,9 +123,32 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 Positioned(
                   left: 25,
                   bottom: 20,
-                  child: Text(
-                    name!,
-                    style: const TextStyle(fontSize: 17),
+                  child: Row(
+                    children: [
+                      GetBuilder<EditUserName>(
+                        init: EditUserName(),
+                        builder: (_) => Text(
+                          name!,
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Visibility(
+                          visible: (_auth?.email == null),
+                          child: InkWell(
+                            onTap: () {
+                              EditUserName eun = EditUserName();
+                              eun.editNameDialoge();
+                            },
+                            child: const Icon(
+                              Icons.edit,
+                              size: 15,
+                              color: Color.fromARGB(255, 145, 144, 144),
+                            ),
+                          ))
+                    ],
                   ),
                 ),
                 Positioned(
@@ -221,6 +263,54 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
       ),
     );
   }
+
+  void editNameDialoge() async {
+    UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+    TextEditingController nameController = TextEditingController();
+    final name = user?.name;
+    nameController.text = name!;
+    Get.dialog(AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: Text(
+        'Edit Name',
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+      ),
+      content: TextFormField(
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+        controller: nameController,
+      ),
+      actions: [
+        ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ))),
+          child: const Text("Cancel"),
+          onPressed: () => Get.back(),
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.deepPurple)))),
+          child: const Text(
+            "Update",
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            updateUserName(nameController.text);
+            Get.back();
+          },
+        ),
+      ],
+    ));
+  }
 }
 
 Widget drawerListTileItem(
@@ -235,4 +325,55 @@ Widget drawerListTileItem(
     ),
     title: Text(title),
   );
+}
+
+class EditUserName extends GetxController {
+  void editNameDialoge() async {
+    UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+    TextEditingController nameController = TextEditingController();
+    final name = user?.name;
+    nameController.text = name!;
+    Get.dialog(AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: Text(
+        'Edit Name',
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+      ),
+      content: TextFormField(
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+        controller: nameController,
+      ),
+      actions: [
+        ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ))),
+          child: const Text("Cancel"),
+          onPressed: () => Get.back(),
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.deepPurple)))),
+          child: const Text(
+            "Update",
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            updateUserName(nameController.text);
+            Get.back();
+            update();
+          },
+        ),
+      ],
+    ));
+  }
 }
