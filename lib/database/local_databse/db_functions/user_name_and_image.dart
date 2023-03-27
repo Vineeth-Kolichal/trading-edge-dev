@@ -1,12 +1,8 @@
 import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 
-// ValueNotifier<String> nameNotifier = ValueNotifier('');
-// ValueNotifier<String> imgPathNotifier = ValueNotifier('');
 Future<void> addName({required UserModel user}) async {
   final userDb = await Hive.openBox<UserModel>('user_db');
   String currentUserId = returnCurrentUserId();
@@ -33,4 +29,14 @@ Future<void> updateUserImage(Uint8List image) async {
   final name = user?.name;
   UserModel updatedUser = UserModel(name: name!, image: image);
   userDb.put(returnCurrentUserId(), updatedUser);
+}
+
+Future<bool> checkUserExist() async {
+  final userDb = await Hive.openBox<UserModel>('user_db');
+  if (userDb.containsKey(returnCurrentUserId())) {
+    print('user exist');
+    return true;
+  } else {
+    return false;
+  }
 }

@@ -2,15 +2,9 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/route_manager.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/intro/screen_intro.dart';
-import 'package:my_tradebook/screens/loading/screen_loading.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/screens/no_internet/screen_no_internet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,14 +27,6 @@ class _ScreenSplashState extends State<ScreenSplash> {
     checkInternetConnetion();
     checkSharedPreferences();
     super.initState();
-    // Future.delayed(const Duration(seconds: 5), () {
-    //   checkSharedPreferences();
-    //   Get.to(
-    //       (user == null)
-    //           ? ((newUser) ? ScreenIntro() : ScreenLogin())
-    //           : ScreenHome(),
-    //       transition: Transition.leftToRight);
-    // });
   }
 
   Future<void> checkInternetConnetion() async {
@@ -77,7 +63,6 @@ class _ScreenSplashState extends State<ScreenSplash> {
               ? ((newUser) ? const ScreenIntro() : ScreenLogin())
               : ScreenHome()
           : const ScreenNoInternet(),
-      //checkInternet ? const ScreenLoading() : const ScreenNoInternet(),
       splashTransition: SplashTransition.slideTransition,
     );
   }

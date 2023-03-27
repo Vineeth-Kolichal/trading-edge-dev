@@ -25,8 +25,6 @@ class GoogleSignInProvider extends ChangeNotifier {
       final User? user = userCredential.user;
       String? userId = user?.uid;
       final SharedPreferences shared = await SharedPreferences.getInstance();
-
-      // save current user id to shared preferences
       await shared.setString(currentUserId, userId!);
       return true;
     } catch (e) {

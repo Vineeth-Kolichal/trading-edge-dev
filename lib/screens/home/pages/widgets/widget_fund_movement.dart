@@ -1,10 +1,8 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
-class WidgetFUndMovement extends StatelessWidget {
-  const WidgetFUndMovement({super.key});
+class WidgetFundMovement extends StatelessWidget {
+  const WidgetFundMovement({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +28,25 @@ class WidgetFUndMovement extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: 180,
-                        width: 300,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         child: DChartLine(
                           includePoints: true,
                           data: [
                             {
                               'id': 'Line',
                               'data': [
-                                {'domain': 1, 'measure': 10},
-                                {'domain': 2, 'measure': 0},
-                                {'domain': 3, 'measure': 1},
-                                {'domain': 4, 'measure': 1},
+                                {'domain': 1, 'measure': 00},
+                                {'domain': 2, 'measure': 21},
+                                {'domain': 3, 'measure': 55},
+                                {'domain': 4, 'measure': 41},
                                 {'domain': 5, 'measure': 110},
-                                {'domain': 6, 'measure': 1},
-                                {'domain': 7, 'measure': 1},
-                                {'domain': 8, 'measure': 1},
-                                {'domain': 9, 'measure': 1},
-                                {'domain': 10, 'measure': 1},
-                                {'domain': 11, 'measure': 1},
-                                {'domain': 12, 'measure': 1},
+                                {'domain': 6, 'measure': 17},
+                                {'domain': 7, 'measure': 127},
+                                {'domain': 8, 'measure': 78},
+                                {'domain': 9, 'measure': 89},
+                                {'domain': 10, 'measure': 187},
+                                {'domain': 11, 'measure': 148},
+                                {'domain': 12, 'measure': 127},
                               ],
                             },
                           ],

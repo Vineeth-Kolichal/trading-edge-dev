@@ -107,7 +107,7 @@ class _PageDashboardState extends State<PageDashboard> {
               sizedBoxTen,
               WidgetPnlAnalysis(),
               sizedBoxTen,
-              WidgetFUndMovement(),
+              WidgetFundMovement(),
               const SizedBox(
                 height: 10,
               ),
@@ -125,6 +125,7 @@ class _PageDashboardState extends State<PageDashboard> {
               height: 45,
               width: double.infinity,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: choiceChipList(),
               ),
             ),

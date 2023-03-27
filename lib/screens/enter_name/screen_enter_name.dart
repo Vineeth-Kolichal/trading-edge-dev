@@ -9,6 +9,8 @@ import 'package:my_tradebook/widgets/widget_login_button.dart';
 
 class ScreenEnterName extends StatelessWidget {
   ScreenEnterName({super.key});
+  final _formKey = GlobalKey<FormState>();
+
   final nameController = TextEditingController();
 
   @override
@@ -47,15 +49,25 @@ class ScreenEnterName extends StatelessWidget {
                         child: Padding(
                           padding:
                               const EdgeInsets.only(left: 8, right: 15, top: 5),
-                          child: TextFormField(
-                            controller: nameController,
-                            decoration: const InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(bottom: 7),
-                                  child: Icon(FontAwesomeIcons.user, size: 20),
-                                ),
-                                hintText: 'Enter your name',
-                                border: InputBorder.none),
+                          child: Form(
+                            key: _formKey,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name!';
+                                }
+                                return null;
+                              },
+                              controller: nameController,
+                              decoration: const InputDecoration(
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(bottom: 7),
+                                    child:
+                                        Icon(FontAwesomeIcons.user, size: 20),
+                                  ),
+                                  hintText: 'Enter your name',
+                                  border: InputBorder.none),
+                            ),
                           ),
                         ),
                       ),
@@ -74,13 +86,16 @@ class ScreenEnterName extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
-                              UserModel user = UserModel(
-                                  name: nameController.text, image: null);
+                              if (_formKey.currentState!.validate()) {
+                                UserModel user = UserModel(
+                                    name: nameController.text, image: null);
 
-                              await addName(user: user);
-                              Get.offAll(ScreenHome(),
-                                  transition: Transition.leftToRightWithFade,
-                                  duration: const Duration(milliseconds: 500));
+                                await addName(user: user);
+                                Get.offAll(ScreenHome(),
+                                    transition: Transition.leftToRightWithFade,
+                                    duration:
+                                        const Duration(milliseconds: 500));
+                              }
                               // Navigator.of(context).pushReplacement(
                               //     MaterialPageRoute(
                               //         builder: ((ctx) => ScreenHome())));

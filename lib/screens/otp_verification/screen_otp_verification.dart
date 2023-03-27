@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
+import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenOtpVerification extends StatefulWidget {
-  const ScreenOtpVerification({super.key});
+  final String phoneNumber;
+  const ScreenOtpVerification({super.key, required this.phoneNumber});
 
   @override
   State<ScreenOtpVerification> createState() => _ScreenOtpVerificationState();
 }
 
 class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
+  bool resendVisible = true;
+  final formKey = GlobalKey<FormState>();
   final _pinController = TextEditingController();
 
   final defaultPinTheme = PinTheme(
@@ -68,8 +73,8 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Text(
-                'We need to verify your phone number \n before getting started !',
+              Text(
+                'We need to verify your phone number\n ${widget.phoneNumber} \n before getting started !',
                 textAlign: TextAlign.center,
               ),
               Padding(
@@ -85,11 +90,21 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: Pinput(
-                          controller: _pinController,
-                          defaultPinTheme: defaultPinTheme,
-                          focusedPinTheme: focusedPinTheme,
-                          length: 6,
+                        child: Form(
+                          key: formKey,
+                          child: Pinput(
+                            controller: _pinController,
+                            defaultPinTheme: defaultPinTheme,
+                            focusedPinTheme: focusedPinTheme,
+                            length: 6,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter OTP';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -106,7 +121,9 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                             ),
                           ),
                           onPressed: () async {
-                            await veryfyOtpRecieved();
+                            if (formKey.currentState!.validate()) {
+                              await veryfyOtpRecieved();
+                            }
                           },
                           child: const Text(
                             'Verify Phone Number',
@@ -115,8 +132,36 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                         ),
                       ),
                     ),
-                    InkWell(
-                        onTap: () {}, child: const Text('Edit Phone Number?')),
+                    sizedBoxTen,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          visible: resendVisible,
+                          child: InkWell(
+                              onTap: () async {
+                                _pinController.clear();
+                                setState(() {
+                                  resendVisible = false;
+                                });
+                                await sendOtp(widget.phoneNumber);
+                                Future.delayed(const Duration(minutes: 1));
+                                setState(() {
+                                  resendVisible = true;
+                                });
+                              },
+                              child: const Text('Resend OTP')),
+                        ),
+                        const SizedBox(
+                          width: 1,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              Get.offAll(ScreenLogin());
+                            },
+                            child: const Text('Change Phone Number?')),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -142,24 +187,26 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
       await shared.setString(loginType, mobile);
+      bool isUserExistInLocalDevice = await checkUserExist();
       Get.snackbar('OTP Verified Successfully!', '',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),
           margin: const EdgeInsets.all(10),
-          animationDuration: const Duration(milliseconds: 1500),
+          animationDuration: const Duration(milliseconds: 1100),
           colorText: Colors.white);
-
-      Get.offAll(ScreenEnterName(),
-          transition: Transition.leftToRightWithFade,
-          duration: Duration(milliseconds: 500));
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: ((ctx) => ScreenEnterName()),
-      //   ),
-      // );
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (isUserExistInLocalDevice) {
+        Get.offAll(ScreenHome(),
+            transition: Transition.leftToRightWithFade,
+            duration: const Duration(milliseconds: 500));
+      } else {
+        Get.offAll(ScreenEnterName(),
+            transition: Transition.leftToRightWithFade,
+            duration: const Duration(milliseconds: 500));
+      }
     } else {
       Get.snackbar('Ooops..', 'Wrong OTP, Please enter correct OTP',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           margin: const EdgeInsets.all(10),
           animationDuration: const Duration(milliseconds: 2000),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
@@ -24,6 +25,7 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
+  final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String completePhone = '';
 
@@ -33,6 +35,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
       // backgroundColor: Color.fromARGB(249, 255, 253, 253),
       body: SafeArea(
         child: Container(
+          width: MediaQuery.of(context).size.width,
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Padding(
@@ -43,14 +46,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.asset('assets/images/login.png'),
+                    child: Image.asset('assets/images/login.png', scale: 3),
                   ),
                   sizedBoxTen,
-                  Text(
-                    'Welcome..',
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.w500),
+                  const Text(
+                    'Sign in to continue..',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Padding(
@@ -58,7 +61,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Login with Mobile',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.w300),
@@ -66,22 +69,24 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         sizedBoxTen,
                         Padding(
                           padding: const EdgeInsets.all(5.0),
-                          child: IntlPhoneField(
-                            style: TextStyle(fontSize: 17),
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Phone Number',
-                              //labelText: 'Phone Number',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(),
+                          child: Form(
+                            key: _formKey,
+                            child: IntlPhoneField(
+                              style: const TextStyle(fontSize: 17),
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                hintText: 'Phone Number',
+                                //labelText: 'Phone Number',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(),
+                                ),
                               ),
+                              initialCountryCode: 'IN',
+                              onChanged: (phone) {
+                                completePhone = phone.completeNumber;
+                              },
                             ),
-                            initialCountryCode: 'IN',
-                            onChanged: (phone) {
-                              completePhone = phone.completeNumber;
-                              print(phone.completeNumber);
-                            },
                           ),
                         ),
                         sizedBoxTen,
@@ -98,7 +103,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 ),
                               ),
                               onPressed: () async {
-                                await signInWithMobile();
+                                if (_formKey.currentState!.validate()) {
+                                  await signInWithMobile();
+                                }
                               },
                               child: _isLoading
                                   ? const SizedBox(
@@ -121,11 +128,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            children: [
+                            children: const [
                               Expanded(child: Divider()),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 15),
+                                padding: EdgeInsets.only(left: 15, right: 15),
                                 child: Text(
                                   'OR',
                                   style: TextStyle(fontSize: 19),
@@ -143,7 +149,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                             elevation: 5,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            color: Color.fromARGB(255, 226, 223, 223),
+                            color: const Color.fromARGB(255, 226, 223, 223),
                             child: InkWell(
                               onTap: () async {
                                 await signInWithGoogle();
@@ -197,13 +203,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
     if (validated) {
       Get.offAll(ScreenHome(),
-          transition: Transition.zoom, duration: Duration(milliseconds: 1000));
+          transition: Transition.leftToRightWithFade,
+          duration: const Duration(milliseconds: 500));
     } else {
       Get.snackbar('Ooops..', 'Something went wrong, Please try again',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           margin: const EdgeInsets.all(10),
-          animationDuration: const Duration(milliseconds: 2000),
+          animationDuration: const Duration(milliseconds: 1500),
           colorText: Colors.white);
     }
   }
@@ -214,11 +221,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
     });
     await Future.delayed(const Duration(milliseconds: 2000));
     await sendOtp(completePhone);
-    Get.off(const ScreenOtpVerification(),
+    Get.off(ScreenOtpVerification(phoneNumber: completePhone),
         transition: Transition.leftToRightWithFade,
         duration: const Duration(milliseconds: 500));
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
+
     setState(() {
       _isLoading = false;
     });
