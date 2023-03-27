@@ -1,13 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
-import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 import 'package:my_tradebook/main.dart';
@@ -28,6 +27,9 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   String? name = '';
   String? mail = '';
   String? imgPath = '';
+  String? updatedImgPath = '';
+  File? localImgFile;
+  String? localImgPath;
   @override
   void initState() {
     setNameImage();
@@ -39,13 +41,28 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     if (_auth?.email == null) {
       setState(() {
         name = user?.name;
-        imgPath = user?.imagePath;
+        localImgPath = user?.imagePath;
+        localImgFile = File(localImgPath!);
         mail = _auth?.phoneNumber;
       });
     } else {
-      name = (_auth?.displayName == null) ? name : _auth?.displayName;
-      mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
-      imgPath = (_auth?.photoURL == null) ? imgPath : _auth?.photoURL;
+      setState(() {
+        name = (_auth?.displayName == null) ? name : _auth?.displayName;
+        mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
+        imgPath = _auth?.photoURL;
+      });
+    }
+  }
+
+  File? _image;
+  Future<void> pickImage() async {
+    final imagePicked =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (imagePicked != null) {
+      setState(() {
+        _image = File(imagePicked.path);
+        //print(imagePicked.path);
+      });
     }
   }
 
@@ -94,9 +111,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       child: InkWell(
                         onTap: () async {
                           if (_auth?.email == null) {
-                            final ImagePicker _picker = ImagePicker();
-                            final XFile? image = await _picker.pickImage(
-                                source: ImageSource.gallery);
+                            pickImage();
+                            String? imgPathnew = _image?.path;
+                            if (imgPathnew != null) {
+                              updateUserImage(imgPathnew);
+                            }
                           }
                         },
                         child: Container(
@@ -107,13 +126,33 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                           width: 60,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: (_auth?.photoURL == null)
-                                ? Image.asset(
-                                    'assets/images/user_image_drawer.png')
-                                : Image.network(
-                                    imgPath!,
-                                    fit: BoxFit.cover,
-                                  ),
+                            child: (_auth?.email == null)
+                                ? (localImgPath == 'no-img')
+                                    ? Image.asset(
+                                        'assets/images/user_image_drawer.png',
+                                        fit: BoxFit.cover)
+                                    : Image.file(File(localImgPath!),
+                                        fit: BoxFit.cover)
+                                : (imgPath != null)
+                                    ? Image.network(imgPath!, fit: BoxFit.cover)
+                                    : Image.asset(
+                                        'assets/images/user_image_drawer.png',
+                                        fit: BoxFit.cover),
+
+                            // ? (_image != null)
+                            //     ? Image.file(
+                            //         _image!,
+                            //         fit: BoxFit.cover,
+                            //       )
+                            //     : Image.file(localImgPath!,
+                            //         fit: BoxFit.cover)
+                            // : (imgPath != '')
+                            //     ? Image.network(
+                            //         imgPath!,
+                            //         fit: BoxFit.cover,
+                            //       )
+                            //     : Image.asset(
+                            //         'assets/images/user_image_drawer.png'),
                           ),
                         ),
                       ),
@@ -125,12 +164,9 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                   bottom: 20,
                   child: Row(
                     children: [
-                      GetBuilder<EditUserName>(
-                        init: EditUserName(),
-                        builder: (_) => Text(
-                          name!,
-                          style: const TextStyle(fontSize: 17),
-                        ),
+                      Text(
+                        name!,
+                        style: const TextStyle(fontSize: 17),
                       ),
                       const SizedBox(
                         width: 10,
@@ -139,8 +175,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                           visible: (_auth?.email == null),
                           child: InkWell(
                             onTap: () {
-                              EditUserName eun = EditUserName();
-                              eun.editNameDialoge();
+                              editNameDialoge();
+                              scaffoldKey.currentState!.closeDrawer();
                             },
                             child: const Icon(
                               Icons.edit,
@@ -206,24 +242,26 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         ),
         Expanded(
           child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 60,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Divider(),
-                        Text(
-                          'Made with ❤️ by Vineeth',
-                          style: TextStyle(fontSize: 11),
-                        ),
-                        Text('Version :', style: TextStyle(fontSize: 11))
-                      ]),
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: 60,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    Divider(),
+                    Text(
+                      'Made with ❤️ by Vineeth',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                    Text('Version :', style: TextStyle(fontSize: 11))
+                  ],
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -248,11 +286,14 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.deepPurple)))),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.deepPurple),
+                ),
+              ),
+            ),
             child: const Text(
               "Confirm",
               style: TextStyle(color: Colors.black),
@@ -271,13 +312,13 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     nameController.text = name!;
     Get.dialog(AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Text(
+      title: const Text(
         'Edit Name',
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
       ),
       content: TextFormField(
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
         controller: nameController,
@@ -294,11 +335,14 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         ),
         ElevatedButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.deepPurple)))),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.deepPurple),
+              ),
+            ),
+          ),
           child: const Text(
             "Update",
             style: TextStyle(color: Colors.black),
@@ -327,53 +371,49 @@ Widget drawerListTileItem(
   );
 }
 
-class EditUserName extends GetxController {
-  void editNameDialoge() async {
-    UserModel? user = await getUserNameAndImage(returnCurrentUserId());
-    TextEditingController nameController = TextEditingController();
-    final name = user?.name;
-    nameController.text = name!;
-    Get.dialog(AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Text(
-        'Edit Name',
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+void editNameDialoge() async {
+  UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+  TextEditingController nameController = TextEditingController();
+  final name = user?.name;
+  nameController.text = name!;
+  Get.dialog(AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    title: Text(
+      'Edit Name',
+      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+    ),
+    content: TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+      controller: nameController,
+    ),
+    actions: [
+      ElevatedButton(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ))),
+        child: const Text("Cancel"),
+        onPressed: () => Get.back(),
       ),
-      content: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
-        controller: nameController,
+      ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.deepPurple)))),
+        child: const Text(
+          "Update",
+          style: TextStyle(color: Colors.black),
+        ),
+        onPressed: () {
+          updateUserName(nameController.text);
+          Get.back();
+        },
       ),
-      actions: [
-        ElevatedButton(
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ))),
-          child: const Text("Cancel"),
-          onPressed: () => Get.back(),
-        ),
-        ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.deepPurple)))),
-          child: const Text(
-            "Update",
-            style: TextStyle(color: Colors.black),
-          ),
-          onPressed: () {
-            updateUserName(nameController.text);
-            Get.back();
-            update();
-          },
-        ),
-      ],
-    ));
-  }
+    ],
+  ));
 }
