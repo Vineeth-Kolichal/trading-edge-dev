@@ -21,7 +21,7 @@ class WidgetFUndMovement extends StatelessWidget {
             ),
             SizedBox(
               height: 200,
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
               child: Row(
                 children: [
                   const RotatedBox(quarterTurns: 3, child: Text('Fund--->')),

@@ -219,7 +219,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         duration: const Duration(milliseconds: 500));
     // Navigator.of(context)
     //     .push(MaterialPageRoute(builder: ((ctx) => ScreenOtpVerification())));
-    setState(() async {
+    setState(() {
       _isLoading = false;
     });
   }

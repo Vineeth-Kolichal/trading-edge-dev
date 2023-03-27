@@ -53,6 +53,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 'assets/images/otp.png',
@@ -81,11 +82,16 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                       style: TextStyle(color: Colors.grey),
                     ),
                     sizedBoxTen,
-                    Pinput(
-                      controller: _pinController,
-                      defaultPinTheme: defaultPinTheme,
-                      focusedPinTheme: focusedPinTheme,
-                      length: 6,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Pinput(
+                          controller: _pinController,
+                          defaultPinTheme: defaultPinTheme,
+                          focusedPinTheme: focusedPinTheme,
+                          length: 6,
+                        ),
+                      ),
                     ),
                     sizedBoxTen,
                     SizedBox(

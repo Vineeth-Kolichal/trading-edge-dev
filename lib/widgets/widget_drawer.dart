@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,13 @@ class WidgetDrawer extends StatefulWidget {
 }
 
 class _WidgetDrawerState extends State<WidgetDrawer> {
-  final User? _auth = FirebaseAuth.instance.currentUser;
+  final currentUser = FirebaseAuth.instance.currentUser;
 
   String? name = '';
   String? mail = '';
   String? imgPath = '';
   String? updatedImgPath = '';
-  File? localImgFile;
+  Uint8List? localImgBytes;
   String? localImgPath;
   @override
   void initState() {
@@ -37,31 +38,33 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   }
 
   void setNameImage() async {
-    UserModel? user = await getUserNameAndImage(returnCurrentUserId());
-    if (_auth?.email == null) {
-      setState(() {
-        name = user?.name;
-        localImgPath = user?.imagePath;
-        localImgFile = File(localImgPath!);
-        mail = _auth?.phoneNumber;
-      });
-    } else {
-      setState(() {
-        name = (_auth?.displayName == null) ? name : _auth?.displayName;
-        mail = (_auth?.email == null) ? _auth?.phoneNumber : _auth?.email;
-        imgPath = _auth?.photoURL;
-      });
+    if (currentUser != null) {
+      if (currentUser?.providerData[0].providerId == 'google.com') {
+        setState(() {
+          name = currentUser?.displayName;
+          mail = currentUser?.email;
+          imgPath = currentUser?.photoURL;
+        });
+      }
+      if (currentUser?.providerData[0].providerId == 'phone') {
+        UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+        setState(() {
+          name = user?.name;
+          mail = currentUser?.phoneNumber;
+          localImgBytes = user?.image;
+        });
+      }
     }
+
   }
 
-  File? _image;
   Future<void> pickImage() async {
     final imagePicked =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imagePicked != null) {
+      final temp = await imagePicked.readAsBytes();
       setState(() {
-        _image = File(imagePicked.path);
-        //print(imagePicked.path);
+        localImgBytes = temp;
       });
     }
   }
@@ -110,12 +113,10 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () async {
-                          if (_auth?.email == null) {
-                            pickImage();
-                            String? imgPathnew = _image?.path;
-                            if (imgPathnew != null) {
-                              updateUserImage(imgPathnew);
-                            }
+                          if (currentUser?.providerData[0].providerId !=
+                              'google.com') {
+                            await pickImage();
+                            await updateUserImage(localImgBytes!);
                           }
                         },
                         child: Container(
@@ -126,33 +127,15 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                           width: 60,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: (_auth?.email == null)
-                                ? (localImgPath == 'no-img')
+                            child: (currentUser?.providerData[0].providerId ==
+                                    'google.com')
+                                ? Image.network(imgPath!, fit: BoxFit.cover)
+                                : ((localImgBytes == null)
                                     ? Image.asset(
                                         'assets/images/user_image_drawer.png',
                                         fit: BoxFit.cover)
-                                    : Image.file(File(localImgPath!),
-                                        fit: BoxFit.cover)
-                                : (imgPath != null)
-                                    ? Image.network(imgPath!, fit: BoxFit.cover)
-                                    : Image.asset(
-                                        'assets/images/user_image_drawer.png',
-                                        fit: BoxFit.cover),
-
-                            // ? (_image != null)
-                            //     ? Image.file(
-                            //         _image!,
-                            //         fit: BoxFit.cover,
-                            //       )
-                            //     : Image.file(localImgPath!,
-                            //         fit: BoxFit.cover)
-                            // : (imgPath != '')
-                            //     ? Image.network(
-                            //         imgPath!,
-                            //         fit: BoxFit.cover,
-                            //       )
-                            //     : Image.asset(
-                            //         'assets/images/user_image_drawer.png'),
+                                    : Image.memory(localImgBytes!,
+                                        fit: BoxFit.cover)),
                           ),
                         ),
                       ),
@@ -172,7 +155,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                         width: 10,
                       ),
                       Visibility(
-                          visible: (_auth?.email == null),
+                          visible: (currentUser?.providerData[0].providerId ==
+                              'phone'),
                           child: InkWell(
                             onTap: () {
                               editNameDialoge();

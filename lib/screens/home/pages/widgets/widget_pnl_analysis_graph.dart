@@ -20,30 +20,32 @@ class WidgetPnlAnalysis extends StatelessWidget {
             ),
             SizedBox(
               height: 160,
-              width: double.infinity,
-              child: DChartPie(
-                data: [
-                  {'domain': 'profit_swing', 'measure': 28},
-                  {'domain': 'loss_swing', 'measure': 27},
-                  {'domain': 'profit_intraday', 'measure': 30},
-                  {'domain': 'loss_intraday', 'measure': 15},
-                ],
-                fillColor: (pieData, index) {
-                  switch (pieData['domain']) {
-                    case 'profit_swing':
-                      return Color.fromARGB(255, 35, 204, 1);
-                    case 'loss_swing':
-                      return Color.fromARGB(255, 245, 3, 3);
-                    case 'profit_intraday':
-                      return Color.fromARGB(255, 121, 241, 110);
-                    case 'loss_intraday':
-                      return Color.fromARGB(255, 245, 126, 117);
-                    default:
-                      return Colors.purple.shade900;
-                  }
-                },
-                donutWidth: 25,
-                labelColor: Colors.white,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: DChartPie(
+                  data: [
+                    {'domain': 'profit_swing', 'measure': 28},
+                    {'domain': 'loss_swing', 'measure': 27},
+                    {'domain': 'profit_intraday', 'measure': 30},
+                    {'domain': 'loss_intraday', 'measure': 15},
+                  ],
+                  fillColor: (pieData, index) {
+                    switch (pieData['domain']) {
+                      case 'profit_swing':
+                        return Color.fromARGB(255, 35, 204, 1);
+                      case 'loss_swing':
+                        return Color.fromARGB(255, 245, 3, 3);
+                      case 'profit_intraday':
+                        return Color.fromARGB(255, 121, 241, 110);
+                      case 'loss_intraday':
+                        return Color.fromARGB(255, 245, 126, 117);
+                      default:
+                        return Colors.purple.shade900;
+                    }
+                  },
+                  donutWidth: 25,
+                  labelColor: Colors.white,
+                ),
               ),
             ),
             pnlGraphComponent(),

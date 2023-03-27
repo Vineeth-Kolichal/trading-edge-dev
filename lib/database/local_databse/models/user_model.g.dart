@@ -18,7 +18,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     };
     return UserModel(
       name: fields[0] as String,
-      imagePath: fields[1] as String?,
+      image: fields[1] as Uint8List?,
     );
   }
 
@@ -29,7 +29,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.imagePath);
+      ..write(obj.image);
   }
 
   @override

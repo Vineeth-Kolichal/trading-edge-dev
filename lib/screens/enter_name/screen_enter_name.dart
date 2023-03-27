@@ -75,8 +75,7 @@ class ScreenEnterName extends StatelessWidget {
                             ),
                             onPressed: () async {
                               UserModel user = UserModel(
-                                  name: nameController.text,
-                                  imagePath: 'no-img');
+                                  name: nameController.text, image: null);
 
                               await addName(user: user);
                               Get.offAll(ScreenHome(),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
@@ -21,14 +23,14 @@ Future<UserModel?> getUserNameAndImage(String userId) async {
 Future<void> updateUserName(String name) async {
   final userDb = await Hive.openBox<UserModel>('user_db');
   UserModel? user = userDb.get(returnCurrentUserId());
-  UserModel updatedUser = UserModel(name: name, imagePath: user?.imagePath);
+  UserModel updatedUser = UserModel(name: name, image: user?.image);
   userDb.put(returnCurrentUserId(), updatedUser);
 }
 
-Future<void> updateUserImage(String imagePath) async {
+Future<void> updateUserImage(Uint8List image) async {
   final userDb = await Hive.openBox<UserModel>('user_db');
   UserModel? user = userDb.get(returnCurrentUserId());
   final name = user?.name;
-  UserModel updatedUser = UserModel(name: name!, imagePath: imagePath);
+  UserModel updatedUser = UserModel(name: name!, image: image);
   userDb.put(returnCurrentUserId(), updatedUser);
 }
