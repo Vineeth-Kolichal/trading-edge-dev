@@ -34,7 +34,6 @@ Future<void> updateUserImage(Uint8List image) async {
 Future<bool> checkUserExist() async {
   final userDb = await Hive.openBox<UserModel>('user_db');
   if (userDb.containsKey(returnCurrentUserId())) {
-    print('user exist');
     return true;
   } else {
     return false;

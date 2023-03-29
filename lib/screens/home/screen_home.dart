@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/route_manager.dart';
 import 'package:my_tradebook/screens/home/pages/page_dashboard.dart';
 import 'package:my_tradebook/screens/home/pages/page_fund.dart';
 import 'package:my_tradebook/screens/home/pages/page_trades_log.dart';
@@ -11,7 +12,7 @@ import 'package:my_tradebook/widgets/widget_drawer.dart';
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
 class ScreenHome extends StatefulWidget {
-  ScreenHome({super.key});
+  const ScreenHome({super.key});
 
   @override
   State<ScreenHome> createState() => _ScreenHomeState();
@@ -20,7 +21,7 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   int _selectedTabIndex = 0;
 
-  List _pages = [
+  final List _pages = const [
     PageDashboard(),
     PageTradesLog(),
     PageFund(),
@@ -29,7 +30,6 @@ class _ScreenHomeState extends State<ScreenHome> {
   _changeIndex(int index) {
     setState(() {
       _selectedTabIndex = index;
-      print("index..." + index.toString());
     });
   }
 
@@ -37,7 +37,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      drawer: Drawer(
+      drawer: const Drawer(
         child: WidgetDrawer(),
       ),
       appBar: AppBar(
@@ -72,9 +72,11 @@ class _ScreenHomeState extends State<ScreenHome> {
           onPressed: () {
             if (_selectedTabIndex == 1) {
               showTradeLogInputBottomSheet();
+            } else {
+              showFundInputBottomSheet();
             }
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ),
       body: _pages[_selectedTabIndex],
@@ -106,11 +108,11 @@ class _ScreenHomeState extends State<ScreenHome> {
           showUnselectedLabels: true,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.chartLine),
+              icon: FaIcon(FontAwesomeIcons.chartLine),
               label: 'Dashboard',
             ),
             BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.moneyBillTrendUp),
+              icon: FaIcon(FontAwesomeIcons.moneyBillTrendUp),
               label: 'Trades Log',
             ),
             BottomNavigationBarItem(
@@ -126,7 +128,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   void showTradeLogInputBottomSheet() {
     showModalBottomSheet<void>(
       //useSafeArea: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -134,7 +136,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       elevation: 4,
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -147,18 +149,67 @@ class _ScreenHomeState extends State<ScreenHome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Add Trade',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(Icons.close),
+                        onTap: () => Get.back(),
+                        child: const Icon(Icons.close),
                       )
                     ],
                   ),
                 ),
-                Divider(),
+                const Divider(),
+                // DatePickerDialog(
+                //     initialDate: DateTime.now(),
+                //     firstDate: DateTime(2022),
+                //     lastDate: DateTime(2024)),
+                // textFormFieldWIdget(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showFundInputBottomSheet() {
+    showModalBottomSheet<void>(
+      //useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      elevation: 4,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.height,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Add Fund',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(Icons.close),
+                      )
+                    ],
+                  ),
+                ),
+                const Divider(),
                 // DatePickerDialog(
                 //     initialDate: DateTime.now(),
                 //     firstDate: DateTime(2022),

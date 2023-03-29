@@ -145,6 +145,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: cloud_firestore
+      sha256: "0ad93f01816ab7e59560bffeece2d19cec872fedfea04a7ad5be418cad25d574"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.5"
+  cloud_firestore_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_firestore_platform_interface
+      sha256: "6255cf3ad845d44c6c69a7db51139c8d90691e435dd175578f6365f10c023fcc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.11.5"
+  cloud_firestore_web:
+    dependency: transitive
+    description:
+      name: cloud_firestore_web
+      sha256: "3bc08abdeb21a59e80491aee827895aaa3c6da602bad9ab68d83e1ab13c951b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.5"
   code_builder:
     dependency: transitive
     description:
@@ -321,6 +345,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      sha256: "0a49413725587aa3ceaaa6233fdb2e32687e4972f13cd7277526219cd5acb398"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.16"
+  firebase_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_storage_platform_interface
+      sha256: "951871b91ffdc49ead69daa03e58606f29b9b541056258ef805bbb7128f54afc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.32"
+  firebase_storage_web:
+    dependency: transitive
+    description:
+      name: firebase_storage_web
+      sha256: d77573712c9fa5e05c7f1e23c77db0757b0b0718136a550d4d9823c92eeca8c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.25"
   fixnum:
     dependency: transitive
     description:
@@ -342,6 +390,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0+1"
+  flutter_image_compress:
+    dependency: "direct main"
+    description:
+      name: flutter_image_compress
+      sha256: "37f1b26399098e5f97b74c1483f534855e7dff68ead6ddaccf747029fb03f29f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -681,7 +737,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4

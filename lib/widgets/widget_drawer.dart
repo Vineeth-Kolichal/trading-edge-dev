@@ -8,8 +8,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
+import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/database/local_databse/models/user_model.dart';
+import 'package:my_tradebook/drawer_pages/page_about_tradebook.dart';
+import 'package:my_tradebook/drawer_pages/page_contact_us.dart';
+import 'package:my_tradebook/drawer_pages/page_terms_of_user.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -28,7 +32,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   String? name = '';
   String? mail = '';
   String? imgPath = '';
-  String? updatedImgPath = '';
+  String? fireStoreImgPath = '';
   Uint8List? localImgBytes;
   String? localImgPath;
   @override
@@ -47,15 +51,15 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         });
       }
       if (currentUser?.providerData[0].providerId == 'phone') {
-        UserModel? user = await getUserNameAndImage(returnCurrentUserId());
+        String username = await getNameFromFirebase();
+        String? profileImgUrl = await getImageUrlFromFirebase();
         setState(() {
-          name = user?.name;
+          name = username;
           mail = currentUser?.phoneNumber;
-          localImgBytes = user?.image;
+          fireStoreImgPath = profileImgUrl;
         });
       }
     }
-
   }
 
   Future<void> pickImage() async {
@@ -115,8 +119,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                         onTap: () async {
                           if (currentUser?.providerData[0].providerId !=
                               'google.com') {
-                            await pickImage();
-                            await updateUserImage(localImgBytes!);
+                            final imgurl =
+                                await pickAndUploadImageToFirebaseStorage();
+                            await updateImageUrl(imgurl);
+                            // await pickImage();
+                            //  await updateUserImage(localImgBytes!);
                           }
                         },
                         child: Container(
@@ -130,11 +137,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                             child: (currentUser?.providerData[0].providerId ==
                                     'google.com')
                                 ? Image.network(imgPath!, fit: BoxFit.cover)
-                                : ((localImgBytes == null)
+                                : ((fireStoreImgPath == null)
                                     ? Image.asset(
                                         'assets/images/user_image_drawer.png',
                                         fit: BoxFit.cover)
-                                    : Image.memory(localImgBytes!,
+                                    : Image.network(fireStoreImgPath!,
                                         fit: BoxFit.cover)),
                           ),
                         ),
@@ -187,17 +194,23 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         drawerListTileItem(
           leadingIcon: FeatherIcons.book,
           title: 'About My TradeBook',
-          onTapFunction: () {},
+          onTapFunction: () {
+            Get.to(() => const PageAboutTradeBokk());
+          },
         ),
         drawerListTileItem(
           leadingIcon: FeatherIcons.alertCircle,
           title: 'Terms of use',
-          onTapFunction: () {},
+          onTapFunction: () {
+            Get.to(() => const PageTermsOfUser());
+          },
         ),
         drawerListTileItem(
           leadingIcon: FeatherIcons.mail,
           title: 'Contact us',
-          onTapFunction: () {},
+          onTapFunction: () {
+            Get.to(() => const ContactUs());
+          },
         ),
         drawerListTileItem(
           leadingIcon: FeatherIcons.share2,
@@ -290,6 +303,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   }
 
   void editNameDialoge() async {
+    final formGlobalKey = GlobalKey<FormState>();
     UserModel? user = await getUserNameAndImage(returnCurrentUserId());
     TextEditingController nameController = TextEditingController();
     final name = user?.name;
@@ -300,12 +314,21 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         'Edit Name',
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
       ),
-      content: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
-        controller: nameController,
+      content: Form(
+        key: formGlobalKey,
+        child: TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your name ';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+          controller: nameController,
+        ),
       ),
       actions: [
         ElevatedButton(
@@ -323,7 +346,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.deepPurple),
+                side: const BorderSide(color: Colors.deepPurple),
               ),
             ),
           ),
@@ -332,8 +355,10 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             style: TextStyle(color: Colors.black),
           ),
           onPressed: () {
-            updateUserName(nameController.text);
-            Get.back();
+            if (formGlobalKey.currentState!.validate()) {
+              updateUserName(nameController.text);
+              Get.back();
+            }
           },
         ),
       ],
@@ -344,7 +369,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
 Widget drawerListTileItem(
     {required IconData leadingIcon,
     required String title,
-    required onTapFunction()}) {
+    required Function() onTapFunction}) {
   return ListTile(
     onTap: onTapFunction,
     leading: Icon(
@@ -362,13 +387,13 @@ void editNameDialoge() async {
   nameController.text = name!;
   Get.dialog(AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    title: Text(
+    title: const Text(
       'Edit Name',
       style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
     ),
     content: TextFormField(
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
       controller: nameController,
     ),
@@ -388,7 +413,7 @@ void editNameDialoge() async {
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.deepPurple)))),
+                    side: const BorderSide(color: Colors.deepPurple)))),
         child: const Text(
           "Update",
           style: TextStyle(color: Colors.black),

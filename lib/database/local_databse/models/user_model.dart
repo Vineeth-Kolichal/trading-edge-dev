@@ -7,7 +7,9 @@ part 'user_model.g.dart';
 class UserModel extends HiveObject {
   @HiveField(0)
   String name;
+
   @HiveField(1)
   Uint8List? image;
+
   UserModel({required this.name, this.image});
 }

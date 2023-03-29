@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
+import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
@@ -89,16 +90,14 @@ class ScreenEnterName extends StatelessWidget {
                               if (_formKey.currentState!.validate()) {
                                 UserModel user = UserModel(
                                     name: nameController.text, image: null);
-
-                                await addName(user: user);
+                                addUserProfileToFireStore(
+                                    nameController.text, null);
+                                //await addName(user: user);
                                 Get.offAll(ScreenHome(),
                                     transition: Transition.leftToRightWithFade,
                                     duration:
                                         const Duration(milliseconds: 500));
                               }
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: ((ctx) => ScreenHome())));
                             },
                             child: const Text(
                               'Submit',
