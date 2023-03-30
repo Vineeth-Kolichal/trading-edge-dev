@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:my_tradebook/main.dart';
 
 class WidgetTradeLogItem extends StatelessWidget {
   const WidgetTradeLogItem({super.key});
@@ -10,8 +9,9 @@ class WidgetTradeLogItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Material(
+        color: whiteColor,
         borderRadius: BorderRadius.circular(10),
-        elevation: 3,
+        elevation: 1,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -27,14 +27,15 @@ class WidgetTradeLogItem extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color: true ? Colors.green : Colors.red),
                     ),
-                   const  Divider(),
+                    const Divider(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:const  SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 3),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, childAspectRatio: 3),
                         itemCount: 6,
                         itemBuilder: (context, index) {
                           return gridItemColumn(title: 'title', value: 'Value');
@@ -43,7 +44,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                     ),
                     Text(
                       'Comments',
-                      style:const  TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey),
@@ -72,7 +73,7 @@ class WidgetTradeLogItem extends StatelessWidget {
           style: const TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey),
         ),
-       const SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(

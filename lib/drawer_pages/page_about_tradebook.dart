@@ -7,6 +7,7 @@ class PageAboutTradeBokk extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 238, 238, 230),
       appBar: WidgetAppbar(title: 'About Tradebook'),
       body: SafeArea(
         child: Center(child: Text('about')),

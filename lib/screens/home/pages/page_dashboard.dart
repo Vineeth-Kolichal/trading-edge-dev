@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/otp_verification_dialoges/success_otp_dialoge.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_movement.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_pnl_analysis_graph.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -36,8 +37,9 @@ class _PageDashboardState extends State<PageDashboard> {
                 height: 60,
               ),
               Material(
+                color: whiteColor,
                 borderRadius: BorderRadius.circular(13),
-                elevation: 3,
+                elevation: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SizedBox(
@@ -117,8 +119,9 @@ class _PageDashboardState extends State<PageDashboard> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Material(
+            color: whiteColor,
             borderRadius: BorderRadius.circular(13),
-            elevation: 3,
+            elevation: 1,
             child: Container(
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -148,7 +151,9 @@ class _PageDashboardState extends State<PageDashboard> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 7),
         child: ChoiceChip(
-          backgroundColor: Colors.white,
+          pressElevation: 0,
+          elevation: 0,
+          backgroundColor: whiteColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           label: Text(

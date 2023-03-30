@@ -13,6 +13,7 @@ const mobile = 'mobile';
 const google = 'google';
 const loginType = 'LoggedIn';
 const String currentUserId = 'current_user_id';
+const whiteColor = Colors.white;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

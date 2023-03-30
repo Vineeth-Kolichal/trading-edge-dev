@@ -1,5 +1,6 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_pnl_analysis_graph_description.dart';
 
 class WidgetPnlAnalysis extends StatelessWidget {
@@ -7,9 +8,9 @@ class WidgetPnlAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Material(color: whiteColor,
       borderRadius: BorderRadius.circular(13),
-      elevation: 3,
+      elevation: 1,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

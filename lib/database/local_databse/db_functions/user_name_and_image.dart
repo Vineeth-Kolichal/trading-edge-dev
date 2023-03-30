@@ -1,41 +1,41 @@
-import 'dart:typed_data';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/database/local_databse/models/user_model.dart';
+// import 'dart:typed_data';
+// import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:my_tradebook/authentication/get_current_user_id.dart';
+// import 'package:my_tradebook/database/local_databse/models/user_model.dart';
 
-Future<void> addName({required UserModel user}) async {
-  final userDb = await Hive.openBox<UserModel>('user_db');
-  String currentUserId = returnCurrentUserId();
-  await userDb.put(currentUserId, user);
-  getUserNameAndImage(currentUserId);
-}
+// Future<void> addName({required UserModel user}) async {
+//   final userDb = await Hive.openBox<UserModel>('user_db');
+//   String currentUserId = returnCurrentUserId();
+//   await userDb.put(currentUserId, user);
+//   getUserNameAndImage(currentUserId);
+// }
 
-Future<UserModel?> getUserNameAndImage(String userId) async {
-  final userDb = await Hive.openBox<UserModel>('user_db');
-  UserModel? user = userDb.get(userId);
-  return user;
-}
+// Future<UserModel?> getUserNameAndImage(String userId) async {
+//   final userDb = await Hive.openBox<UserModel>('user_db');
+//   UserModel? user = userDb.get(userId);
+//   return user;
+// }
 
-Future<void> updateUserName(String name) async {
-  final userDb = await Hive.openBox<UserModel>('user_db');
-  UserModel? user = userDb.get(returnCurrentUserId());
-  UserModel updatedUser = UserModel(name: name, image: user?.image);
-  userDb.put(returnCurrentUserId(), updatedUser);
-}
+// Future<void> updateUserName(String name) async {
+//   final userDb = await Hive.openBox<UserModel>('user_db');
+//   UserModel? user = userDb.get(returnCurrentUserId());
+//   UserModel updatedUser = UserModel(name: name, image: user?.image);
+//   userDb.put(returnCurrentUserId(), updatedUser);
+// }
 
-Future<void> updateUserImage(Uint8List image) async {
-  final userDb = await Hive.openBox<UserModel>('user_db');
-  UserModel? user = userDb.get(returnCurrentUserId());
-  final name = user?.name;
-  UserModel updatedUser = UserModel(name: name!, image: image);
-  userDb.put(returnCurrentUserId(), updatedUser);
-}
+// Future<void> updateUserImage(Uint8List image) async {
+//   final userDb = await Hive.openBox<UserModel>('user_db');
+//   UserModel? user = userDb.get(returnCurrentUserId());
+//   final name = user?.name;
+//   UserModel updatedUser = UserModel(name: name!, image: image);
+//   userDb.put(returnCurrentUserId(), updatedUser);
+// }
 
-Future<bool> checkUserExist() async {
-  final userDb = await Hive.openBox<UserModel>('user_db');
-  if (userDb.containsKey(returnCurrentUserId())) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// Future<bool> checkUserExist() async {
+//   final userDb = await Hive.openBox<UserModel>('user_db');
+//   if (userDb.containsKey(returnCurrentUserId())) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }

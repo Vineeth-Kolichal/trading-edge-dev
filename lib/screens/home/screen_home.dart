@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
+import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/screens/home/pages/page_add_trade_logs.dart';
 import 'package:my_tradebook/screens/home/pages/page_dashboard.dart';
 import 'package:my_tradebook/screens/home/pages/page_fund.dart';
 import 'package:my_tradebook/screens/home/pages/page_trades_log.dart';
@@ -19,6 +21,9 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  static const IconData _candlestick_chart_rounded =
+      IconData(0xf05c5, fontFamily: 'MaterialIcons');
+
   int _selectedTabIndex = 0;
 
   final List _pages = const [
@@ -36,11 +41,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 238, 238, 230),
       key: scaffoldKey,
       drawer: const Drawer(
         child: WidgetDrawer(),
       ),
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
         title: Image.asset(
           'assets/images/my_trade_book.png',
@@ -63,7 +70,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             },
           );
         }),
-        backgroundColor: Colors.white,
+        backgroundColor: whiteColor,
       ),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: Visibility(
@@ -71,7 +78,9 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: FloatingActionButton(
           onPressed: () {
             if (_selectedTabIndex == 1) {
-              showTradeLogInputBottomSheet();
+              Get.to(PageAddTradeLog(),
+                  transition: Transition.zoom,
+                  duration: Duration(milliseconds: 350));
             } else {
               showFundInputBottomSheet();
             }
@@ -108,11 +117,11 @@ class _ScreenHomeState extends State<ScreenHome> {
           showUnselectedLabels: true,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.chartLine),
+              icon: Icon(IconData(0xea39, fontFamily: 'MaterialIcons')),
               label: 'Dashboard',
             ),
             BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.moneyBillTrendUp),
+              icon: Icon(_candlestick_chart_rounded),
               label: 'Trades Log',
             ),
             BottomNavigationBarItem(
@@ -125,54 +134,54 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 
-  void showTradeLogInputBottomSheet() {
-    showModalBottomSheet<void>(
-      //useSafeArea: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      elevation: 4,
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                SizedBox(
-                  width: MediaQuery.of(context).size.height,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Add Trade',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(Icons.close),
-                      )
-                    ],
-                  ),
-                ),
-                const Divider(),
-                // DatePickerDialog(
-                //     initialDate: DateTime.now(),
-                //     firstDate: DateTime(2022),
-                //     lastDate: DateTime(2024)),
-                // textFormFieldWIdget(),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // void showTradeLogInputBottomSheet() {
+  //   showModalBottomSheet<void>(
+  //     //useSafeArea: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(20),
+  //       ),
+  //     ),
+  //     elevation: 4,
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return SizedBox(
+  //         height: MediaQuery.of(context).size.height * 0.75,
+  //         child: Padding(
+  //           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+  //           child: Column(
+  //             // mainAxisAlignment: MainAxisAlignment.center,
+  //             mainAxisSize: MainAxisSize.max,
+  //             children: <Widget>[
+  //               SizedBox(
+  //                 width: MediaQuery.of(context).size.height,
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     const Text(
+  //                       'Add Trade',
+  //                       style: TextStyle(fontWeight: FontWeight.w500),
+  //                     ),
+  //                     InkWell(
+  //                       onTap: () => Get.back(),
+  //                       child: const Icon(Icons.close),
+  //                     )
+  //                   ],
+  //                 ),
+  //               ),
+  //               const Divider(),
+  //               // DatePickerDialog(
+  //               //     initialDate: DateTime.now(),
+  //               //     firstDate: DateTime(2022),
+  //               //     lastDate: DateTime(2024)),
+  //               // textFormFieldWIdget(),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void showFundInputBottomSheet() {
     showModalBottomSheet<void>(
@@ -182,7 +191,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           top: Radius.circular(20),
         ),
       ),
-      elevation: 4,
+      elevation: 1,
       context: context,
       builder: (BuildContext context) {
         return SizedBox(

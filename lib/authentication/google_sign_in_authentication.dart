@@ -33,11 +33,14 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   Future<void> googleSignOut() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
     await FirebaseAuth.instance.signOut();
     final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
     if (googleSignInAccount != null) {
       await googleSignInAccount.clearAuthCache();
     }
-    await googleSignIn.disconnect();
+    if (currentUser?.providerData[0].providerId == 'google.com') {
+      await googleSignIn.disconnect();
+    }
   }
 }

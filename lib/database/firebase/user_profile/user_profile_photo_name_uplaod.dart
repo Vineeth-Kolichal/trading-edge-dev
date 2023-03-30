@@ -44,22 +44,21 @@ Future<void> updateImageUrl(String imgUrl) async {
   });
 }
 
-Future<String> getNameFromFirebase() async {
-  final documentRef =
+Future<void> updateUserName(String name) async {
+  final docRef =
       FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
-
-  final documentSnapshot = await documentRef.get();
-  final fieldValue = documentSnapshot['name'];
-
-  return fieldValue;
+  docRef.update({
+    'name': name,
+  });
 }
 
-Future<dynamic> getImageUrlFromFirebase() async {
-  final documentRef =
-      FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
+Future<bool> checkUserDataExist(String userId) async {
+  final DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
-  final documentSnapshot = await documentRef.get();
-  final fieldValue = documentSnapshot['photUrl'];
-
-  return fieldValue;
+  if (snapshot.exists) {
+    return true;
+  } else {
+    return false;
+  }
 }

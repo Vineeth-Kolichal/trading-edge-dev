@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
+import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
@@ -187,7 +189,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
       await shared.setString(loginType, mobile);
-      bool isUserExistInLocalDevice = await checkUserExist();
+      bool isUserExist = await checkUserDataExist(returnCurrentUserId());
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),
@@ -195,8 +197,8 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
           animationDuration: const Duration(milliseconds: 1100),
           colorText: Colors.white);
       await Future.delayed(const Duration(milliseconds: 1500));
-      if (isUserExistInLocalDevice) {
-        Get.offAll(ScreenHome(),
+      if (isUserExist) {
+        Get.offAll(const ScreenHome(),
             transition: Transition.leftToRightWithFade,
             duration: const Duration(milliseconds: 500));
       } else {

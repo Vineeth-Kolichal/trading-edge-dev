@@ -12,6 +12,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       centerTitle: true,
       title: Text(
         title,
