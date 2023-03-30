@@ -15,6 +15,7 @@ class PageAddTradeLog extends StatefulWidget {
 class _PageAddTradeLogState extends State<PageAddTradeLog> {
   FocusNode focusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
+  DateTime? _selectedDate;
   TextEditingController dateController = TextEditingController();
   TextEditingController pnlController = TextEditingController();
   TextEditingController commentController = TextEditingController();
@@ -23,7 +24,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
 
-  DateTime? _selectedDate;
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +184,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      print('validated');
+                     
                     }
                     print('not validated');
                   },

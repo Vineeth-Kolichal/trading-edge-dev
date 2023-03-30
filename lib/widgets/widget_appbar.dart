@@ -7,7 +7,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
 
   final String title;
   final double height;
-  const WidgetAppbar({required this.title, this.height = kToolbarHeight});
+  const WidgetAppbar({super.key, required this.title, this.height = kToolbarHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
       centerTitle: true,
       title: Text(
         title,
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
       leading: Builder(builder: (context) {
@@ -34,6 +34,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
   }
 
   @override
+  // ignore: todo
   // TODO: implement child
   Widget get child => throw UnimplementedError();
 }

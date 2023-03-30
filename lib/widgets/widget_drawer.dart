@@ -14,6 +14,7 @@ import 'package:my_tradebook/drawer_pages/page_terms_of_user.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:my_tradebook/screens/position_sizing/screen_position_sizing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WidgetDrawer extends StatefulWidget {
@@ -195,7 +196,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         drawerListTileItem(
           leadingIcon: FeatherIcons.pieChart,
           title: 'Position sizing',
-          onTapFunction: () {},
+          onTapFunction: () {
+            Get.to(() => const ScreenPositionSizing(),
+                transition: Transition.zoom,
+                duration: Duration(milliseconds: 300));
+          },
         ),
         drawerListTileItem(
           leadingIcon: FeatherIcons.book,

@@ -14,10 +14,15 @@ class PageFund extends StatelessWidget {
       child: ListView.separated(
         //shrinkWrap: true,
         itemBuilder: ((context, index) {
-          return WidgetFundTile();
+          final DateTime today = DateTime.now();
+          return WidgetFundTile(
+            amount: '100000.00',
+            type: 'loss',
+            date: today,
+          );
         }),
         separatorBuilder: (context, index) => sizedBoxTen,
-        itemCount: 1,
+        itemCount: 5,
       ),
     );
   }
