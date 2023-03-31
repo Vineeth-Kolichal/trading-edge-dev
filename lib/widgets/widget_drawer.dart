@@ -197,7 +197,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           leadingIcon: FeatherIcons.pieChart,
           title: 'Position sizing',
           onTapFunction: () {
-            Get.to(() => const ScreenPositionSizing(),
+            Get.to(() => ScreenPositionSizing(),
                 transition: Transition.zoom,
                 duration: Duration(milliseconds: 300));
           },
