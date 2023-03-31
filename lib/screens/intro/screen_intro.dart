@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
+import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/screens/intro/pages/page_one.dart';
 import 'package:my_tradebook/screens/intro/pages/page_two.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -78,6 +81,11 @@ class _ScreenIntroState extends State<ScreenIntro> {
                               final SharedPreferences login =
                                   await SharedPreferences.getInstance();
                               await login.setBool('not_a_first_user', true);
+                              SizingModel sm = SizingModel(
+                                  targetAmount: 0.0,
+                                  targetPercentage: 0.0,
+                                  stoplossPercentage: 0.0);
+                              addOrUpdateSizing(sm);
                               Get.offAll(ScreenLogin(),
                                   transition: Transition.leftToRight);
                             },

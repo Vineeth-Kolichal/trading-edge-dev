@@ -1,35 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_model.dart';
+part of 'sizing_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserModelAdapter extends TypeAdapter<UserModel> {
+class SizingModelAdapter extends TypeAdapter<SizingModel> {
   @override
   final int typeId = 0;
 
   @override
-  UserModel read(BinaryReader reader) {
+  SizingModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserModel(
-      name: fields[0] as String,
-      image: fields[1] as Uint8List?,
+    return SizingModel(
+      targetAmount: fields[0] as double,
+      targetPercentage: fields[1] as double,
+      stoplossPercentage: fields[2] as double,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserModel obj) {
+  void write(BinaryWriter writer, SizingModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.targetAmount)
       ..writeByte(1)
-      ..write(obj.image);
+      ..write(obj.targetPercentage)
+      ..writeByte(2)
+      ..write(obj.stoplossPercentage);
   }
 
   @override
@@ -38,7 +41,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserModelAdapter &&
+      other is SizingModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

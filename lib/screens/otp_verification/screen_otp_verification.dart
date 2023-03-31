@@ -3,7 +3,6 @@ import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
-import 'package:my_tradebook/database/local_databse/db_functions/user_name_and_image.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';

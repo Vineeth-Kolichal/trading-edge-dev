@@ -5,7 +5,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/check_adapter_registered.dart';
 import 'package:my_tradebook/firebase_options.dart';
-import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
 import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
