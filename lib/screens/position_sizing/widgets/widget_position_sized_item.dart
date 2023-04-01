@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
 class WidgetPositionSizedItem extends StatelessWidget {
-  const WidgetPositionSizedItem({super.key});
+  PositionModel position;
+ WidgetPositionSizedItem({super.key,required this.position});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Stock Name',
+                position.stockName,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
               PopupMenuButton<PopupItem>(
@@ -48,7 +50,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
             ],
           ),
         ),
-        Divider(),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.only(left: 8, right: 0),
           child: GridView.count(
@@ -63,8 +65,8 @@ class WidgetPositionSizedItem extends StatelessWidget {
             // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             //     crossAxisCount: 2, childAspectRatio: 3),
             children: [
-              gridItemColumn(title: 'Trade Type', content: 'Buy'),
-              gridItemColumn(title: 'Entry Price', content: 'Buy'),
+              gridItemColumn(title: 'Trade Type', content:(position.type==TradeType.buy)? 'Buy':'Sell'),
+              gridItemColumn(title: 'Entry Price', content: position.entryPrice.toString(),),
               gridItemColumn(title: 'Target', content: 'Buy'),
               gridItemColumn(title: 'Stoploss', content: 'Buy'),
               gridItemColumn(title: 'Quantity', content: 'Buy')

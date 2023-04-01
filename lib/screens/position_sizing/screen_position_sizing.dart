@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-//import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/route_manager.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
+import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/screens/position_sizing/widgets/widget_position_sized_item.dart';
@@ -19,13 +17,13 @@ class ScreenPositionSizing extends StatelessWidget {
   Widget build(BuildContext context) {
     getSizingData();
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 238, 238, 255),
-      appBar: WidgetAppbar(title: 'Position Sizing'),
+      backgroundColor: const Color.fromARGB(255, 238, 238, 255),
+      appBar: const WidgetAppbar(title: 'Position Sizing'),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           addStock(context);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -33,100 +31,117 @@ class ScreenPositionSizing extends StatelessWidget {
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 80,
                 ),
                 Expanded(
-                    child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return WidgetPositionSizedItem();
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(
-                            height: 7,
-                          );
-                        },
-                        itemCount: 20))
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return WidgetPositionSizedItem();
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 10,
+                      );
+                    },
+                    itemCount: 20,
+                  ),
+                ),
               ],
             ),
             Container(
               height: 70,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 0.5, color: Color.fromARGB(255, 206, 205, 205)),
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.fromARGB(255, 233, 230, 237),
-                      Color.fromARGB(255, 204, 200, 210),
-                    ],
-                  )),
+                border: Border.all(
+                    width: 0.5,
+                    color: const Color.fromARGB(255, 206, 205, 205)),
+                borderRadius: BorderRadius.circular(15),
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromARGB(255, 233, 230, 237),
+                    Color.fromARGB(255, 204, 200, 210),
+                  ],
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ValueListenableBuilder(
-                    valueListenable: sizingNotifier,
-                    builder:
-                        (BuildContext ctx, SizingModel? sm, Widget? child) {
-                      String? targetAmount = sm?.targetAmount.toString();
-                      String? target = '${sm?.targetPercentage}%';
-                      String? stop = '${sm?.stoplossPercentage}%';
-                      return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  valueListenable: sizingNotifier,
+                  builder: (BuildContext ctx, SizingModel? sm, Widget? child) {
+                    String targetAmount = '₹${sm?.targetAmount}';
+                    String target = '${sm?.targetPercentage}%';
+                    String stop = '${sm?.stoplossPercentage}%';
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Text(
-                                  'Target Amount/Trade',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 80, 78, 78)),
-                                ),
-                                sizedBoxTen,
-                                Text(targetAmount!,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17)),
-                              ],
+                            const Text(
+                              'Target Amount/Trade',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 80, 78, 78)),
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  'Target(%)',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 80, 78, 78)),
-                                ),
-                                sizedBoxTen,
-                                Text(target,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17)),
-                              ],
+                            sizedBoxTen,
+                            Text(
+                              targetAmount,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
                             ),
-                            Column(
-                              children: [
-                                Text('SL(%)',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 80, 78, 78),
-                                    )),
-                                sizedBoxTen,
-                                Text(stop,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17)),
-                              ],
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text(
+                              'Target(%)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 80, 78, 78)),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  setTargetAndStoploss(context);
-                                },
-                                icon: Icon(Icons.edit))
-                          ]);
-                    }),
+                            sizedBoxTen,
+                            Text(
+                              target,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text(
+                              'SL(%)',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 80, 78, 78),
+                              ),
+                            ),
+                            sizedBoxTen,
+                            Text(
+                              stop,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setTargetAndStoploss(context);
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             )
           ],
@@ -136,7 +151,7 @@ class ScreenPositionSizing extends StatelessWidget {
   }
 
   void setTargetAndStoploss(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     TextEditingController targetAmountController = TextEditingController();
     TextEditingController targetPercentageController = TextEditingController();
     TextEditingController stopLossPercentageController =
@@ -144,38 +159,42 @@ class ScreenPositionSizing extends StatelessWidget {
 
     Get.dialog(
       AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         elevation: 5,
-        // title: const Text('Set Target & SL'),
         content: SizedBox(
           height: 160,
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 inputTextFormField(
-                    type: TextInputType.number,
-                    label: 'Target Amount',
-                    isEnabled: true,
-                    controller: targetAmountController,
-                    width: MediaQuery.of(context).size.width * 0.91),
+                  type: TextInputType.number,
+                  label: 'Target Amount',
+                  isEnabled: true,
+                  controller: targetAmountController,
+                  width: MediaQuery.of(context).size.width * 0.91,
+                ),
                 sizedBoxTen,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     inputTextFormField(
-                        type: TextInputType.number,
-                        label: 'Target(%)',
-                        isEnabled: true,
-                        controller: targetPercentageController,
-                        width: MediaQuery.of(context).size.width * 0.3),
+                      type: TextInputType.number,
+                      label: 'Target(%)',
+                      isEnabled: true,
+                      controller: targetPercentageController,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                    ),
                     inputTextFormField(
-                        type: TextInputType.number,
-                        label: 'SL(%)',
-                        isEnabled: true,
-                        controller: stopLossPercentageController,
-                        width: MediaQuery.of(context).size.width * 0.3)
+                      type: TextInputType.number,
+                      label: 'SL(%)',
+                      isEnabled: true,
+                      controller: stopLossPercentageController,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                    )
                   ],
                 )
               ],
@@ -185,10 +204,12 @@ class ScreenPositionSizing extends StatelessWidget {
         actions: [
           ElevatedButton(
             style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+              ),
+            ),
             child: const Text("Cancel"),
             onPressed: () => Get.back(),
           ),
@@ -207,14 +228,17 @@ class ScreenPositionSizing extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
+              if (formKey.currentState!.validate()) {
                 SizingModel sm = SizingModel(
-                  targetAmount:
-                      double.parse(targetAmountController.text.trim()),
-                  targetPercentage:
-                      double.parse(targetPercentageController.text.trim()),
-                  stoplossPercentage:
-                      double.parse(stopLossPercentageController.text.trim()),
+                  targetAmount: double.parse(
+                    targetAmountController.text.trim(),
+                  ),
+                  targetPercentage: double.parse(
+                    targetPercentageController.text.trim(),
+                  ),
+                  stoplossPercentage: double.parse(
+                    stopLossPercentageController.text.trim(),
+                  ),
                 );
                 addOrUpdateSizing(sm);
                 Get.back();
@@ -227,25 +251,26 @@ class ScreenPositionSizing extends StatelessWidget {
   }
 
   void addStock(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    TextEditingController targetAmountController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    TextEditingController stockNameController = TextEditingController();
+
+    TextEditingController entryPriceController = TextEditingController();
 
     Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 5,
-        // title: const Text('Set Target & SL'),
         content: SizedBox(
           height: 160,
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 inputTextFormField(
                     label: 'Stock Name',
                     isEnabled: true,
-                    controller: targetAmountController,
+                    controller: stockNameController,
                     width: MediaQuery.of(context).size.width * 0.91),
                 sizedBoxTen,
                 Row(
@@ -254,27 +279,36 @@ class ScreenPositionSizing extends StatelessWidget {
                     inputTextFormField(
                       label: 'Entry Price',
                       isEnabled: true,
-                      controller: targetAmountController,
+                      controller: entryPriceController,
                       width: MediaQuery.of(context).size.width * 0.3,
                     ),
                     SizedBox(
                       child: Row(
                         children: [
-                          Text(
+                          const Text(
                             'Buy',
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green),
                           ),
                           Obx(
                             () => Switch(
                               activeColor: Colors.red,
-                              inactiveTrackColor: Colors.green,
+                              inactiveTrackColor:
+                                  const Color.fromARGB(255, 119, 206, 122),
                               inactiveThumbColor: Colors.green,
                               value: controller.switchValue.value,
                               onChanged: (value) =>
                                   controller.toggleSwitch(value),
                             ),
                           ),
-                          Text('Sell'),
+                          const Text(
+                            'Sell',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red,
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -308,14 +342,20 @@ class ScreenPositionSizing extends StatelessWidget {
               "Confirm",
               style: TextStyle(color: Colors.black),
             ),
-            onPressed: () {
+            onPressed: () async {
+              TradeType type;
               if (controller.isEnabled) {
-                print('hi');
+                type = TradeType.sell;
               } else {
-                print('hello');
+                type = TradeType.buy;
               }
-              if (_formKey.currentState!.validate()) {
-                print('Validated');
+              if (formKey.currentState!.validate()) {
+                PositionModel position = PositionModel(
+                  stockName: stockNameController.text.toUpperCase().trim(),
+                  entryPrice: double.parse(entryPriceController.text),
+                  type: type,
+                );
+                await addPosition(position);
               }
             },
           ),
@@ -327,7 +367,6 @@ class ScreenPositionSizing extends StatelessWidget {
 
 class SwitchController extends GetxController {
   RxBool switchValue = false.obs;
-
   void toggleSwitch(bool value) {
     switchValue.value = value;
   }
