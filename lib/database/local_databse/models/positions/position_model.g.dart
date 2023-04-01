@@ -8,7 +8,7 @@ part of 'position_model.dart';
 
 class PositionModelAdapter extends TypeAdapter<PositionModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
   PositionModel read(BinaryReader reader) {
@@ -48,7 +48,7 @@ class PositionModelAdapter extends TypeAdapter<PositionModel> {
 
 class TradeTypeAdapter extends TypeAdapter<TradeType> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   TradeType read(BinaryReader reader) {

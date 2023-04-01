@@ -15,6 +15,7 @@ class ScreenPositionSizing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getAllPositions();
     getSizingData();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 255),
@@ -35,17 +36,25 @@ class ScreenPositionSizing extends StatelessWidget {
                   height: 80,
                 ),
                 Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return WidgetPositionSizedItem();
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 10,
-                      );
-                    },
-                    itemCount: 20,
-                  ),
+                  child: ValueListenableBuilder(
+                      valueListenable: positionNotifier,
+                      builder: (BuildContext ctx, List<PositionModel> pos,
+                          Widget? child) {
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            PositionModel position = pos[index];
+                            return WidgetPositionSizedItem(
+                              position: position,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: pos.length,
+                        );
+                      }),
                 ),
               ],
             ),
@@ -356,6 +365,7 @@ class ScreenPositionSizing extends StatelessWidget {
                   type: type,
                 );
                 await addPosition(position);
+                Get.back();
               }
             },
           ),

@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 part 'position_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 enum TradeType {
   @HiveField(0)
   buy,
@@ -9,7 +9,7 @@ enum TradeType {
   sell,
 }
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class PositionModel extends HiveObject {
   @HiveField(0)
   String stockName;

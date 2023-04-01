@@ -14,6 +14,7 @@ Future<void> getAllPositions() async {
   positionNotifier.value.clear();
   positionNotifier.value.addAll(positionDB.values);
   positionNotifier.notifyListeners();
+  print(positionNotifier.value);
 }
 
 Future<void> deletePosition(int key) async {
