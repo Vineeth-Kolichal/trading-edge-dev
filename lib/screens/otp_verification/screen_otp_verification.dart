@@ -174,7 +174,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   }
 
   Future<void> veryfyOtpRecieved() async {
-    final SharedPreferences shared = await SharedPreferences.getInstance();
+    // final SharedPreferences shared = await SharedPreferences.getInstance();
 
     // ignore: use_build_context_synchronously
     await showDialog(
@@ -187,30 +187,30 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     );
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
-      await shared.setString(loginType, mobile);
+      // await shared.setString(loginType, mobile);
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),
           margin: const EdgeInsets.all(10),
-          animationDuration: const Duration(milliseconds: 1100),
+          animationDuration: const Duration(milliseconds: 700),
           colorText: Colors.white);
-      await Future.delayed(const Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1000));
       if (isUserExist) {
         Get.offAll(const ScreenHome(),
             transition: Transition.leftToRightWithFade,
-            duration: const Duration(milliseconds: 500));
+            duration: const Duration(milliseconds: 800));
       } else {
         Get.offAll(ScreenEnterName(),
             transition: Transition.leftToRightWithFade,
-            duration: const Duration(milliseconds: 500));
+            duration: const Duration(milliseconds: 800));
       }
     } else {
       Get.snackbar('Ooops..', 'Wrong OTP, Please enter correct OTP',
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           margin: const EdgeInsets.all(10),
-          animationDuration: const Duration(milliseconds: 2000),
+          animationDuration: const Duration(milliseconds: 700),
           colorText: Colors.white);
     }
   }

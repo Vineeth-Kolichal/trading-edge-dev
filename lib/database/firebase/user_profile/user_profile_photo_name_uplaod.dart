@@ -14,7 +14,7 @@ Future<String> pickAndUploadImageToFirebaseStorage() async {
   final path = tempDir.path;
   final compressedImage = await FlutterImageCompress.compressAndGetFile(
       pickedImagePath!, '$path/${DateTime.now().millisecondsSinceEpoch}.jpg',
-      quality: 50);
+      quality: 25);
 
   final storageRef = FirebaseStorage.instance
       .ref()

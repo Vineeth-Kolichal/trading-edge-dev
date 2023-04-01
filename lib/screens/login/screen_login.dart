@@ -1,24 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
-import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/otp_verification/screen_otp_verification.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-Widget sizedBoxTen = SizedBox(
+Widget sizedBoxTen = const SizedBox(
   height: 10,
 );
 
 class ScreenLogin extends StatefulWidget {
-  ScreenLogin({super.key});
+  const ScreenLogin({super.key});
 
   @override
   State<ScreenLogin> createState() => _ScreenLoginState();
@@ -187,11 +185,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
   }
 
   Future<void> signInWithGoogle() async {
-    final SharedPreferences shared = await SharedPreferences.getInstance();
+    // final SharedPreferences shared = await SharedPreferences.getInstance();
     // ignore: use_build_context_synchronously
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     bool validated = await provider.googleLogin();
-    await shared.setString(loginType, google);
+    // await shared.setString(loginType, google);
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -202,7 +200,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
       },
     );
     if (validated) {
-      Get.offAll(ScreenHome(),
+      final currentUser = FirebaseAuth.instance.currentUser;
+      String? name = currentUser?.displayName;
+      String? imagePath = currentUser?.photoURL;
+      addUserProfileToFireStore(name!, imagePath);
+      Get.offAll(const ScreenHome(),
           transition: Transition.leftToRightWithFade,
           duration: const Duration(milliseconds: 500));
     } else {
@@ -210,7 +212,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           margin: const EdgeInsets.all(10),
-          animationDuration: const Duration(milliseconds: 1500),
+          animationDuration: const Duration(milliseconds: 700),
           colorText: Colors.white);
     }
   }
