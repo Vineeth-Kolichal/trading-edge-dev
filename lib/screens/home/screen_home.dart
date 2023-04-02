@@ -87,7 +87,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           onPressed: () {
             if (_selectedTabIndex == 1) {
               Get.to(PageAddTradeLog(),
-                  transition: Transition.zoom,
+                  transition: Transition.fade,
                   duration: Duration(milliseconds: 350));
             } else {
               showFundInputBottomSheet();
@@ -211,7 +211,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                                     DateFormat.yMMMEd().format(picked);
                                 setState(() {
                                   _selectedDate = picked;
-                                  print(formatter);
                                   dateController.text = formatter;
                                 });
                               }

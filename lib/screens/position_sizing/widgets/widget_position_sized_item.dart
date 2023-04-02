@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
@@ -13,7 +12,7 @@ import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
 class WidgetPositionSizedItem extends StatelessWidget {
   final SwitchController controller = Get.put(SwitchController());
-  PositionModel position;
+  final PositionModel position;
   WidgetPositionSizedItem({super.key, required this.position});
 
   @override
@@ -31,9 +30,14 @@ class WidgetPositionSizedItem extends StatelessWidget {
               children: [
                 Text(
                   position.stockName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w700),
                 ),
                 PopupMenuButton<PopupItem>(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 0.1),
+                      borderRadius: BorderRadius.circular(15)),
                   splashRadius: 20,
                   onSelected: (PopupItem item) async {
                     if (item == PopupItem.delete) {

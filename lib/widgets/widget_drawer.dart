@@ -39,10 +39,12 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   void setNameImage() async {
     if (currentUser != null) {
       if (currentUser?.providerData[0].providerId == 'google.com') {
+        String username = await getNameFromFirebase();
+        String? profileImgUrl = await getImageUrlFromFirebase();
         setState(() {
-          name = currentUser?.displayName;
+          name = username;
           mail = currentUser?.email;
-          imgPath = currentUser?.photoURL;
+          fireStoreImgPath = profileImgUrl;
         });
       }
       if (currentUser?.providerData[0].providerId == 'phone') {
@@ -59,7 +61,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         Material(
           elevation: 3,
@@ -72,30 +74,27 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 image: AssetImage('assets/images/drawer_header_bg.png'),
               ),
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 10,
-                  left: 10,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(40),
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {
-                        scaffoldKey.currentState!.closeDrawer();
-                      },
-                      child: const CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Color.fromARGB(255, 235, 232, 232),
-                        child: Icon(Icons.arrow_back),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 20,
-                  bottom: 40,
-                  child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // Material(
+                  //   borderRadius: BorderRadius.circular(40),
+                  //   elevation: 5,
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       scaffoldKey.currentState!.closeDrawer();
+                  //     },
+                  //     child: const CircleAvatar(
+                  //       radius: 15,
+                  //       backgroundColor: Color.fromARGB(255, 235, 232, 232),
+                  //       child: Icon(Icons.arrow_back),
+                  //     ),
+                  //   ),
+                  // ),
+                  Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     elevation: 4,
@@ -103,57 +102,47 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () async {
-                          if (currentUser?.providerData[0].providerId !=
-                              'google.com') {
-                            final imgurl =
-                                await pickAndUploadImageToFirebaseStorage();
-                            await updateImageUrl(imgurl);
-                          }
+                          final imgurl =
+                              await pickAndUploadImageToFirebaseStorage();
+                          await updateImageUrl(imgurl);
                         },
                         child: Container(
                           decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 235, 232, 232),
                               borderRadius: BorderRadius.circular(10)),
-                          height: 60,
-                          width: 60,
+                          height: 75,
+                          width: 75,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: (currentUser?.providerData[0].providerId ==
-                                    'google.com')
-                                ? Image.network(imgPath!, fit: BoxFit.cover)
-                                : ((fireStoreImgPath == null)
-                                    ? Image.asset(
-                                        'assets/images/user_image_drawer.png',
-                                        fit: BoxFit.cover)
-                                    : FutureBuilder<String>(
-                                        future: getImageUrlFromFirebase(),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<String> snapshot) {
-                                          if (snapshot.hasData) {
-                                            return Image.network(snapshot.data!,
-                                                fit: BoxFit.cover);
-                                          } else {
-                                            return const SizedBox(
-                                              width: 10,
-                                              height: 10,
-                                              child: SpinKitCircle(
-                                                color: Colors.white,
-                                                size: 40,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      )),
+                            child: ((fireStoreImgPath == null)
+                                ? Image.asset(
+                                    'assets/images/user_image_drawer.png',
+                                    fit: BoxFit.cover)
+                                : FutureBuilder<String>(
+                                    future: getImageUrlFromFirebase(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<String> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Image.network(snapshot.data!,
+                                            fit: BoxFit.cover);
+                                      } else {
+                                        return const SizedBox(
+                                          width: 10,
+                                          height: 10,
+                                          child: SpinKitCircle(
+                                            color: Colors.white,
+                                            size: 40,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  )),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 25,
-                  bottom: 20,
-                  child: Row(
+                  Row(
                     children: [
                       Text(
                         name!,
@@ -162,33 +151,26 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       const SizedBox(
                         width: 10,
                       ),
-                      Visibility(
-                          visible: (currentUser?.providerData[0].providerId ==
-                              'phone'),
-                          child: InkWell(
-                            onTap: () {
-                              editNameDialoge();
-                              scaffoldKey.currentState!.closeDrawer();
-                            },
-                            child: const Icon(
-                              Icons.edit,
-                              size: 15,
-                              color: Color.fromARGB(255, 145, 144, 144),
-                            ),
-                          ))
+                      InkWell(
+                        onTap: () {
+                          editNameDialoge();
+                          scaffoldKey.currentState!.closeDrawer();
+                        },
+                        child: const Icon(
+                          Icons.edit,
+                          size: 15,
+                          color: Color.fromARGB(255, 145, 144, 144),
+                        ),
+                      )
                     ],
                   ),
-                ),
-                Positioned(
-                  left: 25,
-                  bottom: 7,
-                  child: Text(
+                  Text(
                     mail!,
                     style: const TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w300),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -197,7 +179,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           title: 'Position sizing',
           onTapFunction: () {
             Get.to(() => ScreenPositionSizing(),
-                transition: Transition.zoom,
+                transition: Transition.fadeIn,
                 duration: Duration(milliseconds: 300));
           },
         ),
@@ -206,7 +188,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           title: 'About My TradeBook',
           onTapFunction: () {
             Get.to(() => const PageAboutTradeBokk(),
-                transition: Transition.zoom,
+                transition: Transition.fadeIn,
                 duration: Duration(milliseconds: 300));
           },
         ),
@@ -215,7 +197,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           title: 'Terms of use',
           onTapFunction: () {
             Get.to(() => const PageTermsOfUser(),
-                transition: Transition.zoom,
+                transition: Transition.fadeIn,
                 duration: Duration(milliseconds: 300));
           },
         ),
@@ -224,7 +206,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           title: 'Contact us',
           onTapFunction: () {
             Get.to(() => const ContactUs(),
-                transition: Transition.zoom,
+                transition: Transition.fadeIn,
                 duration: Duration(milliseconds: 300));
           },
         ),
@@ -243,25 +225,23 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             openDialog();
           },
         ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    Divider(),
-                    Text(
-                      'Made with ❤️ by Vineeth',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    Text('Version :', style: TextStyle(fontSize: 11))
-                  ],
-                ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 60,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: const [
+                  Divider(),
+                  Text(
+                    'Made with ❤️ by Vineeth',
+                    style: TextStyle(fontSize: 11),
+                  ),
+                  Text('Version :', style: TextStyle(fontSize: 11))
+                ],
               ),
             ),
           ),
@@ -304,7 +284,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             onPressed: () {
               GoogleSignInProvider provider = GoogleSignInProvider();
               provider.googleSignOut();
-              Get.offAll(ScreenLogin());
+              Get.offAll(const ScreenLogin());
             },
           ),
         ],

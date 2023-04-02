@@ -23,7 +23,7 @@ class WidgetTradeLogItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Padding(
-            padding: const EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.only(left: 8, right: 8),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
@@ -39,6 +39,10 @@ class WidgetTradeLogItem extends StatelessWidget {
                   Visibility(
                     visible: true,
                     child: PopupMenuButton<PopupItem>(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 0.1),
+                          borderRadius: BorderRadius.circular(15)),
                       splashRadius: 20,
                       onSelected: (PopupItem item) {
                         if (item == PopupItem.delete) {

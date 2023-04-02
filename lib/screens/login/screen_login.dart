@@ -205,7 +205,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
       String? imagePath = currentUser?.photoURL;
       addUserProfileToFireStore(name!, imagePath);
       Get.offAll(const ScreenHome(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.fadeIn,
           duration: const Duration(milliseconds: 500));
     } else {
       Get.snackbar('Ooops..', 'Something went wrong, Please try again',
@@ -224,7 +224,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     await Future.delayed(const Duration(milliseconds: 2000));
     await sendOtp(completePhone);
     Get.off(ScreenOtpVerification(phoneNumber: completePhone),
-        transition: Transition.leftToRightWithFade,
+        transition: Transition.fadeIn,
         duration: const Duration(milliseconds: 500));
 
     setState(() {
