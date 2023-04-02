@@ -9,7 +9,7 @@ class PageTermsOfUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 230),
-      appBar: const WidgetAppbar(title: 'Terms of use'),
+      appBar:  WidgetAppbar(title: 'Terms of use'),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Padding(

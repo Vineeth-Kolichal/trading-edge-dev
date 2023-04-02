@@ -39,7 +39,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
@@ -48,8 +48,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   ),
                   sizedBoxTen,
                   const Text(
-                    'Sign in to continue..',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                    'Sign in to',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/my_trade_book.png',
+                      scale: 3,
+                    ),
                   ),
                   const SizedBox(
                     height: 40,

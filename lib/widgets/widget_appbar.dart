@@ -7,7 +7,12 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
 
   final String title;
   final double height;
-  const WidgetAppbar({super.key, required this.title, this.height = kToolbarHeight});
+  Widget? actions;
+  WidgetAppbar(
+      {super.key,
+      required this.title,
+      this.height = kToolbarHeight,
+      this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
         );
       }),
       backgroundColor: Colors.white,
+      actions: (actions == null) ? null : [actions!],
     );
   }
 

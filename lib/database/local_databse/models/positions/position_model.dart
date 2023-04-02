@@ -17,6 +17,12 @@ class PositionModel extends HiveObject {
   double entryPrice;
   @HiveField(2)
   TradeType type;
+  @HiveField(3)
+  String currentUserId;
+
   PositionModel(
-      {required this.stockName, required this.entryPrice, required this.type});
+      {required this.stockName,
+      required this.entryPrice,
+      required this.type,
+      required this.currentUserId});
 }

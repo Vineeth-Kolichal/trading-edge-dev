@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
@@ -257,12 +258,12 @@ class WidgetPositionSizedItem extends StatelessWidget {
                 type = TradeType.buy;
               }
               if (formKey.currentState!.validate()) {
-                PositionModel position = PositionModel(
-                  stockName: stockNameController.text.toUpperCase().trim(),
-                  entryPrice: double.parse(entryPriceController.text),
-                  type: type,
-                );
-                await addPosition(position);
+                PositionModel Updatedposition = PositionModel(
+                    stockName: stockNameController.text.toUpperCase().trim(),
+                    entryPrice: double.parse(entryPriceController.text),
+                    type: type,
+                    currentUserId: returnCurrentUserId());
+                await updatePosition(Updatedposition, position.key);
                 Get.back();
               }
             },

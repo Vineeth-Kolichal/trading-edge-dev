@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
@@ -15,11 +16,16 @@ class ScreenPositionSizing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getAllPositions();
+    refreshUi();
     getSizingData();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 255),
-      appBar: const WidgetAppbar(title: 'Position Sizing'),
+      appBar: WidgetAppbar(
+          title: 'Position Sizing',
+          actions: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.cleaning_services_outlined),
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           addStock(context);
@@ -37,9 +43,10 @@ class ScreenPositionSizing extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueListenableBuilder(
-                      valueListenable: positionNotifier,
-                      builder: (BuildContext ctx, List<PositionModel> pos,
-                          Widget? child) {
+                    valueListenable: positionNotifier,
+                    builder: (BuildContext ctx, List<PositionModel> pos,
+                        Widget? child) {
+                      if (pos.isNotEmpty) {
                         return ListView.separated(
                           itemBuilder: (context, index) {
                             PositionModel position = pos[index];
@@ -54,7 +61,13 @@ class ScreenPositionSizing extends StatelessWidget {
                           },
                           itemCount: pos.length,
                         );
-                      }),
+                      } else {
+                        return Center(
+                          child: Text('Positions List is Empty'),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -359,7 +372,7 @@ class ScreenPositionSizing extends StatelessWidget {
                 type = TradeType.buy;
               }
               if (formKey.currentState!.validate()) {
-                PositionModel position = PositionModel(
+                PositionModel position = PositionModel(currentUserId: returnCurrentUserId(),
                   stockName: stockNameController.text.toUpperCase().trim(),
                   entryPrice: double.parse(entryPriceController.text),
                   type: type,

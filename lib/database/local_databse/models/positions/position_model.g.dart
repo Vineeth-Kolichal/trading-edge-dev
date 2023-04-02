@@ -20,19 +20,22 @@ class PositionModelAdapter extends TypeAdapter<PositionModel> {
       stockName: fields[0] as String,
       entryPrice: fields[1] as double,
       type: fields[2] as TradeType,
+      currentUserId: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PositionModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.stockName)
       ..writeByte(1)
       ..write(obj.entryPrice)
       ..writeByte(2)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(3)
+      ..write(obj.currentUserId);
   }
 
   @override

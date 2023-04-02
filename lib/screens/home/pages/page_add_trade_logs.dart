@@ -24,11 +24,10 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const WidgetAppbar(title: 'Add Trade'),
+      appBar: WidgetAppbar(title: 'Add Trade'),
       body: SingleChildScrollView(
         child: Padding(
           padding:
@@ -183,9 +182,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                 width: MediaQuery.of(context).size.width * 0.915,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                     
-                    }
+                    if (_formKey.currentState!.validate()) {}
                     print('not validated');
                   },
                   child: Text('Add'),

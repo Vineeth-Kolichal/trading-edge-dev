@@ -10,7 +10,7 @@ class ContactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 238, 238, 230),
-      appBar: const WidgetAppbar(title: 'Contact Us'),
+      appBar: WidgetAppbar(title: 'Contact Us'),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(12.0),
