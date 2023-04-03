@@ -1,8 +1,4 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +39,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
+ 
   DateTime? _selectedDate;
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
@@ -129,36 +126,10 @@ class _ScreenHomeState extends State<ScreenHome> {
         ),
       ],
     );
-    // return BottomNavyBar(
-    //   selectedIndex: _selectedTabIndex,
-    //   onItemSelected: _changeIndex,
-    //   // backgroundColor: Colors.grey,
-    //   // type: BottomNavigationBarType.fixed,
-    //   // selectedFontSize: 12,
-    //   // unselectedFontSize: 12,
-    //   // selectedItemColor: Colors.deepPurple,
-    //   // unselectedItemColor: Colors.grey[500],
-    //   // showUnselectedLabels: true,
-    //   items: <BottomNavyBarItem>[
-    //     BottomNavyBarItem(
-    //         icon: Icon(IconData(0xea39, fontFamily: 'MaterialIcons')),
-    //         title: Text('Dashboard'),
-    //         activeColor: Colors.deepPurple),
-    //     BottomNavyBarItem(
-    //       icon: Icon(_candlestick_chart_rounded),
-    //       title: Text('Trades Log'),
-    //     ),
-    //     BottomNavyBarItem(
-    //       icon: Icon(Icons.currency_rupee),
-    //       title: Text('Fund'),
-    //     ),
-    //   ],
-    // );
   }
 
   void showFundInputBottomSheet() {
     showModalBottomSheet<void>(
-      //useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
@@ -173,8 +144,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: SingleChildScrollView(
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.center,
+             
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   SizedBox(

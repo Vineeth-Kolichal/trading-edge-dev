@@ -6,6 +6,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/otp_verification/screen_otp_verification.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
@@ -211,6 +212,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
       String? name = currentUser?.displayName;
       String? imagePath = currentUser?.photoURL;
       addUserProfileToFireStore(name!, imagePath);
+      await initializeSizing();
       Get.offAll(const ScreenHome(),
           transition: Transition.fadeIn,
           duration: const Duration(milliseconds: 500));

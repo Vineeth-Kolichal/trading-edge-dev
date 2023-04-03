@@ -258,6 +258,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
                 type = TradeType.buy;
               }
               if (formKey.currentState!.validate()) {
+                // ignore: non_constant_identifier_names
                 PositionModel Updatedposition = PositionModel(
                     stockName: stockNameController.text.toUpperCase().trim(),
                     entryPrice: double.parse(entryPriceController.text),

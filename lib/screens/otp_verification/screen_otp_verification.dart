@@ -3,13 +3,13 @@ import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
-import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/screens/enter_name/screen_enter_name.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:pinput/pinput.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ScreenOtpVerification extends StatefulWidget {
   final String phoneNumber;
@@ -158,7 +158,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
                         ),
                         InkWell(
                             onTap: () {
-                              Get.offAll(ScreenLogin());
+                              Get.offAll(const ScreenLogin());
                             },
                             child: const Text('Change Phone Number?')),
                       ],
@@ -174,7 +174,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   }
 
   Future<void> veryfyOtpRecieved() async {
-    // final SharedPreferences shared = await SharedPreferences.getInstance();
+  
 
     // ignore: use_build_context_synchronously
     await showDialog(
@@ -187,8 +187,9 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     );
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
-      // await shared.setString(loginType, mobile);
+     
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
+      await initializeSizing();
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),

@@ -43,8 +43,6 @@ class _ScreenIntroState extends State<ScreenIntro> {
                         child: TextButton(
                           onPressed: () {
                             Get.offAll(const ScreenLogin());
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: ((ctx) => const ScreenLogin())));
                           },
                           child: const Text(
                             'Skip >>',
@@ -81,11 +79,6 @@ class _ScreenIntroState extends State<ScreenIntro> {
                               final SharedPreferences login =
                                   await SharedPreferences.getInstance();
                               await login.setBool('not_a_first_user', true);
-                              SizingModel sm = SizingModel(
-                                  targetAmount: 0.0,
-                                  targetPercentage: 0.0,
-                                  stoplossPercentage: 0.0);
-                              addOrUpdateSizing(sm);
                               Get.offAll(const ScreenLogin(),
                                   transition: Transition.leftToRight);
                             },

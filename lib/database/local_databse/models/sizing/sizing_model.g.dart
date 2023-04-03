@@ -17,9 +17,9 @@ class SizingModelAdapter extends TypeAdapter<SizingModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SizingModel(
-      targetAmount: fields[0] as double,
-      targetPercentage: fields[1] as double,
-      stoplossPercentage: fields[2] as double,
+      targetAmount: fields[0] == null ? 0.0 : fields[0] as double,
+      targetPercentage: fields[1] == null ? 0.0 : fields[1] as double,
+      stoplossPercentage: fields[2] == null ? 0.0 : fields[2] as double,
     );
   }
 
