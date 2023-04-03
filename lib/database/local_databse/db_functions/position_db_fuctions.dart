@@ -37,7 +37,6 @@ Future<void> clearPosition() async {
       .forEach((element) {
     userKeys.add(element.key);
   });
-  //print(userKeys);
   await positionDB.deleteAll(userKeys);
   refreshUi();
 }

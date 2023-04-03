@@ -39,4 +39,11 @@ class _WidgetSearchGifState extends State<WidgetSearchGif>
       ),
     );
   }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 }

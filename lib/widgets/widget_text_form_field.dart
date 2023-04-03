@@ -15,6 +15,9 @@ Widget inputTextFormField(
         if (value == null || value.isEmpty) {
           return 'Fill details';
         }
+        if (value == '0') {
+          return 'please add corrent value';
+        }
         return null;
       },
       keyboardType: type,

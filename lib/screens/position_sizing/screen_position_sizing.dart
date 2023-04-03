@@ -13,6 +13,7 @@ import 'package:my_tradebook/widgets/widget_search_gif.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
 class ScreenPositionSizing extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final SwitchController controller = Get.put(SwitchController());
   ScreenPositionSizing({super.key});
 
@@ -21,18 +22,33 @@ class ScreenPositionSizing extends StatelessWidget {
     refreshUi();
     getSizingData(returnCurrentUserId());
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 238, 238, 255),
       appBar: WidgetAppbar(
           title: 'Position Sizing',
           actions: IconButton(
             onPressed: () {
-              openDialog(context);
+              openDialog(_scaffoldKey.currentContext!);
             },
             icon: const Icon(Icons.cleaning_services_outlined),
           )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          addStock(context);
+        onPressed: () async {
+          SizingModel sm = await returnCurrentUsersSizingData();
+          if (sm.targetAmount == 0.0 &&
+              sm.targetPercentage == 0.0 &&
+              sm.stoplossPercentage == 0.0) {
+            sizingSettingAlert('required sizing parameters');
+          } else if (sm.stoplossPercentage == 0.0) {
+            sizingSettingAlert('SL percentage');
+          } else if (sm.targetAmount == 0.0) {
+            sizingSettingAlert('Target amount');
+          } else if (sm.targetPercentage == 0.0) {
+            sizingSettingAlert('Target percentage');
+          } else {
+            // ignore: use_build_context_synchronously
+            addStock(context);
+          }
         },
         child: const Icon(Icons.add),
       ),
@@ -68,7 +84,7 @@ class ScreenPositionSizing extends StatelessWidget {
                       } else {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Center(
                               child: WidgetSearchGif(),
                             ),
@@ -166,7 +182,7 @@ class ScreenPositionSizing extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            setTargetAndStoploss(context);
+                            setTargetAndStoploss();
                           },
                           icon: const Icon(Icons.edit),
                         ),
@@ -182,7 +198,7 @@ class ScreenPositionSizing extends StatelessWidget {
     );
   }
 
-  void setTargetAndStoploss(BuildContext context) {
+  void setTargetAndStoploss() {
     final formKey = GlobalKey<FormState>();
     TextEditingController targetAmountController = TextEditingController();
     TextEditingController targetPercentageController = TextEditingController();
@@ -207,7 +223,7 @@ class ScreenPositionSizing extends StatelessWidget {
                   label: 'Target Amount',
                   isEnabled: true,
                   controller: targetAmountController,
-                  width: MediaQuery.of(context).size.width * 0.91,
+                  width: 300,
                 ),
                 sizedBoxTen,
                 Row(
@@ -218,14 +234,14 @@ class ScreenPositionSizing extends StatelessWidget {
                       label: 'Target(%)',
                       isEnabled: true,
                       controller: targetPercentageController,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: 120,
                     ),
                     inputTextFormField(
                       type: TextInputType.number,
                       label: 'SL(%)',
                       isEnabled: true,
                       controller: stopLossPercentageController,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: 120,
                     )
                   ],
                 )
@@ -392,6 +408,28 @@ class ScreenPositionSizing extends StatelessWidget {
                 Get.back();
               }
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void sizingSettingAlert(String title) {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        title: const Text('Warning!'),
+        content: Text('Please add $title before adding new data '),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text("close"),
+            onPressed: () => Get.back(),
           ),
         ],
       ),

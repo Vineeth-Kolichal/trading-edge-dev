@@ -28,3 +28,9 @@ Future<void> initializeSizing() async {
     await addOrUpdateSizing(key: returnCurrentUserId(), sizing: sm);
   }
 }
+
+Future<SizingModel> returnCurrentUsersSizingData() async {
+  final sizingDB = await Hive.openBox<SizingModel>('sizing_db');
+  final sizing = sizingDB.get(returnCurrentUserId());
+  return sizing!;
+}
