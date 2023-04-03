@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
+import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
+import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
+import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/page_add_trade_logs.dart';
 import 'package:my_tradebook/screens/home/pages/page_dashboard.dart';
 import 'package:my_tradebook/screens/home/pages/page_fund.dart';
+import 'package:my_tradebook/screens/home/pages/page_position_sizing.dart';
 import 'package:my_tradebook/screens/home/pages/page_trades_log.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_drawer.dart';
+import 'package:my_tradebook/widgets/widget_loading_alert.dart';
+import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -21,16 +34,18 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  final SwitchController controller = Get.put(SwitchController());
   final _formKey = GlobalKey<FormState>();
   static const IconData _candlestick_chart_rounded =
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
 
   int _selectedTabIndex = 0;
 
-  final List _pages = const [
+  final List _pages = [
     PageDashboard(),
     PageTradesLog(),
     PageFund(),
+    PagePositionSizing()
   ];
 
   _changeIndex(int index) {
@@ -39,7 +54,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     });
   }
 
- 
   DateTime? _selectedDate;
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
@@ -76,24 +90,238 @@ class _ScreenHomeState extends State<ScreenHome> {
           );
         }),
         backgroundColor: whiteColor,
+        actions: (_selectedTabIndex == 3)
+            ? [
+                IconButton(
+                  onPressed: () {
+                    openDialog(context);
+                  },
+                  icon: const Icon(Icons.cleaning_services_outlined),
+                ),
+              ]
+            : null,
       ),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: Visibility(
         visible: (_selectedTabIndex != 0) ? true : false,
         child: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             if (_selectedTabIndex == 1) {
               Get.to(PageAddTradeLog(),
                   transition: Transition.fade,
                   duration: Duration(milliseconds: 350));
-            } else {
+            } else if (_selectedTabIndex == 2) {
               showFundInputBottomSheet();
+            } else {
+              SizingModel sm = await returnCurrentUsersSizingData();
+              if (sm.targetAmount == 0.0 &&
+                  sm.targetPercentage == 0.0 &&
+                  sm.stoplossPercentage == 0.0) {
+                sizingSettingAlert('required sizing parameters');
+              } else if (sm.stoplossPercentage == 0.0) {
+                sizingSettingAlert('SL percentage');
+              } else if (sm.targetAmount == 0.0) {
+                sizingSettingAlert('Target amount');
+              } else if (sm.targetPercentage == 0.0) {
+                sizingSettingAlert('Target percentage');
+              } else {
+                // ignore: use_build_context_synchronously
+                addStock(context);
+              }
             }
           },
           child: const Icon(Icons.add),
         ),
       ),
       body: _pages[_selectedTabIndex],
+    );
+  }
+
+  void sizingSettingAlert(String title) {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        title: const Text('Warning!'),
+        content: Text('Please add $title before adding new data '),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text("close"),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void openDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        title: const Text('Confirm Clear'),
+        content: const Text('Are you sure want to clear'),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text("Cancel"),
+            onPressed: () => Get.back(),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.deepPurple),
+                ),
+              ),
+            ),
+            child: const Text(
+              "Confirm",
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () async {
+              await clearPosition();
+              // ignore: use_build_context_synchronously
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const WidgetLoadingAlert(
+                    duration: 2000,
+                  );
+                },
+              );
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void addStock(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    TextEditingController stockNameController = TextEditingController();
+
+    TextEditingController entryPriceController = TextEditingController();
+
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        content: SizedBox(
+          height: 160,
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                widgetInputTextFormField(
+                    label: 'Stock Name',
+                    isEnabled: true,
+                    controller: stockNameController,
+                    width: MediaQuery.of(context).size.width * 0.91),
+                sizedBoxTen,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    widgetInputTextFormField(
+                      label: 'Entry Price',
+                      isEnabled: true,
+                      controller: entryPriceController,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                    ),
+                    SizedBox(
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Buy',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green),
+                          ),
+                          Obx(
+                            () => Switch(
+                              activeColor: Colors.red,
+                              inactiveTrackColor:
+                                  const Color.fromARGB(255, 119, 206, 122),
+                              inactiveThumbColor: Colors.green,
+                              value: controller.switchValue.value,
+                              onChanged: (value) =>
+                                  controller.toggleSwitch(value),
+                            ),
+                          ),
+                          const Text(
+                            'Sell',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text("Cancel"),
+            onPressed: () => Get.back(),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.deepPurple),
+                ),
+              ),
+            ),
+            child: const Text(
+              "Confirm",
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () async {
+              TradeType type;
+              if (controller.isEnabled) {
+                type = TradeType.sell;
+              } else {
+                type = TradeType.buy;
+              }
+              if (formKey.currentState!.validate()) {
+                PositionModel position = PositionModel(
+                  currentUserId: returnCurrentUserId(),
+                  stockName: stockNameController.text.toUpperCase().trim(),
+                  entryPrice: double.parse(entryPriceController.text),
+                  type: type,
+                );
+                await addPosition(position);
+                Get.back();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -124,6 +352,10 @@ class _ScreenHomeState extends State<ScreenHome> {
           icon: Icon(Icons.currency_rupee),
           label: 'Fund',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(FeatherIcons.pieChart),
+          label: 'Position Sizing',
+        ),
       ],
     );
   }
@@ -144,7 +376,6 @@ class _ScreenHomeState extends State<ScreenHome> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: SingleChildScrollView(
               child: Column(
-             
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   SizedBox(
@@ -307,4 +538,13 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
     );
   }
+}
+
+class SwitchController extends GetxController {
+  RxBool switchValue = false.obs;
+  void toggleSwitch(bool value) {
+    switchValue.value = value;
+  }
+
+  bool get isEnabled => switchValue.value;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget inputTextFormField(
+Widget widgetInputTextFormField(
     {required bool isEnabled,
     String? label,
     String? sufixItem,

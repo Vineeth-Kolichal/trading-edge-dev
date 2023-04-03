@@ -199,15 +199,15 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 ),
               ),
             ),
-            drawerListTileItem(
-              leadingIcon: FeatherIcons.pieChart,
-              title: 'Position sizing',
-              onTapFunction: () {
-                Get.to(() => ScreenPositionSizing(),
-                    transition: Transition.fadeIn,
-                    duration: Duration(milliseconds: 300));
-              },
-            ),
+            // drawerListTileItem(
+            //   leadingIcon: FeatherIcons.pieChart,
+            //   title: 'Position sizing',
+            //   onTapFunction: () {
+            //     Get.to(() => ScreenPositionSizing(),
+            //         transition: Transition.fadeIn,
+            //         duration: Duration(milliseconds: 300));
+            //   },
+            // ),
             drawerListTileItem(
               leadingIcon: FeatherIcons.book,
               title: 'About My TradeBook',
