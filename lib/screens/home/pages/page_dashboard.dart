@@ -127,9 +127,12 @@ class _PageDashboardState extends State<PageDashboard> {
                   BoxDecoration(borderRadius: BorderRadius.circular(10)),
               height: 45,
               width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: choiceChipList(),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 7, right: 7),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: choiceChipList(),
+                ),
               ),
             ),
           ),
@@ -148,27 +151,23 @@ class _PageDashboardState extends State<PageDashboard> {
   List<Widget> choiceChipList() {
     List<Widget> chips = [];
     for (var i = 0; i < _choiceChipNameList.length; i++) {
-      Widget item = Padding(
-        padding: const EdgeInsets.only(left: 7),
-        child: ChoiceChip(
-          pressElevation: 0,
-          elevation: 0,
-          backgroundColor: whiteColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          label: Text(
-            _choiceChipNameList[i],
-            style: TextStyle(
-                color: (_selectedIdex == i) ? Colors.white : Colors.black),
-          ),
-          selected: _selectedIdex == i,
-          selectedColor: Colors.deepPurple,
-          onSelected: (value) {
-            setState(() {
-              _selectedIdex = i;
-            });
-          },
+      Widget item = ChoiceChip(
+        pressElevation: 0,
+        elevation: 0,
+        backgroundColor: whiteColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        label: Text(
+          _choiceChipNameList[i],
+          style: TextStyle(
+              color: (_selectedIdex == i) ? Colors.white : Colors.black),
         ),
+        selected: _selectedIdex == i,
+        selectedColor: customPrimaryColor,
+        onSelected: (value) {
+          setState(() {
+            _selectedIdex = i;
+          });
+        },
       );
       chips.add(item);
     }

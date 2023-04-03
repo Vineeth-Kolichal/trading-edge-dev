@@ -26,6 +26,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
+enum ClearPopupItem { clear }
+
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
 
@@ -41,7 +43,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   int _selectedTabIndex = 0;
 
-  final List _pages = [
+  final List _pages = const [
     PageDashboard(),
     PageTradesLog(),
     PageFund(),
@@ -60,7 +62,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 238, 238, 247),
+      backgroundColor: const Color.fromARGB(255, 238, 238, 247),
       key: scaffoldKey,
       drawer: const Drawer(
         child: WidgetDrawer(),
@@ -81,10 +83,8 @@ class _ScreenHomeState extends State<ScreenHome> {
             onPressed: () {
               if (scaffoldKey.currentState!.isDrawerOpen) {
                 scaffoldKey.currentState!.closeDrawer();
-                //close drawer, if drawer is open
               } else {
                 scaffoldKey.currentState!.openDrawer();
-                //open drawer, if drawer is closed
               }
             },
           );
@@ -92,11 +92,25 @@ class _ScreenHomeState extends State<ScreenHome> {
         backgroundColor: whiteColor,
         actions: (_selectedTabIndex == 3)
             ? [
-                IconButton(
-                  onPressed: () {
+                PopupMenuButton<ClearPopupItem>(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(width: 0.1),
+                      borderRadius: BorderRadius.circular(15)),
+                  splashRadius: 20,
+                  onSelected: (ClearPopupItem item) async {
                     openDialog(context);
                   },
-                  icon: const Icon(Icons.cleaning_services_outlined),
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<ClearPopupItem>>[
+                    const PopupMenuItem<ClearPopupItem>(
+                      value: ClearPopupItem.clear,
+                      child: Text(
+                        'Clear All',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
                 ),
               ]
             : null,
@@ -107,9 +121,9 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: FloatingActionButton(
           onPressed: () async {
             if (_selectedTabIndex == 1) {
-              Get.to(PageAddTradeLog(),
+              Get.to(const PageAddTradeLog(),
                   transition: Transition.fade,
-                  duration: Duration(milliseconds: 350));
+                  duration: const Duration(milliseconds: 350));
             } else if (_selectedTabIndex == 2) {
               showFundInputBottomSheet();
             } else {
@@ -137,6 +151,8 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 
+//Sizing section values updation dialoge
+
   void sizingSettingAlert(String title) {
     Get.dialog(
       AlertDialog(
@@ -158,6 +174,8 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
     );
   }
+
+//Position Sizing List Clear function
 
   void openDialog(BuildContext context) {
     Get.dialog(
@@ -208,6 +226,8 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
     );
   }
+
+//Add stock dialoge fuction, this function is called from floating action button
 
   void addStock(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -325,15 +345,18 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 
+//Bottom navigation Bar
+
   Widget get bottomNavigationBar {
     return BottomNavigationBar(
+      backgroundColor: whiteColor,
       currentIndex: _selectedTabIndex,
       onTap: _changeIndex,
       type: BottomNavigationBarType.fixed,
       selectedFontSize: 12,
       unselectedFontSize: 12,
-      selectedItemColor: Colors.deepPurple,
-      unselectedItemColor: Colors.grey[500],
+      selectedItemColor:const  Color(0xFF648BF8),
+      unselectedItemColor: const Color.fromARGB(255, 131, 129, 129),
       showUnselectedLabels: true,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -359,6 +382,8 @@ class _ScreenHomeState extends State<ScreenHome> {
       ],
     );
   }
+
+//Fund Add bottom sheet, this fuction is called from floating action buttom
 
   void showFundInputBottomSheet() {
     showModalBottomSheet<void>(
@@ -431,13 +456,13 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 decoration: InputDecoration(
                                     disabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey)),
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey)),
                                     labelText: 'Date',
                                     hintText: 'Select Date',
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         vertical: 10, horizontal: 20),
-                                    suffixIcon: Icon(
+                                    suffixIcon: const Icon(
                                       Icons.calendar_month_outlined,
                                       color: Colors.grey,
                                     ),
@@ -453,10 +478,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                               ToggleSwitch(
                                 minHeight: 43,
                                 borderWidth: 0.75,
-                                borderColor: [Colors.grey],
+                                borderColor: const [Colors.grey],
                                 minWidth: 90,
                                 cornerRadius: 10.0,
-                                activeBgColors: [
+                                activeBgColors: const [
                                   [Colors.green],
                                   [Colors.red]
                                 ],
@@ -465,10 +490,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 inactiveFgColor: Colors.black,
                                 initialLabelIndex: 0,
                                 totalSwitches: 2,
-                                labels: ['Deposit', 'Withdraw'],
+                                labels: const ['Deposit', 'Withdraw'],
                                 radiusStyle: true,
                                 onToggle: (index) {
-                                  print('switched to: $index');
+                                  // print('switched to: $index');
                                 },
                               ),
                             ],
@@ -491,10 +516,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                           Get.back();
                         }
                       },
-                      child: Text('Add'),
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
+                      child: const Text('Add'),
                     ),
                   )
                 ],
@@ -505,6 +530,8 @@ class _ScreenHomeState extends State<ScreenHome> {
       },
     );
   }
+
+//common text field widget for add trade and add fund screen
 
   Widget inputTextFormField(
       {required bool isEnabled,
@@ -529,9 +556,10 @@ class _ScreenHomeState extends State<ScreenHome> {
             hintText: hint,
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey)),
+                borderSide: const BorderSide(color: Colors.grey)),
             labelText: label,
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             suffixText: sufixItem,
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
@@ -540,6 +568,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 }
 
+//Getx state management used to manage the switch in the position sizing add postion dialoge
 class SwitchController extends GetxController {
   RxBool switchValue = false.obs;
   void toggleSwitch(bool value) {
