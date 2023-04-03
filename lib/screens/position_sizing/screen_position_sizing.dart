@@ -8,6 +8,7 @@ import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.d
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/screens/position_sizing/widgets/widget_position_sized_item.dart';
 import 'package:my_tradebook/widgets/widget_appbar.dart';
+import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
 class ScreenPositionSizing extends StatelessWidget {
@@ -23,7 +24,17 @@ class ScreenPositionSizing extends StatelessWidget {
       appBar: WidgetAppbar(
           title: 'Position Sizing',
           actions: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              clearPosition();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const WidgetLoadingAlert(
+                    duration: 2000,
+                  );
+                },
+              );
+            },
             icon: const Icon(Icons.cleaning_services_outlined),
           )),
       floatingActionButton: FloatingActionButton(
@@ -372,7 +383,8 @@ class ScreenPositionSizing extends StatelessWidget {
                 type = TradeType.buy;
               }
               if (formKey.currentState!.validate()) {
-                PositionModel position = PositionModel(currentUserId: returnCurrentUserId(),
+                PositionModel position = PositionModel(
+                  currentUserId: returnCurrentUserId(),
                   stockName: stockNameController.text.toUpperCase().trim(),
                   entryPrice: double.parse(entryPriceController.text),
                   type: type,

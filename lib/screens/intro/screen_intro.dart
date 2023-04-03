@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/screens/intro/pages/page_one.dart';
@@ -43,8 +42,9 @@ class _ScreenIntroState extends State<ScreenIntro> {
                       child: SizedBox(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: ((ctx) => ScreenLogin())));
+                            Get.offAll(const ScreenLogin());
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: ((ctx) => const ScreenLogin())));
                           },
                           child: const Text(
                             'Skip >>',
@@ -86,7 +86,7 @@ class _ScreenIntroState extends State<ScreenIntro> {
                                   targetPercentage: 0.0,
                                   stoplossPercentage: 0.0);
                               addOrUpdateSizing(sm);
-                              Get.offAll(ScreenLogin(),
+                              Get.offAll(const ScreenLogin(),
                                   transition: Transition.leftToRight);
                             },
                             child: const Text('Get started'),

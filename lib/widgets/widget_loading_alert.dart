@@ -16,7 +16,7 @@ class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 10), () {
+    Timer(Duration(milliseconds: widget.duration), () {
       Get.back();
     });
   }
@@ -28,7 +28,7 @@ class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
       backgroundColor: Colors.transparent,
       title: Center(
         child: SpinKitThreeBounce(
-          duration: Duration(milliseconds: widget.duration),
+          duration: Duration(milliseconds: 3000),
           color: Colors.white,
           size: 60,
         ),

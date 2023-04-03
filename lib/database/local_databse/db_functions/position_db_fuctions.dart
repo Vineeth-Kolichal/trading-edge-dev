@@ -28,6 +28,20 @@ Future<void> deletePosition(int key) async {
   await refreshUi();
 }
 
+Future<void> clearPosition() async {
+  final positionDB = await Hive.openBox<PositionModel>('position_db');
+  List<int> userKeys = [];
+  String currenUseId = returnCurrentUserId();
+  positionDB.values
+      .where((element) => element.currentUserId == currenUseId)
+      .forEach((element) {
+    userKeys.add(element.key);
+  });
+  //print(userKeys);
+  await positionDB.deleteAll(userKeys);
+  refreshUi();
+}
+
 Future<void> updatePosition(PositionModel positionModel, int key) async {
   final positionDB = await Hive.openBox<PositionModel>('position_db');
   positionDB.put(key, positionModel);

@@ -7,8 +7,8 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
 
   final String title;
   final double height;
-  Widget? actions;
-  WidgetAppbar(
+  final Widget? actions;
+  const WidgetAppbar(
       {super.key,
       required this.title,
       this.height = kToolbarHeight,

@@ -4,7 +4,6 @@ import 'package:get/route_manager.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
-import 'package:my_tradebook/widgets/widget_login_button.dart';
 
 class ScreenEnterName extends StatelessWidget {
   ScreenEnterName({super.key});
@@ -89,7 +88,7 @@ class ScreenEnterName extends StatelessWidget {
                                 addUserProfileToFireStore(
                                     nameController.text, null);
                                 //await addName(user: user);
-                                Get.offAll(ScreenHome(),
+                                Get.offAll(const ScreenHome(),
                                     transition: Transition.leftToRightWithFade,
                                     duration:
                                         const Duration(milliseconds: 500));
