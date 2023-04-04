@@ -43,7 +43,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   int _selectedTabIndex = 0;
 
-  final List _pages = const [
+  final List _pages =  [
     PageDashboard(),
     PageTradesLog(),
     PageFund(),

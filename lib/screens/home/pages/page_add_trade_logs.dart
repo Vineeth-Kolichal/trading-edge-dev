@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_appbar.dart';
@@ -23,6 +25,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   TextEditingController swingProtController = TextEditingController();
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
+  EntryType type = EntryType.profit;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +109,15 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                       labels: ['Profit', 'Loss'],
                       radiusStyle: true,
                       onToggle: (index) {
+                        if (index == 0) {
+                          // setState(() {
+                          type = EntryType.profit;
+                          // });
+                        } else {
+                          // setState(() {
+                          type = EntryType.loss;
+                          // });
+                        }
                         print('switched to: $index');
                       },
                     ),
@@ -118,6 +130,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.915,
                       child: TextFormField(
+                        controller: commentController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Fill details';
@@ -181,14 +194,46 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.915,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {}
-                    print('not validated');
+                    await addTradeLoges(
+                      date: _selectedDate!,
+                      type: type,
+                      amount: pnlController.text,
+                      description: commentController.text,
+                      swPro: (swingProtController.text.isNotEmpty)
+                          ? int.parse(swingProtController.text)
+                          : 0,
+                      swLo: (swingLotController.text.isNotEmpty)
+                          ? int.parse(swingLotController.text)
+                          : 0,
+                      intraPro: (intraProController.text.isNotEmpty)
+                          ? int.parse(intraProController.text)
+                          : 0,
+                      intraLo: (intraLoController.text.isNotEmpty)
+                          ? int.parse(intraLoController.text)
+                          : 0,
+                    );
+                    // await addTradeCount(
+                    //   swPro: (swingProtController.text.isNotEmpty)
+                    //       ? int.parse(swingProtController.text)
+                    //       : 0,
+                    //   swLo: (swingLotController.text.isNotEmpty)
+                    //       ? int.parse(swingLotController.text)
+                    //       : 0,
+                    //   intraPro: (intraProController.text.isNotEmpty)
+                    //       ? int.parse(intraProController.text)
+                    //       : 0,
+                    //   intraLo: (intraLoController.text.isNotEmpty)
+                    //       ? int.parse(intraLoController.text)
+                    //       : 0,
+                    // );
+                    Get.back();
                   },
-                  child: Text('Add'),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
+                  child: const Text('Add'),
                 ),
               )
             ],

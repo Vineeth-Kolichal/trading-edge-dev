@@ -10,7 +10,6 @@ import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:pinput/pinput.dart';
 
-
 class ScreenOtpVerification extends StatefulWidget {
   final String phoneNumber;
   const ScreenOtpVerification({super.key, required this.phoneNumber});
@@ -174,8 +173,6 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   }
 
   Future<void> veryfyOtpRecieved() async {
-  
-
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -187,7 +184,6 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     );
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
-     
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
       await initializeSizing();
       Get.snackbar('OTP Verified Successfully!', '',

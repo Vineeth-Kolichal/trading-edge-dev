@@ -8,7 +8,24 @@ enum PopupItem {
 }
 
 class WidgetTradeLogItem extends StatelessWidget {
-  WidgetTradeLogItem({super.key});
+  final String type;
+  final double amount;
+  final DateTime date;
+  final int swp;
+  final int swl;
+  final int intp;
+  final int intl;
+  final String comments;
+  WidgetTradeLogItem(
+      {super.key,
+      required this.type,
+      required this.amount,
+      required this.date,
+      required this.swp,
+      required this.swl,
+      required this.intp,
+      required this.intl,
+      required this.comments});
 
   PopupItem? selectedMenu;
 
@@ -30,11 +47,11 @@ class WidgetTradeLogItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Profit',
+                    type.toUpperCase(),
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: true ? Colors.green : Colors.red),
+                        color: (type == 'profit') ? Colors.green : Colors.red),
                   ),
                   Visibility(
                     visible: true,
@@ -103,7 +120,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                                   color: Colors.grey)),
                           sizedBoxTen,
                           Text(
-                            'PNL',
+                            amount.toString(),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -146,10 +163,13 @@ class WidgetTradeLogItem extends StatelessWidget {
                 // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 //     crossAxisCount: 2, childAspectRatio: 3),
                 children: [
-                  gridColumnItem(title: 'Swing(Profit)', content: '0'),
-                  gridColumnItem(title: 'Swing(Loss)', content: '0'),
-                  gridColumnItem(title: 'Intraday(Profit)', content: '0'),
-                  gridColumnItem(title: 'Intraday(Loss)', content: '0'),
+                  gridColumnItem(
+                      title: 'Swing(Profit)', content: swp.toString()),
+                  gridColumnItem(title: 'Swing(Loss)', content: swl.toString()),
+                  gridColumnItem(
+                      title: 'Intraday(Profit)', content: intp.toString()),
+                  gridColumnItem(
+                      title: 'Intraday(Loss)', content: intl.toString()),
                 ],
               ),
               Divider(),
@@ -165,7 +185,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        'kjhdjksdf, hkajdhjs husafdh hasfghgdjhsdjhhdfggsdfhgdfgsdfgsdjkhg',
+                        comments,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     )
