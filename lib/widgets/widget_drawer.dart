@@ -13,7 +13,6 @@ import 'package:my_tradebook/drawer_pages/page_terms_of_user.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
-import 'package:my_tradebook/screens/position_sizing/screen_position_sizing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WidgetDrawer extends StatefulWidget {
@@ -135,8 +134,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                                   color:
                                       const Color.fromARGB(255, 235, 232, 232),
                                   borderRadius: BorderRadius.circular(10)),
-                              height: 75,
-                              width: 75,
+                              height: 60,
+                              width: 60,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(7),
                                 child: ((fireStoreImgPath == null)
@@ -199,15 +198,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 ),
               ),
             ),
-            // drawerListTileItem(
-            //   leadingIcon: FeatherIcons.pieChart,
-            //   title: 'Position sizing',
-            //   onTapFunction: () {
-            //     Get.to(() => ScreenPositionSizing(),
-            //         transition: Transition.fadeIn,
-            //         duration: Duration(milliseconds: 300));
-            //   },
-            // ),
             drawerListTileItem(
               leadingIcon: FeatherIcons.book,
               title: 'About My TradeBook',
@@ -235,11 +225,11 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                     duration: Duration(milliseconds: 300));
               },
             ),
-            // drawerListTileItem(
-            //   leadingIcon: FeatherIcons.share2,
-            //   title: 'Share with friends',
-            //   onTapFunction: () {},
-            // ),
+            drawerListTileItem(
+              leadingIcon: FeatherIcons.share2,
+              title: 'Share with friends',
+              onTapFunction: () {},
+            ),
             drawerListTileItem(
               leadingIcon: FeatherIcons.logOut,
               title: 'Logout',

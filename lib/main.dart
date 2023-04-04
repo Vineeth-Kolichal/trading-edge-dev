@@ -8,6 +8,8 @@ import 'package:my_tradebook/firebase_options.dart';
 import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
+import 'screens/enter_name/screen_enter_name.dart';
+
 const loginType = 'LoggedIn';
 const String currentUserId = 'current_user_id';
 const whiteColor = Colors.white;
