@@ -9,7 +9,6 @@ import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
-import 'package:my_tradebook/screens/position_sizing/screen_position_sizing.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
 class WidgetPositionSizedItem extends StatelessWidget {
@@ -38,7 +37,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
                 PopupMenuButton<PopupItem>(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 0.1),
+                      side: const BorderSide(width: 0.1),
                       borderRadius: BorderRadius.circular(15)),
                   splashRadius: 20,
                   onSelected: (PopupItem item) async {

@@ -22,6 +22,9 @@ class PageTradesLog extends StatelessWidget {
             .orderBy('date', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.data == null) {
+            return const Center(child: WidgetSearchGif());
+          }
           if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong 😟'));
           }
@@ -33,9 +36,7 @@ class PageTradesLog extends StatelessWidget {
               duration: Duration(milliseconds: 1000),
             ));
           }
-          if (snapshot.data == null) {
-            return const Center(child: WidgetSearchGif());
-          }
+
           List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot
               .data!.docs
               .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();

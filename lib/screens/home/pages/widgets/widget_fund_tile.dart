@@ -80,8 +80,8 @@ class WidgetFundTile extends StatelessWidget {
                                 color: (type == 'profit')
                                     ? Colors.green
                                     : Colors.red))
-                        : (type == 'deposit')
-                            ? Text('Deposite',
+                        : (type == 'deposite')
+                            ? Text('Deposit',
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,

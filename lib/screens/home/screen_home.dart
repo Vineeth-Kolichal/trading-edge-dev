@@ -8,6 +8,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
+import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuctions.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
@@ -40,8 +41,9 @@ class _ScreenHomeState extends State<ScreenHome> {
   final _formKey = GlobalKey<FormState>();
   static const IconData _candlestick_chart_rounded =
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
-
+  int? initialLabelIndex = null;
   int _selectedTabIndex = 0;
+  bool _isSwitchEnabled = false;
 
   final List _pages = [
     PageDashboard(),
@@ -49,7 +51,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     PageFund(),
     PagePositionSizing()
   ];
-
+  EntryType fundType = EntryType.deposite;
   _changeIndex(int index) {
     setState(() {
       _selectedTabIndex = index;
@@ -423,6 +425,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   const Divider(),
                   Form(
                       key: _formKey,
+                      autovalidateMode: AutovalidateMode.always,
                       child: Column(
                         children: [
                           GestureDetector(
@@ -430,8 +433,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                               final DateTime? picked = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2010),
-                                lastDate: DateTime(2030),
+                                firstDate: DateTime.now()
+                                    .subtract(const Duration(days: 7)),
+                                lastDate: DateTime.now(),
                               );
                               if (picked != null) {
                                 final formatter =
@@ -455,21 +459,25 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 enabled: false,
                                 controller: dateController,
                                 decoration: InputDecoration(
-                                    disabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey)),
-                                    labelText: 'Date',
-                                    hintText: 'Select Date',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    suffixIcon: const Icon(
-                                      Icons.calendar_month_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
+                                  labelText: 'Date',
+                                  hintText: 'Select Date',
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 20,
+                                  ),
+                                  suffixIcon: const Icon(
+                                    Icons.calendar_month_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -489,11 +497,24 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 activeFgColor: Colors.white,
                                 inactiveBgColor: Colors.white,
                                 inactiveFgColor: Colors.black,
-                                initialLabelIndex: 0,
+                                initialLabelIndex: initialLabelIndex,
                                 totalSwitches: 2,
                                 labels: const ['Deposit', 'Withdraw'],
                                 radiusStyle: true,
                                 onToggle: (index) {
+                                  print(index);
+                                  setState(() {
+                                    initialLabelIndex = index;
+                                  });
+                                  if (initialLabelIndex == 0) {
+                                    fundType = EntryType.deposite;
+                                    print(fundType);
+                                  }
+                                  if (initialLabelIndex == 1) {
+                                    fundType = EntryType.withdraw;
+                                    print(fundType);
+                                  }
+
                                   // print('switched to: $index');
                                 },
                               ),
@@ -510,8 +531,12 @@ class _ScreenHomeState extends State<ScreenHome> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          await addTradeLoges(
+                              date: _selectedDate!,
+                              type: fundType,
+                              amount: amountController.text);
                           dateController.clear();
                           amountController.clear();
                           Get.back();
@@ -546,7 +571,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       child: TextFormField(
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Fill details';
+            return 'Required!';
           }
           return null;
         },
@@ -554,6 +579,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         enabled: isEnabled,
         controller: controller,
         decoration: InputDecoration(
+            // errorStyle: TextStyle(color: Colors.red),
             hintText: hint,
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

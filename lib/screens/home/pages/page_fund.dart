@@ -1,29 +1,62 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_tile.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:my_tradebook/widgets/widget_search_gif.dart';
 
 class PageFund extends StatelessWidget {
-  const PageFund({super.key});
+  final CollectionReference tradesAndFund = FirebaseFirestore.instance
+      .collection('users')
+      .doc(returnCurrentUserId())
+      .collection('Trades_and_fund');
+  PageFund({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: ListView.separated(
-        //shrinkWrap: true,
-        itemBuilder: ((context, index) {
-          final DateTime today = DateTime.now();
-          return WidgetFundTile(
-            amount: '100000.00',
-            type: 'loss',
-            date: today,
-          );
-        }),
-        separatorBuilder: (context, index) => sizedBoxTen,
-        itemCount: 5,
-      ),
+      child: StreamBuilder(
+          stream: tradesAndFund
+              // .where('type', whereIn: ['profit', 'loss'])
+              .orderBy('date', descending: true)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.data == null) {
+              return const Center(child: WidgetSearchGif());
+            }
+            if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong 😟'));
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: SpinKitCircle(
+                color: whiteColor,
+                duration: Duration(milliseconds: 1000),
+              ));
+            }
+            List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot
+                .data!.docs
+                .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();
+
+            return ListView.separated(
+              //shrinkWrap: true,
+              itemBuilder: ((context, index) {
+                Map<String, dynamic> data = docs[index].data();
+                return WidgetFundTile(
+                  amount: data['amount'].toString(),
+                  type: data['type'],
+                  date: data['date'].toDate(),
+                );
+              }),
+              separatorBuilder: (context, index) => sizedBoxTen,
+              itemCount: docs.length,
+            );
+          }),
     );
   }
 }

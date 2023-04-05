@@ -13,7 +13,7 @@ Widget widgetInputTextFormField(
     child: TextFormField(
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Fill details';
+          return 'Required!';
         }
         if (value == '0') {
           return 'please add corrent value';

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
@@ -76,10 +75,11 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                     padding: const EdgeInsets.all(4.0),
                     child: InkWell(
                       onTap: () {
-                        setState(() async {
-                          imgurl = await pickAndUploadImageToFirebaseStorage();
-                          setNameImage();
-                        });
+                        _updateState();
+                        // setState(() async {
+                        //   imgurl = await pickAndUploadImageToFirebaseStorage();
+                        //   setNameImage();
+                        // });
                         // await updateImageUrl(imgurl);
                       },
                       child: Container(
@@ -204,6 +204,15 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
         ),
       ),
     );
+  }
+
+  void _updateState() {
+    pickAndUploadImageToFirebaseStorage().then((imgurl) {
+      setState(() {
+        this.imgurl = imgurl;
+        setNameImage();
+      });
+    });
   }
 
   Future<String> getImageUrlFromFirebase() async {
