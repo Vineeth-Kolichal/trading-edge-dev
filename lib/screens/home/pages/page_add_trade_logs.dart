@@ -26,6 +26,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
   EntryType type = EntryType.profit;
+  int? seletedIndex = null;
 
   @override
   Widget build(BuildContext context) {
@@ -104,19 +105,18 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                       activeFgColor: Colors.white,
                       inactiveBgColor: Colors.white,
                       inactiveFgColor: Colors.black,
-                      initialLabelIndex: 0,
+                      initialLabelIndex: seletedIndex,
                       totalSwitches: 2,
                       labels: ['Profit', 'Loss'],
                       radiusStyle: true,
                       onToggle: (index) {
+                        setState(() {
+                          seletedIndex = index;
+                        });
                         if (index == 0) {
-                          // setState(() {
                           type = EntryType.profit;
-                          // });
                         } else {
-                          // setState(() {
                           type = EntryType.loss;
-                          // });
                         }
                         print('switched to: $index');
                       },

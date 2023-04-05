@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
@@ -47,7 +48,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    type.toUpperCase(),
+                    toBeginningOfSentenceCase(type)!,
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -132,15 +133,15 @@ class WidgetTradeLogItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Trade Date',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey)),
                           sizedBoxTen,
                           Text(
-                            'PNL',
+                            DateFormat.yMMMEd().format(date),
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -160,8 +161,6 @@ class WidgetTradeLogItem extends StatelessWidget {
                 mainAxisSpacing: 5,
                 crossAxisCount: 4,
                 physics: const NeverScrollableScrollPhysics(),
-                // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //     crossAxisCount: 2, childAspectRatio: 3),
                 children: [
                   gridColumnItem(
                       title: 'Swing(Profit)', content: swp.toString()),
@@ -172,7 +171,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                       title: 'Intraday(Loss)', content: intl.toString()),
                 ],
               ),
-              Divider(),
+              const Divider(),
               Theme(
                 data: Theme.of(context)
                     .copyWith(dividerColor: Colors.transparent),

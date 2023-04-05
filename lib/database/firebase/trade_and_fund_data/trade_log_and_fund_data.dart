@@ -36,7 +36,7 @@ Future<void> addTradeLoges(
       'date': dateTime,
       'type': entryType,
       'amount': amt,
-      'description': description
+      'description': description,
     });
   } else {
     await tradesAndFund.add({
@@ -47,9 +47,7 @@ Future<void> addTradeLoges(
       'swing_profit': swPro,
       'swing_loss': swLo,
       'intraday_profit': intraPro,
-      'intraday_loss': intraLo
+      'intraday_loss': intraLo,
     });
   }
 }
-
-

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 
 class PageTradesLog extends StatelessWidget {
@@ -15,18 +17,24 @@ class PageTradesLog extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: tradesAndFund
-            // .where('type', whereIn: ['profit', 'loss'])
+            .where('type', whereIn: ['profit', 'loss'])
             .orderBy('date', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return Center(child: Text('Something went wrong'));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading');
+            return Center(
+                child: SpinKitCircle(
+              color: whiteColor,
+              duration: Duration(milliseconds: 1000),
+            ));
           }
-
+          if (snapshot.data == null) {
+            return Center(child: Text('No data available'));
+          }
           List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot
               .data!.docs
               .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();
