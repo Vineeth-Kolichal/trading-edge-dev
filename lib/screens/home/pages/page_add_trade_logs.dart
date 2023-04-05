@@ -95,10 +95,10 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                     ToggleSwitch(
                       minHeight: 43,
                       borderWidth: 0.75,
-                      borderColor: [Colors.grey],
+                      borderColor: const [Colors.grey],
                       minWidth: 90,
                       cornerRadius: 10.0,
-                      activeBgColors: [
+                      activeBgColors:const  [
                         [Colors.green],
                         [Colors.red]
                       ],
@@ -107,7 +107,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                       inactiveFgColor: Colors.black,
                       initialLabelIndex: seletedIndex,
                       totalSwitches: 2,
-                      labels: ['Profit', 'Loss'],
+                      labels:const ['Profit', 'Loss'],
                       radiusStyle: true,
                       onToggle: (index) {
                         setState(() {
@@ -118,7 +118,6 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                         } else {
                           type = EntryType.loss;
                         }
-                        print('switched to: $index');
                       },
                     ),
                     sizedBoxTen,

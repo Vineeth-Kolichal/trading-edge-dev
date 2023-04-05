@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 
 class WidgetSearchGif extends StatefulWidget {
@@ -15,8 +13,8 @@ class _WidgetSearchGifState extends State<WidgetSearchGif>
   late FlutterGifController controller;
   @override
   void initState() {
+    super.initState();
     controller = FlutterGifController(vsync: this);
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.repeat(
         min: 0,

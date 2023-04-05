@@ -43,7 +43,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   int _selectedTabIndex = 0;
 
-  final List _pages =  [
+  final List _pages = [
     PageDashboard(),
     PageTradesLog(),
     PageFund(),
@@ -62,6 +62,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: customPrimaryColor[50],
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
       key: scaffoldKey,
       drawer: const Drawer(
@@ -355,7 +356,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       type: BottomNavigationBarType.fixed,
       selectedFontSize: 12,
       unselectedFontSize: 12,
-      selectedItemColor:const  Color(0xFF648BF8),
+      selectedItemColor: const Color(0xFF648BF8),
       unselectedItemColor: const Color.fromARGB(255, 131, 129, 129),
       showUnselectedLabels: true,
       items: const <BottomNavigationBarItem>[
