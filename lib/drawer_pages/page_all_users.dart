@@ -62,6 +62,7 @@ class PageAllUser extends StatelessWidget {
                       photoUrl: data['photUrl'],
                       docId: docId,
                       emailOrPhone: data['contact'] ?? '',
+                      index: index + 1,
                     );
                   }
                   return null;
@@ -81,12 +82,14 @@ class UserTile extends StatelessWidget {
   final String name;
   final String photoUrl;
   final String emailOrPhone;
+  final int index;
   const UserTile(
       {super.key,
       required this.name,
       required this.photoUrl,
       required this.docId,
-      required this.emailOrPhone});
+      required this.emailOrPhone,
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +118,19 @@ class UserTile extends StatelessWidget {
             ),
           ),
         ),
-        subtitle: Text(emailOrPhone),
+        subtitle: Text(
+          emailOrPhone,
+          style: const TextStyle(
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        trailing: Text(
+          index.toString(),
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
+          ),
+        ),
       ),
     );
   }

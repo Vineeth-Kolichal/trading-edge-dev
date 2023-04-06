@@ -14,6 +14,7 @@ import 'package:my_tradebook/drawer_pages/page_terms_of_user.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WidgetDrawer extends StatefulWidget {
@@ -233,9 +234,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               leadingIcon: FeatherIcons.logOut,
               title: 'Logout',
               onTapFunction: () async {
-                final SharedPreferences shared =
-                    await SharedPreferences.getInstance();
-                shared.remove(currentUserId);
                 openDialog();
               },
             ),
@@ -244,7 +242,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
       ],
     );
   }
-
 
 //Alert shows when user click on the logout button to confirm logout
   void openDialog() {
@@ -278,17 +275,19 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               "Confirm",
               style: TextStyle(color: Colors.black),
             ),
-            onPressed: () {
+            onPressed: () async {
               GoogleSignInProvider provider = GoogleSignInProvider();
-              provider.googleSignOut();
-              Get.offAll(const ScreenLogin());
+              await provider.googleSignOut();
+              const WidgetLoadingAlert(duration: 3000);
+              Get.offAll(const ScreenLogin(),
+                  transition: Transition.leftToRight,
+                  duration: Duration(milliseconds: 1000));
             },
           ),
         ],
       ),
     );
   }
-
 
 // Code for the alert box to edit the name
   void editNameDialoge() async {
@@ -360,7 +359,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     ));
   }
 
-
 // This function is used ot get name from firebase
   Future<String> getNameFromFirebase() async {
     late String fieldValue;
@@ -374,7 +372,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
 
     return fieldValue;
   }
-
 
 // This fuction is used to get image url from firebase
   Future<String> getImageUrlFromFirebase() async {
@@ -391,7 +388,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     return fieldValue;
   }
 }
-
 
 //Drawer List tile Items- refactored
 Widget drawerListTileItem(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
+import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
@@ -95,17 +96,20 @@ class WidgetTradeLogItem extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 0.2, color: Color.fromARGB(255, 206, 205, 205)),
-                    borderRadius: BorderRadius.circular(15),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        whiteColor,
-                        Color.fromARGB(255, 238, 238, 247),
-                      ],
-                    )),
+                  border: Border.all(
+                    width: 0.2,
+                    color: const Color.fromARGB(255, 206, 205, 205),
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      whiteColor,
+                      Color.fromARGB(255, 238, 238, 247),
+                    ],
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8, right: 0),
                   child: GridView.count(
@@ -128,11 +132,34 @@ class WidgetTradeLogItem extends StatelessWidget {
                                 color: Colors.grey),
                           ),
                           sizedBoxTen,
-                          Text(
-                            amount.toString(),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                          Tooltip(
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                            waitDuration: const Duration(milliseconds: 100),
+                            showDuration: const Duration(milliseconds: 5000),
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 0.4),
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  whiteColor,
+                                  Color.fromARGB(255, 238, 238, 247),
+                                ],
+                              ),
+                              // color: customPrimaryColor[200],
+                            ),
+                            message: "₹ $amount",
+                            child: Text(
+                              '₹${shortenNumber(amount)}',
+                              // amount.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -183,7 +210,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                 data: Theme.of(context)
                     .copyWith(dividerColor: Colors.transparent),
                 child: ExpansionTile(
-                  title: Text(
+                  title: const Text(
                     'Comments',
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
@@ -192,7 +219,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                     ListTile(
                       title: Text(
                         comments,
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     )
                   ],

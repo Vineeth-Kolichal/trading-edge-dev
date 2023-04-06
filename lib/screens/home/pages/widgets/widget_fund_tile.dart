@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
+import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
@@ -16,15 +17,6 @@ class WidgetFundTile extends StatelessWidget {
       required this.amount,
       required this.date,
       required this.docId});
-  String shortenNumber(double num) {
-    if (num >= 100000 && num < 1000000) {
-      return '${(num / 1000).toStringAsFixed(0)} K';
-    } else if (num >= 1000000) {
-      return '${(num / 1000000).toStringAsFixed(0)} M';
-    } else {
-      return num.toString();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,11 +141,31 @@ class WidgetFundTile extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: Colors.grey)),
                     sizedBoxTen,
-                    Text('₹${shortenNumber(double.parse(amount))}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
+                    Tooltip(
+                      textStyle: const TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                      waitDuration: const Duration(milliseconds: 100),
+                      showDuration: const Duration(milliseconds: 5000),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 0.4),
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            whiteColor,
+                            Color.fromARGB(255, 238, 238, 247),
+                          ],
+                        ),
+                        // color: customPrimaryColor[200],
+                      ),
+                      message: "₹ $amount",
+                      child: Text('₹${shortenNumber(double.parse(amount))}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                    ),
                   ],
                 )
               ],

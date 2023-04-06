@@ -31,7 +31,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WidgetAppbar(title: 'Add Trade'),
+      appBar: const WidgetAppbar(title: 'Add Trade'),
       body: SingleChildScrollView(
         child: Padding(
           padding:
@@ -75,19 +75,22 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                           onTap: () async {},
                           controller: dateController,
                           decoration: InputDecoration(
-                              disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: Colors.grey)),
-                              labelText: 'Trade Date',
-                              hintText: 'Select Date',
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              suffixIcon: Icon(
-                                Icons.calendar_month_outlined,
-                                color: Colors.grey,
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            labelText: 'Trade Date',
+                            hintText: 'Select Date',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            suffixIcon: const Icon(
+                              Icons.calendar_month_outlined,
+                              color: Colors.grey,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -136,30 +139,32 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                           }
                           return null;
                         },
-                        minLines: 3, // Set this
-                        maxLines: 4, // and this
+                        minLines: 3,
+                        maxLines: 4,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Colors.grey)),
-                            labelText: "What's on your mind (comments)",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                          disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey)),
+                          labelText: "What's on your mind (comments)",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
                     ),
                     sizedBoxTen,
                   ],
                 ),
               ),
-              Text(
+              const Text(
                 'Additional Details(Optional)',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               sizedBoxTen,
-              Text(
+              const Text(
                 'Swing',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
@@ -176,7 +181,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                   controller: swingLotController,
                   sufixItem: 'Lose Trades'),
               sizedBoxTen,
-              Text('Intraday',
+              const Text('Intraday',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
               inputTextFormField(
                   isEnabled: true,
@@ -213,25 +218,13 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                           ? int.parse(intraLoController.text)
                           : 0,
                     );
-                    // await addTradeCount(
-                    //   swPro: (swingProtController.text.isNotEmpty)
-                    //       ? int.parse(swingProtController.text)
-                    //       : 0,
-                    //   swLo: (swingLotController.text.isNotEmpty)
-                    //       ? int.parse(swingLotController.text)
-                    //       : 0,
-                    //   intraPro: (intraProController.text.isNotEmpty)
-                    //       ? int.parse(intraProController.text)
-                    //       : 0,
-                    //   intraLo: (intraLoController.text.isNotEmpty)
-                    //       ? int.parse(intraLoController.text)
-                    //       : 0,
-                    // );
                     Get.back();
                   },
                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                   child: const Text('Add'),
                 ),
               )
@@ -262,15 +255,18 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
         enabled: isEnabled,
         controller: controller,
         decoration: InputDecoration(
-            hintText: hint,
-            disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey)),
-            labelText: label,
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            suffixText: sufixItem,
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          hintText: hint,
+          disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: Colors.grey)),
+          labelText: label,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          suffixText: sufixItem,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tradebook/authentication/otp_verification_dialoges/success_otp_dialoge.dart';
+import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_movement.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_pnl_analysis_graph.dart';
@@ -13,16 +14,6 @@ class PageDashboard extends StatefulWidget {
 }
 
 class _PageDashboardState extends State<PageDashboard> {
-  String shortenNumber(double num) {
-    if (num >= 100000 && num < 1000000) {
-      return '${(num / 1000).toStringAsFixed(0)}K';
-    } else if (num >= 1000000) {
-      return '${(num / 1000000).toStringAsFixed(0)}M';
-    } else {
-      return num.toString();
-    }
-  }
-
   String number = '100000.00';
   var _selectedIdex = 0;
   @override

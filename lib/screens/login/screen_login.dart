@@ -32,7 +32,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color.fromARGB(249, 255, 253, 253),
       body: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -41,7 +40,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
@@ -193,11 +191,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
   }
 
   Future<void> signInWithGoogle() async {
-    // final SharedPreferences shared = await SharedPreferences.getInstance();
-    // ignore: use_build_context_synchronously
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     bool validated = await provider.googleLogin();
-    // await shared.setString(loginType, google);
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -213,14 +208,13 @@ class _ScreenLoginState extends State<ScreenLogin> {
       String? imagePath = currentUser?.photoURL;
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
       if (!isUserExist) {
-        addUserProfileToFireStore(
+        await addUserProfileToFireStore(
             name: name!, imgUrl: imagePath, contact: currentUser?.email);
       }
-      //addUserProfileToFireStore(name!, imagePath);
       await initializeSizing();
       Get.offAll(const ScreenHome(),
-          transition: Transition.fadeIn,
-          duration: const Duration(milliseconds: 500));
+          transition: Transition.leftToRight,
+          duration: const Duration(milliseconds: 1000));
     } else {
       Get.snackbar('Ooops..', 'Something went wrong, Please try again',
           snackPosition: SnackPosition.TOP,
