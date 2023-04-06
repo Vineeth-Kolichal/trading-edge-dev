@@ -61,7 +61,7 @@ class PageAllUser extends StatelessWidget {
                       name: data['name'],
                       photoUrl: data['photUrl'],
                       docId: docId,
-                      emailOrPhone: data['contact'],
+                      emailOrPhone: data['contact'] ?? '',
                     );
                   }
                   return null;

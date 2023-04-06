@@ -19,7 +19,7 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
-  final currentUser = FirebaseAuth.instance.currentUser;
+
   String? fireStoreImgPath = '';
   String imgurl =
       'https://firebasestorage.googleapis.com/v0/b/my-tradebook.appspot.com/o/user_profile_images%2Fuser_image_drawer.png?alt=media&token=259f68a2-dfcb-4be3-9028-781154c58fe6';
@@ -54,21 +54,6 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                 const SizedBox(
                   height: 60,
                 ),
-                // Image.asset(
-                //   'assets/images/name_page_image.png',
-                //   scale: 4.2,
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // const Text(
-                //   'Set up your Profile',
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-                // ),
-                // const SizedBox(
-                //   height: 40,
-                // ),
                 Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(70)),
@@ -78,11 +63,6 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                     child: InkWell(
                       onTap: () {
                         _updateState();
-                        // setState(() async {
-                        //   imgurl = await pickAndUploadImageToFirebaseStorage();
-                        //   setNameImage();
-                        // });
-                        // await updateImageUrl(imgurl);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -96,24 +76,6 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                             imgurl,
                             fit: BoxFit.cover,
                           ),
-                          // child: (FutureBuilder<String>(
-                          //   future: getImageUrlFromFirebase(),
-                          //   builder: (BuildContext context,
-                          //       AsyncSnapshot<String> snapshot) {
-                          //     if (snapshot.hasData) {
-                          //       return Image.network(snapshot.data!,
-                          //           fit: BoxFit.cover);
-                          //     } else {
-                          //       return SizedBox(
-                          //         width: 10,
-                          //         height: 10,
-                          //         child: Image.asset(
-                          //             'assets/images/user_image_drawer.png',
-                          //             fit: BoxFit.cover),
-                          //       );
-                          //     }
-                          //   },
-                          // )),
                         ),
                       ),
                     ),
@@ -163,20 +125,22 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                           padding: const EdgeInsets.all(4.0),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              elevation: 5, // the elevation of the button
+                              elevation: 5,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                    10), // the radius of the button
+                                  10,
+                                ),
                               ),
                             ),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                addUserProfileToFireStore(
+                                final currentUser =
+                                    FirebaseAuth.instance.currentUser;
+                                await addUserProfileToFireStore(
                                     name: nameController.text,
                                     imgUrl: imgurl,
                                     contact: currentUser?.phoneNumber);
-                                // addUserProfileToFireStore(
-                                //     nameController.text, imgurl);
+
                                 Get.offAll(const ScreenHome(),
                                     transition: Transition.leftToRightWithFade,
                                     duration:
