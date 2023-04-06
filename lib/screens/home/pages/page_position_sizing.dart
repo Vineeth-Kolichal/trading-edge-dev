@@ -47,14 +47,18 @@ class PagePositionSizing extends StatelessWidget {
                         itemCount: pos.length,
                       );
                     } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Center(
-                            child: WidgetSearchGif(),
+                      return SingleChildScrollView(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              WidgetSearchGif(),
+                              Text('No position items found! 😧')
+                            ],
                           ),
-                          Text('No position items found! 😧')
-                        ],
+                        ),
                       );
                     }
                   },

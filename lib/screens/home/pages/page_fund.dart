@@ -41,15 +41,17 @@ class PageFund extends StatelessWidget {
                 .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();
 
             if (docs.isEmpty) {
-              return SizedBox(
-                width: double.infinity,
-                child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    WidgetSearchGif(),
-                    Text('No fund entries found! 😧')
-                  ],
+              return SingleChildScrollView(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      WidgetSearchGif(),
+                      Text('No fund entries found! 😧')
+                    ],
+                  ),
                 ),
               );
             } else {
