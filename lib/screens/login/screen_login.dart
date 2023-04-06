@@ -102,10 +102,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
                             padding: const EdgeInsets.all(4.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                elevation: 3, // the elevation of the button
+                                elevation: 3, 
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      10), // the radius of the button
+                                      10), 
                                 ),
                               ),
                               onPressed: () async {
@@ -171,7 +171,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                         child: Image.asset(
                                             'assets/images/google.png')),
                                     const Text(
-                                      'Contitue with google',
+                                      'Continue with google',
                                       style: TextStyle(color: Colors.black),
                                     )
                                   ],

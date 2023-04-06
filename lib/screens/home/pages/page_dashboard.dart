@@ -57,11 +57,35 @@ class _PageDashboardState extends State<PageDashboard> {
                               children: [
                                 const Text('Current Balance'),
                                 sizedBoxTen,
-                                Text(
-                                  '₹${shortenNumber(double.parse(number))}',
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w700,
+                                Tooltip(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                  waitDuration:
+                                      const Duration(milliseconds: 100),
+                                  showDuration:
+                                      const Duration(milliseconds: 5000),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.grey, width: 0.4),
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        whiteColor,
+                                        Color.fromARGB(255, 238, 238, 247),
+                                      ],
+                                    ),
+                                    // color: customPrimaryColor[200],
+                                  ),
+                                  message: "₹ $number",
+                                  child: Text(
+                                    '₹${shortenNumber(double.parse(number))}',
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -83,14 +107,38 @@ class _PageDashboardState extends State<PageDashboard> {
                               children: [
                                 const Text("Last day's P&L"),
                                 sizedBoxTen,
-                                Text(
-                                  '+${shortenNumber(double.parse(number))}',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w700,
-                                      color: (double.parse(number) < 0.0
-                                          ? Colors.red
-                                          : Colors.green)),
+                                Tooltip(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                  waitDuration:
+                                      const Duration(milliseconds: 100),
+                                  showDuration:
+                                      const Duration(milliseconds: 5000),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.grey, width: 0.4),
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        whiteColor,
+                                        Color.fromARGB(255, 238, 238, 247),
+                                      ],
+                                    ),
+                                    // color: customPrimaryColor[200],
+                                  ),
+                                  message: "₹ $number",
+                                  child: Text(
+                                    '+${shortenNumber(double.parse(number))}',
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: (double.parse(number) < 0.0
+                                            ? Colors.red
+                                            : Colors.green)),
+                                  ),
                                 ),
                                 Text(
                                   "1.79%",

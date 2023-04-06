@@ -25,9 +25,6 @@ class PageFund extends StatelessWidget {
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.data == null) {
-              return const Center(child: WidgetSearchGif());
-            }
             if (snapshot.hasError) {
               return const Center(child: Text('Something went wrong 😟'));
             }
@@ -36,26 +33,42 @@ class PageFund extends StatelessWidget {
               return const Center(
                   child: SpinKitCircle(
                 color: whiteColor,
-                duration: Duration(milliseconds: 1000),
+                duration: Duration(milliseconds: 3000),
               ));
             }
             List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot
                 .data!.docs
                 .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();
 
-            return ListView.separated(
-              //shrinkWrap: true,
-              itemBuilder: ((context, index) {
-                Map<String, dynamic> data = docs[index].data();
-                return WidgetFundTile(
-                  amount: data['amount'].toString(),
-                  type: data['type'],
-                  date: data['date'].toDate(),
-                );
-              }),
-              separatorBuilder: (context, index) => sizedBoxTen,
-              itemCount: docs.length,
-            );
+            if (docs.isEmpty) {
+              return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    WidgetSearchGif(),
+                    Text('No fund entries found! 😧')
+                  ],
+                ),
+              );
+            } else {
+              return ListView.separated(
+                //shrinkWrap: true,
+                itemBuilder: ((context, index) {
+                  Map<String, dynamic> data = docs[index].data();
+                  String docId = docs[index].id;
+                  return WidgetFundTile(
+                    docId: docId,
+                    amount: data['amount'].toString(),
+                    type: data['type'],
+                    date: data['date'].toDate(),
+                  );
+                }),
+                separatorBuilder: (context, index) => sizedBoxTen,
+                itemCount: docs.length,
+              );
+            }
           }),
     );
   }

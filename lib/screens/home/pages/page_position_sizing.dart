@@ -53,7 +53,7 @@ class PagePositionSizing extends StatelessWidget {
                           Center(
                             child: WidgetSearchGif(),
                           ),
-                          Text('No position items found')
+                          Text('No position items found! 😧')
                         ],
                       );
                     }

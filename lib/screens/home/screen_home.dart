@@ -41,7 +41,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   final _formKey = GlobalKey<FormState>();
   static const IconData _candlestick_chart_rounded =
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
-  int? initialLabelIndex = null;
+  int? initialLabelIndex;
   int _selectedTabIndex = 0;
   bool _isSwitchEnabled = false;
 
@@ -416,7 +416,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         InkWell(
-                          onTap: () => Get.back(),
+                          onTap: () {
+                            initialLabelIndex = null;
+                            Get.back();
+                          },
                           child: const Icon(Icons.close),
                         )
                       ],
@@ -425,7 +428,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                   const Divider(),
                   Form(
                       key: _formKey,
-                      autovalidateMode: AutovalidateMode.always,
                       child: Column(
                         children: [
                           GestureDetector(
@@ -451,7 +453,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                               child: TextFormField(
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Fill details';
+                                    return 'Required';
                                   }
                                   return null;
                                 },
@@ -502,20 +504,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 labels: const ['Deposit', 'Withdraw'],
                                 radiusStyle: true,
                                 onToggle: (index) {
-                                  print(index);
                                   setState(() {
                                     initialLabelIndex = index;
                                   });
                                   if (initialLabelIndex == 0) {
                                     fundType = EntryType.deposite;
-                                    print(fundType);
                                   }
                                   if (initialLabelIndex == 1) {
                                     fundType = EntryType.withdraw;
-                                    print(fundType);
                                   }
-
-                                  // print('switched to: $index');
                                 },
                               ),
                             ],
@@ -539,6 +536,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                               amount: amountController.text);
                           dateController.clear();
                           amountController.clear();
+                          initialLabelIndex = null;
                           Get.back();
                         }
                       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
@@ -8,6 +9,7 @@ enum PopupItem {
   delete,
 }
 
+// ignore: must_be_immutable
 class WidgetTradeLogItem extends StatelessWidget {
   final String type;
   final double amount;
@@ -17,6 +19,7 @@ class WidgetTradeLogItem extends StatelessWidget {
   final int intp;
   final int intl;
   final String comments;
+  final String docId;
   WidgetTradeLogItem(
       {super.key,
       required this.type,
@@ -26,12 +29,14 @@ class WidgetTradeLogItem extends StatelessWidget {
       required this.swl,
       required this.intp,
       required this.intl,
-      required this.comments});
+      required this.comments,
+      required this.docId});
 
   PopupItem? selectedMenu;
 
   @override
   Widget build(BuildContext context) {
+    final difference = DateTime.now().difference(date);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Material(
@@ -47,24 +52,28 @@ class WidgetTradeLogItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    toBeginningOfSentenceCase(type)!,
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: (type == 'profit') ? Colors.green : Colors.red),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Text(
+                      toBeginningOfSentenceCase(type)!,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color:
+                              (type == 'profit') ? Colors.green : Colors.red),
+                    ),
                   ),
                   Visibility(
-                    visible: true,
+                    visible: difference.inDays < 3,
                     child: PopupMenuButton<PopupItem>(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.1),
+                          side: const BorderSide(width: 0.1),
                           borderRadius: BorderRadius.circular(15)),
                       splashRadius: 20,
-                      onSelected: (PopupItem item) {
+                      onSelected: (PopupItem item) async {
                         if (item == PopupItem.delete) {
-                          print('delete');
+                          await deleteDoc(docId);
                         } else {
                           print('Update');
                         }
@@ -102,23 +111,22 @@ class WidgetTradeLogItem extends StatelessWidget {
                   child: GridView.count(
                     childAspectRatio: 3.2,
                     shrinkWrap: true,
-                    //primary: true,
                     padding: const EdgeInsets.all(8),
                     crossAxisSpacing: 4,
                     mainAxisSpacing: 4,
                     crossAxisCount: 2,
                     physics: const NeverScrollableScrollPhysics(),
-                    // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: 2, childAspectRatio: 3),
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('PNL',
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey)),
+                          const Text(
+                            'PNL',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey),
+                          ),
                           sizedBoxTen,
                           Text(
                             amount.toString(),
@@ -155,7 +163,6 @@ class WidgetTradeLogItem extends StatelessWidget {
               GridView.count(
                 childAspectRatio: 1.8,
                 shrinkWrap: true,
-                //primary: true,
                 padding: const EdgeInsets.all(8),
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5,

@@ -49,14 +49,14 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                         final DateTime? picked = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(2010),
-                          lastDate: DateTime(2030),
+                          firstDate:
+                              DateTime.now().subtract(const Duration(days: 7)),
+                          lastDate: DateTime.now(),
                         );
                         if (picked != null) {
                           final formatter = DateFormat.yMMMEd().format(picked);
                           setState(() {
                             _selectedDate = picked;
-                            print(formatter);
                             dateController.text = formatter;
                           });
                         }
@@ -98,7 +98,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                       borderColor: const [Colors.grey],
                       minWidth: 90,
                       cornerRadius: 10.0,
-                      activeBgColors:const  [
+                      activeBgColors: const [
                         [Colors.green],
                         [Colors.red]
                       ],
@@ -107,7 +107,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                       inactiveFgColor: Colors.black,
                       initialLabelIndex: seletedIndex,
                       totalSwitches: 2,
-                      labels:const ['Profit', 'Loss'],
+                      labels: const ['Profit', 'Loss'],
                       radiusStyle: true,
                       onToggle: (index) {
                         setState(() {

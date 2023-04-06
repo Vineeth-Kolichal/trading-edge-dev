@@ -51,3 +51,12 @@ Future<void> addTradeLoges(
     });
   }
 }
+
+Future<void> deleteDoc(String id) async {
+  final DocumentReference document = FirebaseFirestore.instance
+      .collection('users')
+      .doc(returnCurrentUserId())
+      .collection('Trades_and_fund')
+      .doc(id);
+  await document.delete();
+}
