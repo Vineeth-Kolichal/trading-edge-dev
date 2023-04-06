@@ -8,6 +8,7 @@ import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/drawer_pages/page_about_tradebook.dart';
+import 'package:my_tradebook/drawer_pages/page_all_users.dart';
 import 'package:my_tradebook/drawer_pages/page_contact_us.dart';
 import 'package:my_tradebook/drawer_pages/page_terms_of_user.dart';
 import 'package:my_tradebook/main.dart';
@@ -103,20 +104,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Material(
-                      //   borderRadius: BorderRadius.circular(40),
-                      //   elevation: 5,
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       scaffoldKey.currentState!.closeDrawer();
-                      //     },
-                      //     child: const CircleAvatar(
-                      //       radius: 15,
-                      //       backgroundColor: Color.fromARGB(255, 235, 232, 232),
-                      //       child: Icon(Icons.arrow_back),
-                      //     ),
-                      //   ),
-                      // ),
                       Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -204,7 +191,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               onTapFunction: () {
                 Get.to(() => const PageAboutTradeBokk(),
                     transition: Transition.fadeIn,
-                    duration: Duration(milliseconds: 300));
+                    duration: const Duration(milliseconds: 300));
               },
             ),
             drawerListTileItem(
@@ -213,7 +200,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               onTapFunction: () {
                 Get.to(() => const PageTermsOfUser(),
                     transition: Transition.fadeIn,
-                    duration: Duration(milliseconds: 300));
+                    duration: const Duration(milliseconds: 300));
               },
             ),
             drawerListTileItem(
@@ -222,13 +209,25 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               onTapFunction: () {
                 Get.to(() => const ContactUs(),
                     transition: Transition.fadeIn,
-                    duration: Duration(milliseconds: 300));
+                    duration: const Duration(milliseconds: 300));
               },
             ),
             drawerListTileItem(
               leadingIcon: FeatherIcons.share2,
               title: 'Share with friends',
               onTapFunction: () {},
+            ),
+            Visibility(
+              visible: mail == 'vineethchandran5898@gmail.com',
+              child: drawerListTileItem(
+                leadingIcon: FeatherIcons.users,
+                title: 'View all Users',
+                onTapFunction: () {
+                  Get.to(() => PageAllUser(),
+                      transition: Transition.fadeIn,
+                      duration: const Duration(milliseconds: 300));
+                },
+              ),
             ),
             drawerListTileItem(
               leadingIcon: FeatherIcons.logOut,
@@ -246,6 +245,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     );
   }
 
+
+//Alert shows when user click on the logout button to confirm logout
   void openDialog() {
     Get.dialog(
       AlertDialog(
@@ -288,6 +289,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     );
   }
 
+
+// Code for the alert box to edit the name
   void editNameDialoge() async {
     final documentRef = FirebaseFirestore.instance
         .collection('users')
@@ -349,7 +352,6 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           onPressed: () async {
             if (formGlobalKey.currentState!.validate()) {
               await updateUserName(nameController.text);
-              //await getNameFromFirebase();
               Get.back();
             }
           },
@@ -358,6 +360,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     ));
   }
 
+
+// This function is used ot get name from firebase
   Future<String> getNameFromFirebase() async {
     late String fieldValue;
     final documentRef = FirebaseFirestore.instance
@@ -371,6 +375,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     return fieldValue;
   }
 
+
+// This fuction is used to get image url from firebase
   Future<String> getImageUrlFromFirebase() async {
     late String fieldValue;
     final documentRef = FirebaseFirestore.instance
@@ -386,6 +392,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   }
 }
 
+
+//Drawer List tile Items- refactored
 Widget drawerListTileItem(
     {required IconData leadingIcon,
     required String title,

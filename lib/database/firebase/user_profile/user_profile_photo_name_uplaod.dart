@@ -25,13 +25,15 @@ Future<String> pickAndUploadImageToFirebaseStorage() async {
   return downloadUrl;
 }
 
-Future<void> addUserProfileToFireStore(String name, String? imgUrl) async {
+Future<void> addUserProfileToFireStore(
+    {required String name, String? imgUrl, String? contact}) async {
   await FirebaseFirestore.instance
       .collection('users')
       .doc(returnCurrentUserId())
       .set({
     'name': name,
     'photUrl': imgUrl,
+    'contact': contact,
   });
 }
 

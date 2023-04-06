@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/authentication/phone_authentication.dart';
 import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
@@ -102,10 +103,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                             padding: const EdgeInsets.all(4.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                elevation: 3, 
+                                elevation: 3,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), 
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               onPressed: () async {
@@ -211,7 +211,12 @@ class _ScreenLoginState extends State<ScreenLogin> {
       final currentUser = FirebaseAuth.instance.currentUser;
       String? name = currentUser?.displayName;
       String? imagePath = currentUser?.photoURL;
-      addUserProfileToFireStore(name!, imagePath);
+      bool isUserExist = await checkUserDataExist(returnCurrentUserId());
+      if (!isUserExist) {
+        addUserProfileToFireStore(
+            name: name!, imgUrl: imagePath, contact: currentUser?.email);
+      }
+      //addUserProfileToFireStore(name!, imagePath);
       await initializeSizing();
       Get.offAll(const ScreenHome(),
           transition: Transition.fadeIn,

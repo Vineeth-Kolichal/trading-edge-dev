@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
@@ -18,9 +19,10 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
-
+  final currentUser = FirebaseAuth.instance.currentUser;
   String? fireStoreImgPath = '';
-  String imgurl = '';
+  String imgurl =
+      'https://firebasestorage.googleapis.com/v0/b/my-tradebook.appspot.com/o/user_profile_images%2Fuser_image_drawer.png?alt=media&token=259f68a2-dfcb-4be3-9028-781154c58fe6';
   @override
   void initState() {
     setNameImage();
@@ -90,14 +92,10 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                         width: 120,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(70),
-                          child: (imgurl == '')
-                              ? Image.asset(
-                                  'assets/images/user_image_drawer.png',
-                                  fit: BoxFit.cover)
-                              : Image.network(
-                                  imgurl,
-                                  fit: BoxFit.cover,
-                                ),
+                          child: Image.network(
+                            imgurl,
+                            fit: BoxFit.cover,
+                          ),
                           // child: (FutureBuilder<String>(
                           //   future: getImageUrlFromFirebase(),
                           //   builder: (BuildContext context,
@@ -173,9 +171,12 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                             ),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                addUserProfileToFireStore(nameController.text,
-                                    (imgurl == '') ? null : imgurl);
-                                //await addName(user: user);
+                                addUserProfileToFireStore(
+                                    name: nameController.text,
+                                    imgUrl: imgurl,
+                                    contact: currentUser?.phoneNumber);
+                                // addUserProfileToFireStore(
+                                //     nameController.text, imgurl);
                                 Get.offAll(const ScreenHome(),
                                     transition: Transition.leftToRightWithFade,
                                     duration:
