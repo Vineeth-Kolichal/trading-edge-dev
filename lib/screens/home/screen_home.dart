@@ -212,7 +212,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () async {
-              await clearPosition();
+              Get.back();
               // ignore: use_build_context_synchronously
               await showDialog(
                 context: context,
@@ -222,7 +222,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   );
                 },
               );
-              Get.back();
+              await clearPosition();
             },
           ),
         ],
