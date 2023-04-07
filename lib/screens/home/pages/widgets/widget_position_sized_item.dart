@@ -5,6 +5,7 @@ import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuc
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
+import 'package:my_tradebook/functions/function_position_sizing_calculations.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
@@ -37,17 +38,19 @@ class WidgetPositionSizedItem extends StatelessWidget {
                 PopupMenuButton<PopupItem>(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                      side: const BorderSide(width: 0.1),
-                      borderRadius: BorderRadius.circular(15)),
+                    side: const BorderSide(width: 0.1),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   splashRadius: 20,
                   onSelected: (PopupItem item) async {
                     if (item == PopupItem.delete) {
                       await deletePosition(position.key);
                     } else {
                       updateStock(
-                          context: context,
-                          stockName: position.stockName,
-                          entry: position.entryPrice.toString());
+                        context: context,
+                        stockName: position.stockName,
+                        entry: position.entryPrice.toString(),
+                      );
                     }
                   },
                   itemBuilder: (BuildContext context) =>
@@ -75,17 +78,24 @@ class WidgetPositionSizedItem extends StatelessWidget {
                   double? tarPer = sizing?.targetPercentage;
                   double? slPer = sizing?.stoplossPercentage;
                   double? targetAmt = sizing?.targetAmount;
+                  Map<String, String> calculatedValues =
+                      positionSizingCalculation(
+                          type: position.type,
+                          targetAmt: targetAmt!,
+                          targetPercentage: tarPer!,
+                          stoplossPercentage: slPer!,
+                          entryPrice: position.entryPrice);
+                  String? targetAmount = calculatedValues['targetAmount'];
+                  String? stoplossAmount = calculatedValues['stoplossAmount'];
+                  String? quantity = calculatedValues['quantity'];
                   return GridView.count(
                     childAspectRatio: 3.2,
                     shrinkWrap: true,
-                    //primary: true,
                     padding: const EdgeInsets.all(8),
                     crossAxisSpacing: 4,
                     mainAxisSpacing: 4,
                     crossAxisCount: 2,
                     physics: const NeverScrollableScrollPhysics(),
-                    // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: 2, childAspectRatio: 3),
                     children: [
                       gridItemColumn(
                           title: 'Trade Type',
@@ -97,28 +107,17 @@ class WidgetPositionSizedItem extends StatelessWidget {
                         content: position.entryPrice.toString(),
                       ),
                       gridItemColumn(
-                          title: 'Target',
-                          content: (position.type == TradeType.buy)
-                              ? (position.entryPrice +
-                                      ((position.entryPrice * tarPer!) / 100))
-                                  .toString()
-                              : (position.entryPrice -
-                                      ((position.entryPrice * tarPer!) / 100))
-                                  .toString()),
+                        title: 'Target',
+                        content: targetAmount!,
+                      ),
                       gridItemColumn(
-                          title: 'Stoploss',
-                          content: (position.type == TradeType.buy)
-                              ? (position.entryPrice -
-                                      ((position.entryPrice * slPer!) / 100))
-                                  .toString()
-                              : (position.entryPrice +
-                                      ((position.entryPrice * slPer!) / 100))
-                                  .toString()),
+                        title: 'Stoploss',
+                        content: stoplossAmount!,
+                      ),
                       gridItemColumn(
-                          title: 'Quantity',
-                          content: (targetAmt! ~/
-                                  ((position.entryPrice * tarPer) / 100))
-                              .toString())
+                        title: 'Quantity',
+                        content: quantity!,
+                      ),
                     ],
                   );
                 }),
