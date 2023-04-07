@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
@@ -13,8 +11,9 @@ import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuc
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
+import 'package:my_tradebook/getx_controller_classes/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/screens/home/pages/page_add_trade_logs.dart';
+import 'package:my_tradebook/screens/home/pages/page_add_update_trade_logs.dart';
 import 'package:my_tradebook/screens/home/pages/page_dashboard.dart';
 import 'package:my_tradebook/screens/home/pages/page_fund.dart';
 import 'package:my_tradebook/screens/home/pages/page_position_sizing.dart';
@@ -124,7 +123,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: FloatingActionButton(
           onPressed: () async {
             if (_selectedTabIndex == 1) {
-              Get.to(const PageAddTradeLog(),
+              Get.to(PageAddUpdateTradeLog(operation: 'Add'),
                   transition: Transition.fade,
                   duration: const Duration(milliseconds: 350));
             } else if (_selectedTabIndex == 2) {
@@ -212,7 +211,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () async {
-              Get.back();
+              await clearPosition();
               // ignore: use_build_context_synchronously
               await showDialog(
                 context: context,
@@ -222,7 +221,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   );
                 },
               );
-              await clearPosition();
+              Get.back();
             },
           ),
         ],
@@ -591,14 +590,4 @@ class _ScreenHomeState extends State<ScreenHome> {
       ),
     );
   }
-}
-
-//Getx state management used to manage the switch in the position sizing add postion dialoge
-class SwitchController extends GetxController {
-  RxBool switchValue = false.obs;
-  void toggleSwitch(bool value) {
-    switchValue.value = value;
-  }
-
-  bool get isEnabled => switchValue.value;
 }

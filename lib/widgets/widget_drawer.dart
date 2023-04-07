@@ -113,9 +113,13 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                           padding: const EdgeInsets.all(4.0),
                           child: InkWell(
                             onTap: () async {
-                              final imgurl =
-                                  await pickAndUploadImageToFirebaseStorage();
-                              await updateImageUrl(imgurl);
+                              try {
+                                final imgurl =
+                                    await pickAndUploadImageToFirebaseStorage();
+                                await updateImageUrl(imgurl);
+                              } catch (e) {
+                                print('image exception $e');
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -281,7 +285,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               const WidgetLoadingAlert(duration: 3000);
               Get.offAll(const ScreenLogin(),
                   transition: Transition.leftToRight,
-                  duration: Duration(milliseconds: 1000));
+                  duration:const  Duration(milliseconds: 1000));
             },
           ),
         ],

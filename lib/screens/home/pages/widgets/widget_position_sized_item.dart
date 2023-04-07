@@ -6,6 +6,7 @@ import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/functions/function_position_sizing_calculations.dart';
+import 'package:my_tradebook/getx_controller_classes/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';

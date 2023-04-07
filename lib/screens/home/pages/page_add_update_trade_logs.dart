@@ -7,14 +7,52 @@ import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_appbar.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class PageAddTradeLog extends StatefulWidget {
-  const PageAddTradeLog({super.key});
+class PageAddUpdateTradeLog extends StatefulWidget {
+  String? type;
+  DateTime? date;
+  String? pnl;
+  String? comment;
+  String? swpro;
+  String? swlo;
+  String? intPro;
+  String? intLo;
+  final String operation;
+
+  PageAddUpdateTradeLog(
+      {super.key,
+      this.type,
+      this.date,
+      this.pnl,
+      this.comment,
+      this.swpro,
+      this.swlo,
+      this.intPro,
+      this.intLo,
+      required this.operation});
 
   @override
-  State<PageAddTradeLog> createState() => _PageAddTradeLogState();
+  State<PageAddUpdateTradeLog> createState() => _PageAddUpdateTradeLogState();
 }
 
-class _PageAddTradeLogState extends State<PageAddTradeLog> {
+class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
+  @override
+  void initState() {
+    setState(() {
+      _selectedDate = widget.date;
+      if (widget.date != null) {
+        dateOld = DateFormat.yMMMEd().format(widget.date!);
+      }
+      dateController.text = dateOld ?? '';
+      pnlController.text = widget.pnl ?? '';
+      commentController.text = widget.comment ?? '';
+      swingLotController.text = widget.swlo ?? '';
+      swingProtController.text = widget.swpro ?? '';
+      intraLoController.text = widget.intLo ?? '';
+      intraProController.text = widget.intPro ?? '';
+    });
+    super.initState();
+  }
+
   FocusNode focusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDate;
@@ -25,13 +63,14 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
   TextEditingController swingProtController = TextEditingController();
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
-  EntryType type = EntryType.profit;
-  int? seletedIndex = null;
 
+  EntryType type = EntryType.profit;
+  int? seletedIndex;
+  String? dateOld;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const WidgetAppbar(title: 'Add Trade'),
+      appBar: WidgetAppbar(title: '${widget.operation} Trade'),
       body: SingleChildScrollView(
         child: Padding(
           padding:
@@ -56,6 +95,7 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                         if (picked != null) {
                           final formatter = DateFormat.yMMMEd().format(picked);
                           setState(() {
+                            print('dfdf');
                             _selectedDate = picked;
                             dateController.text = formatter;
                           });
@@ -199,33 +239,45 @@ class _PageAddTradeLogState extends State<PageAddTradeLog> {
                 width: MediaQuery.of(context).size.width * 0.915,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {}
-                    await addTradeLoges(
-                      date: _selectedDate!,
-                      type: type,
-                      amount: pnlController.text,
-                      description: commentController.text,
-                      swPro: (swingProtController.text.isNotEmpty)
-                          ? int.parse(swingProtController.text)
-                          : 0,
-                      swLo: (swingLotController.text.isNotEmpty)
-                          ? int.parse(swingLotController.text)
-                          : 0,
-                      intraPro: (intraProController.text.isNotEmpty)
-                          ? int.parse(intraProController.text)
-                          : 0,
-                      intraLo: (intraLoController.text.isNotEmpty)
-                          ? int.parse(intraLoController.text)
-                          : 0,
-                    );
-                    Get.back();
+                    if (_formKey.currentState!.validate()) {
+                      if (widget.operation == 'Add') {
+                        await addTradeLoges(
+                          date: _selectedDate!,
+                          type: type,
+                          amount: pnlController.text,
+                          description: commentController.text,
+                          swPro: (swingProtController.text.isNotEmpty)
+                              ? int.parse(swingProtController.text)
+                              : 0,
+                          swLo: (swingLotController.text.isNotEmpty)
+                              ? int.parse(swingLotController.text)
+                              : 0,
+                          intraPro: (intraProController.text.isNotEmpty)
+                              ? int.parse(intraProController.text)
+                              : 0,
+                          intraLo: (intraLoController.text.isNotEmpty)
+                              ? int.parse(intraLoController.text)
+                              : 0,
+                        );
+                      } else {
+                        print(_selectedDate);
+                        print(type);
+                        print(commentController.text);
+                        print(pnlController.text);
+                        print(swingLotController.text);
+                        print(swingProtController.text);
+                        print(intraLoController.text);
+                        print(intraProController.text);
+                      }
+                      //Get.back();
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text('Add'),
+                  child: Text(widget.operation),
                 ),
               )
             ],

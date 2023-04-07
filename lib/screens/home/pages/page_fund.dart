@@ -19,10 +19,7 @@ class PageFund extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: StreamBuilder(
-          stream: tradesAndFund
-              // .where('type', whereIn: ['profit', 'loss'])
-              .orderBy('date', descending: true)
-              .snapshots(),
+          stream: tradesAndFund.orderBy('date', descending: true).snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -56,7 +53,6 @@ class PageFund extends StatelessWidget {
               );
             } else {
               return ListView.separated(
-                //shrinkWrap: true,
                 itemBuilder: ((context, index) {
                   Map<String, dynamic> data = docs[index].data();
                   String docId = docs[index].id;

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/screens/home/pages/page_add_update_trade_logs.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'widget_grid_item_of_trade_log_item.dart';
 
 enum PopupItem {
   edit,
@@ -76,7 +80,17 @@ class WidgetTradeLogItem extends StatelessWidget {
                         if (item == PopupItem.delete) {
                           await deleteDoc(docId);
                         } else {
-                          print('Update');
+                          Get.to(PageAddUpdateTradeLog(
+                            operation: 'Update',
+                            pnl: amount.toString(),
+                            comment: comments,
+                            date: date,
+                            swpro: swp.toString(),
+                            swlo: swl.toString(),
+                            intPro: intp.toString(),
+                            intLo: intl.toString(),
+                            type: type,
+                          ));
                         }
                       },
                       itemBuilder: (BuildContext context) =>
@@ -229,28 +243,6 @@ class WidgetTradeLogItem extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget gridColumnItem({
-    required String title,
-    required String content,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title,
-            style: const TextStyle(
-                fontSize: 11, fontWeight: FontWeight.w600, color: Colors.grey)),
-        sizedBoxTen,
-        Text(
-          content,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        )
-      ],
     );
   }
 }

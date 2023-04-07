@@ -36,7 +36,7 @@ Future<void> addTradeLoges(
       'date': dateTime,
       'type': entryType,
       'amount': amt,
-      'description': description,
+      // 'description': description,
     });
   } else {
     await tradesAndFund.add({
