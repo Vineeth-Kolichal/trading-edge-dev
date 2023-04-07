@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_tradebook/authentication/otp_verification_dialoges/success_otp_dialoge.dart';
 import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_movement.dart';
@@ -14,6 +13,27 @@ class PageDashboard extends StatefulWidget {
 }
 
 class _PageDashboardState extends State<PageDashboard> {
+  Map<String, int> doughNutValue = {
+    'Profit-swing': 10,
+    'Loss-swing': 25,
+    'Profit-intraday': 25,
+    'Loss-intraday': 25
+  };
+
+  List<Map<String, dynamic>> chartData = [
+    {'domain': 1, 'measure': 00},
+    {'domain': 2, 'measure': 21},
+    {'domain': 3, 'measure': 55},
+    {'domain': 4, 'measure': 41},
+    {'domain': 5, 'measure': 110},
+    {'domain': 6, 'measure': 17},
+    {'domain': 7, 'measure': 127},
+    {'domain': 8, 'measure': 78},
+    {'domain': 9, 'measure': 89},
+    {'domain': 10, 'measure': 187},
+    {'domain': 11, 'measure': 148},
+    {'domain': 12, 'measure': 127},
+  ];
   String number = '100000.00';
   var _selectedIdex = 0;
   @override
@@ -146,9 +166,9 @@ class _PageDashboardState extends State<PageDashboard> {
                 ),
               ),
               sizedBoxTen,
-              WidgetPnlAnalysis(),
+              WidgetPnlAnalysis(graphValue: doughNutValue),
               sizedBoxTen,
-              WidgetFundMovement(),
+              WidgetFundMovement(chartData: chartData),
               const SizedBox(
                 height: 10,
               ),
@@ -182,9 +202,9 @@ class _PageDashboardState extends State<PageDashboard> {
 
   final List<String> _choiceChipNameList = [
     'Last Day',
-    'Last 5 Days',
-    'This Month',
-    'Custom'
+    'This week',
+    'This Quarter',
+    'This FY'
   ];
 
   List<Widget> choiceChipList() {

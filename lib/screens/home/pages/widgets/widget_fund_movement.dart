@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:my_tradebook/main.dart';
 
 class WidgetFundMovement extends StatelessWidget {
-  const WidgetFundMovement({super.key});
+  final List<Map<String, dynamic>> chartData;
+  const WidgetFundMovement({super.key, required this.chartData});
 
   @override
   Widget build(BuildContext context) {
@@ -20,42 +21,45 @@ class WidgetFundMovement extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             SizedBox(
-              height: 200,
+              height: MediaQuery.of(context).size.height * 0.3,
               width: MediaQuery.of(context).size.width,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const RotatedBox(quarterTurns: 3, child: Text('Fund--->')),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RotatedBox(
+                          quarterTurns: 3,
+                          child: const Icon(Icons.arrow_forward, size: 17)),
+                      const RotatedBox(quarterTurns: 3, child: Text('Fund')),
+                    ],
+                  ),
                   const SizedBox(width: 8),
                   Column(
                     children: [
                       SizedBox(
-                        height: 180,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: DChartLine(
                           includePoints: true,
                           data: [
                             {
                               'id': 'Line',
-                              'data': [
-                                {'domain': 1, 'measure': 00},
-                                {'domain': 2, 'measure': 21},
-                                {'domain': 3, 'measure': 55},
-                                {'domain': 4, 'measure': 41},
-                                {'domain': 5, 'measure': 110},
-                                {'domain': 6, 'measure': 17},
-                                {'domain': 7, 'measure': 127},
-                                {'domain': 8, 'measure': 78},
-                                {'domain': 9, 'measure': 89},
-                                {'domain': 10, 'measure': 187},
-                                {'domain': 11, 'measure': 148},
-                                {'domain': 12, 'measure': 127},
-                              ],
+                              'data': chartData,
                             },
                           ],
-                          lineColor: (lineData, index, id) => Colors.amber,
+                          lineColor: (lineData, index, id) =>
+                              customPrimaryColor,
                         ),
                       ),
-                      const Text('Month ---->')
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Month '),
+                          const Icon(Icons.arrow_forward, size: 17),
+                        ],
+                      )
                     ],
                   ),
                 ],
