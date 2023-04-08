@@ -7,7 +7,6 @@ import 'package:my_tradebook/getx_controller_classes/class_switch_controller.dar
 import 'package:my_tradebook/getx_controller_classes/class_text_controller.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
-import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
@@ -85,6 +84,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                           controller.switchValue.value = true;
                         }
                         updateFund(
+                            docId: widget.docId,
                             context: context,
                             amount: widget.amount,
                             date: widget.date);
@@ -199,7 +199,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
   }
 
   void updateFund(
-      {required BuildContext context,
+      {required String docId,
+      required BuildContext context,
       required String amount,
       required DateTime date}) {
     final formKey = GlobalKey<FormState>();
@@ -319,9 +320,11 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                 type = EntryType.deposite;
               }
               if (formKey.currentState!.validate()) {
-                print(amountController.text);
-                print(type);
-                print(selectedDate);
+                await updateTradeLogsAndFund(
+                    docId: docId,
+                    date: selectedDate,
+                    type: type,
+                    amount: amountController.text);
 
                 Get.back();
               }

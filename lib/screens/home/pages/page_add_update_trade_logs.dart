@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:my_tradebook/main.dart';
@@ -7,7 +7,9 @@ import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_appbar.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+// ignore: must_be_immutable
 class PageAddUpdateTradeLog extends StatefulWidget {
+  String? docId;
   String? type;
   DateTime? date;
   String? pnl;
@@ -20,6 +22,7 @@ class PageAddUpdateTradeLog extends StatefulWidget {
 
   PageAddUpdateTradeLog(
       {super.key,
+      this.docId,
       this.type,
       this.date,
       this.pnl,
@@ -95,7 +98,6 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         if (picked != null) {
                           final formatter = DateFormat.yMMMEd().format(picked);
                           setState(() {
-                            print('dfdf');
                             _selectedDate = picked;
                             dateController.text = formatter;
                           });
@@ -259,6 +261,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                               ? int.parse(intraLoController.text)
                               : 0,
                         );
+                        Get.back();
                       } else {
                         print(_selectedDate);
                         print(type);
@@ -268,8 +271,29 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         print(swingProtController.text);
                         print(intraLoController.text);
                         print(intraProController.text);
+
+                        await updateTradeLogsAndFund(
+                          docId: widget.docId!,
+                          date: _selectedDate!,
+                          type: type,
+                          amount: pnlController.text,
+                          description: commentController.text,
+                          swPro: (swingProtController.text.isNotEmpty)
+                              ? int.parse(swingProtController.text)
+                              : 0,
+                          swLo: (swingLotController.text.isNotEmpty)
+                              ? int.parse(swingLotController.text)
+                              : 0,
+                          intraPro: (intraProController.text.isNotEmpty)
+                              ? int.parse(intraProController.text)
+                              : 0,
+                          intraLo: (intraLoController.text.isNotEmpty)
+                              ? int.parse(intraLoController.text)
+                              : 0,
+                        );
+
+                        Get.back();
                       }
-                      //Get.back();
                     }
                   },
                   style: ElevatedButton.styleFrom(

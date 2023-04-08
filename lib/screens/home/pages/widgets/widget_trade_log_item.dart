@@ -81,6 +81,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                           await deleteDoc(docId);
                         } else {
                           Get.to(PageAddUpdateTradeLog(
+                            docId: docId,
                             operation: 'Update',
                             pnl: amount.toString(),
                             comment: comments,
