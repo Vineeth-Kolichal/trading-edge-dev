@@ -14,7 +14,7 @@ class PageDashboard extends StatefulWidget {
 }
 
 class _PageDashboardState extends State<PageDashboard> {
-  Map<String, int> doughNutValue = {
+  Map<String, int>? doughNutValue = {
     'Profit-swing': 10,
     'Loss-swing': 25,
     'Profit-intraday': 25,
@@ -38,6 +38,12 @@ class _PageDashboardState extends State<PageDashboard> {
   String number = '0.0';
 
   var _selectedIdex = 0;
+  final List<String> pnlTitle = [
+    "Last day's P&L",
+    'This week P&L',
+    'This quarter P&L',
+    'This FY P&L'
+  ];
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -140,7 +146,7 @@ class _PageDashboardState extends State<PageDashboard> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Last day's P&L"),
+                                Text(pnlTitle[_selectedIdex]),
                                 sizedBoxTen,
                                 Tooltip(
                                   textStyle: const TextStyle(
@@ -162,7 +168,6 @@ class _PageDashboardState extends State<PageDashboard> {
                                         Color.fromARGB(255, 238, 238, 247),
                                       ],
                                     ),
-                                    // color: customPrimaryColor[200],
                                   ),
                                   message: "₹ $number",
                                   child: Text(
@@ -190,7 +195,9 @@ class _PageDashboardState extends State<PageDashboard> {
                 ),
               ),
               sizedBoxTen,
-              WidgetPnlAnalysis(graphValue: doughNutValue),
+              WidgetPnlAnalysis(
+                selectedIdex: _selectedIdex,
+              ),
               sizedBoxTen,
               WidgetFundMovement(chartData: chartData),
               const SizedBox(

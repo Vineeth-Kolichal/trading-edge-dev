@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_tradebook/database/firebase/common_functions/tradeFundCollectionReferences.dart';
+import 'package:my_tradebook/database/firebase/dashbord_calculations/pie_graph_data.dart';
 
 Future<double> getCurrentBalance() async {
   final CollectionReference tradesAndFund = tradeFundCollectionReference();
@@ -15,5 +16,6 @@ Future<double> getCurrentBalance() async {
       sum += value;
     }
   }
+  print(pieGraphValues(0));
   return sum;
 }
