@@ -38,17 +38,17 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   final SwitchController controller = Get.put(SwitchController());
   final _formKey = GlobalKey<FormState>();
-  static const IconData _candlestick_chart_rounded =
+  static const IconData candlestickChartRounded =
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
   int? initialLabelIndex;
   int _selectedTabIndex = 0;
-  bool _isSwitchEnabled = false;
+  //bool _isSwitchEnabled = false;
 
   final List _pages = [
-    PageDashboard(),
+    const PageDashboard(),
     PageTradesLog(),
     PageFund(),
-    PagePositionSizing()
+    const PagePositionSizing()
   ];
   EntryType fundType = EntryType.deposite;
   _changeIndex(int index) {
@@ -124,7 +124,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           onPressed: () async {
             if (_selectedTabIndex == 1) {
               Get.to(PageAddUpdateTradeLog(operation: 'Add'),
-                  transition: Transition.fade,
+                  transition: Transition.leftToRight,
                   duration: const Duration(milliseconds: 350));
             } else if (_selectedTabIndex == 2) {
               showFundInputBottomSheet();
@@ -369,7 +369,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            _candlestick_chart_rounded,
+            candlestickChartRounded,
           ),
           label: 'Trades Log',
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/database/firebase/dashbord_calculations/total_pnl_section.dart';
 import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_movement.dart';
@@ -34,7 +35,8 @@ class _PageDashboardState extends State<PageDashboard> {
     {'domain': 11, 'measure': 148},
     {'domain': 12, 'measure': 127},
   ];
-  String number = '100000.00';
+  String number = '0.0';
+
   var _selectedIdex = 0;
   @override
   Widget build(BuildContext context) {
@@ -68,37 +70,59 @@ class _PageDashboardState extends State<PageDashboard> {
                               children: [
                                 const Text('Current Balance'),
                                 sizedBoxTen,
-                                Tooltip(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                  waitDuration:
-                                      const Duration(milliseconds: 100),
-                                  showDuration:
-                                      const Duration(milliseconds: 5000),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.4),
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        whiteColor,
-                                        Color.fromARGB(255, 238, 238, 247),
-                                      ],
-                                    ),
-                                    // color: customPrimaryColor[200],
-                                  ),
-                                  message: "₹ $number",
-                                  child: Text(
-                                    '₹${shortenNumber(double.parse(number))}',
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
+                                FutureBuilder(
+                                    future: getCurrentBalance(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double>
+                                            currentBalancesnapshot) {
+                                      if (currentBalancesnapshot.data == null) {
+                                        return const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 3,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    customPrimaryColor),
+                                          ),
+                                        );
+                                      }
+                                      double currentBalance =
+                                          currentBalancesnapshot.data!;
+
+                                      return Tooltip(
+                                        textStyle: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                        waitDuration:
+                                            const Duration(milliseconds: 100),
+                                        showDuration:
+                                            const Duration(milliseconds: 5000),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey, width: 0.4),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          gradient: const LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              whiteColor,
+                                              Color.fromARGB(
+                                                  255, 238, 238, 247),
+                                            ],
+                                          ),
+                                        ),
+                                        message: "₹ $currentBalance",
+                                        child: Text(
+                                          shortenNumber(currentBalance),
+                                          style: const TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      );
+                                    }),
                               ],
                             ),
                           ),

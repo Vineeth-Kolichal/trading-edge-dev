@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
+import 'package:my_tradebook/database/firebase/common_functions/tradeFundCollectionReferences.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/widgets/widget_search_gif.dart';
 
 // ignore: must_be_immutable
 class PageTradesLog extends StatelessWidget {
-  CollectionReference tradesAndFund = FirebaseFirestore.instance
-      .collection('users')
-      .doc(returnCurrentUserId())
-      .collection('Trades_and_fund');
+  CollectionReference tradesAndFund = tradeFundCollectionReference();
   PageTradesLog({super.key});
 
   @override

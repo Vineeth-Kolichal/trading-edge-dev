@@ -195,7 +195,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               title: 'About My TradeBook',
               onTapFunction: () {
                 Get.to(() => const PageAboutTradeBokk(),
-                    transition: Transition.fadeIn,
+                    transition: Transition.leftToRight,
                     duration: const Duration(milliseconds: 300));
               },
             ),
@@ -204,7 +204,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               title: 'Terms of use',
               onTapFunction: () {
                 Get.to(() => const PageTermsOfUser(),
-                    transition: Transition.fadeIn,
+                    transition: Transition.leftToRight,
                     duration: const Duration(milliseconds: 300));
               },
             ),
@@ -213,7 +213,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               title: 'Contact us',
               onTapFunction: () {
                 Get.to(() => const ContactUs(),
-                    transition: Transition.fadeIn,
+                    transition: Transition.leftToRight,
                     duration: const Duration(milliseconds: 300));
               },
             ),
@@ -229,7 +229,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 title: 'View all Users',
                 onTapFunction: () {
                   Get.to(() => PageAllUser(),
-                      transition: Transition.fadeIn,
+                      transition: Transition.leftToRight,
                       duration: const Duration(milliseconds: 300));
                 },
               ),
@@ -285,7 +285,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               const WidgetLoadingAlert(duration: 3000);
               Get.offAll(const ScreenLogin(),
                   transition: Transition.leftToRight,
-                  duration:const  Duration(milliseconds: 1000));
+                  duration: const Duration(milliseconds: 1000));
             },
           ),
         ],

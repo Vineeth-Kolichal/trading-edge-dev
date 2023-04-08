@@ -182,7 +182,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                       ),
                       message: "₹ ${widget.amount}",
                       child:
-                          Text('₹${shortenNumber(double.parse(widget.amount))}',
+                          Text(shortenNumber(double.parse(widget.amount)),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

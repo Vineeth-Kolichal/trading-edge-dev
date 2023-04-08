@@ -169,7 +169,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                             ),
                             message: "₹ $amount",
                             child: Text(
-                              '₹${shortenNumber(amount)}',
+                              shortenNumber(amount),
                               // amount.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
