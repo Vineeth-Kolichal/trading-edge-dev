@@ -1,10 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/database/firebase/dashbord_calculations/pnl_calculations.dart';
 import 'package:my_tradebook/database/firebase/dashbord_calculations/total_pnl_section.dart';
 import 'package:my_tradebook/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_fund_movement.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_pnl_analysis_graph.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
+import 'package:my_tradebook/widgets/widget_circular_progress.dart';
 
 class PageDashboard extends StatefulWidget {
   const PageDashboard({super.key});
@@ -14,13 +17,6 @@ class PageDashboard extends StatefulWidget {
 }
 
 class _PageDashboardState extends State<PageDashboard> {
-  Map<String, int>? doughNutValue = {
-    'Profit-swing': 10,
-    'Loss-swing': 25,
-    'Profit-intraday': 25,
-    'Loss-intraday': 25
-  };
-
   List<Map<String, dynamic>> chartData = [
     {'domain': 1, 'measure': 00},
     {'domain': 2, 'measure': 21},
@@ -35,7 +31,6 @@ class _PageDashboardState extends State<PageDashboard> {
     {'domain': 11, 'measure': 148},
     {'domain': 12, 'measure': 127},
   ];
-  String number = '0.0';
 
   var _selectedIdex = 0;
   final List<String> pnlTitle = [
@@ -65,6 +60,7 @@ class _PageDashboardState extends State<PageDashboard> {
                       height: 100,
                       width: double.infinity,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
@@ -72,7 +68,7 @@ class _PageDashboardState extends State<PageDashboard> {
                             width: 130,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              //  mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text('Current Balance'),
                                 sizedBoxTen,
@@ -120,12 +116,12 @@ class _PageDashboardState extends State<PageDashboard> {
                                           ),
                                         ),
                                         message: "₹ $currentBalance",
-                                        child: Text(
-                                          shortenNumber(currentBalance),
+                                        child: AutoSizeText(
+                                          '₹$currentBalance',
                                           style: const TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w700),
+                                          maxLines: 1,
                                         ),
                                       );
                                     }),
@@ -135,7 +131,7 @@ class _PageDashboardState extends State<PageDashboard> {
                           const VerticalDivider(
                             width: 20,
                             thickness: 1,
-                            indent: 20,
+                            indent: 0,
                             endIndent: 0,
                             color: Colors.grey,
                           ),
@@ -148,42 +144,60 @@ class _PageDashboardState extends State<PageDashboard> {
                               children: [
                                 Text(pnlTitle[_selectedIdex]),
                                 sizedBoxTen,
-                                Tooltip(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                  waitDuration:
-                                      const Duration(milliseconds: 100),
-                                  showDuration:
-                                      const Duration(milliseconds: 5000),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.4),
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        whiteColor,
-                                        Color.fromARGB(255, 238, 238, 247),
-                                      ],
-                                    ),
-                                  ),
-                                  message: "₹ $number",
-                                  child: Text(
-                                    '+${shortenNumber(double.parse(number))}',
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.w700,
-                                        color: (double.parse(number) < 0.0
-                                            ? Colors.red
-                                            : Colors.green)),
-                                  ),
-                                ),
+                                FutureBuilder(
+                                    future: totalPnlCalculations(_selectedIdex),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return progress;
+                                      } else {
+                                        return Tooltip(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                          waitDuration:
+                                              const Duration(milliseconds: 100),
+                                          showDuration: const Duration(
+                                              milliseconds: 5000),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.grey, width: 0.4),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient: const LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                whiteColor,
+                                                Color.fromARGB(
+                                                    255, 238, 238, 247),
+                                              ],
+                                            ),
+                                          ),
+                                          message: "${snapshot.data}",
+                                          child: (snapshot.data! >= 0)
+                                              ? Text(
+                                                  '+${shortenNumber(snapshot.data!)}',
+                                                  style: const TextStyle(
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.green),
+                                                )
+                                              : Text(
+                                                  '-${shortenNumber(snapshot.data!)}',
+                                                  style: const TextStyle(
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.red),
+                                                ),
+                                        );
+                                      }
+                                    }),
                                 Text(
                                   "1.79%",
                                   style: TextStyle(
-                                      color: (double.parse(number) < 0.0
+                                      color: (0 < 0.0
                                           ? Colors.red
                                           : Colors.green)),
                                 ),

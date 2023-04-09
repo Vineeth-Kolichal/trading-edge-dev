@@ -51,6 +51,7 @@ class WidgetFundMovement extends StatelessWidget {
                           ],
                           lineColor: (lineData, index, id) =>
                               customPrimaryColor,
+                              
                         ),
                       ),
                       Row(

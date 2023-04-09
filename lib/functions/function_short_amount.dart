@@ -9,11 +9,11 @@ String shortenNumber(double num) {
     }
   } else {
     if (num <= -10000 && num > -1000000) {
-      return '-₹ ${(num * (-1) / 1000).toStringAsFixed(0)} K';
+      return '₹${(num * (-1) / 1000).toStringAsFixed(0)} K';
     } else if (num <= -1000000) {
-      return '-₹ ${(num * (-1) / 1000000).toStringAsFixed(0)} M';
+      return '₹${(num * (-1) / 1000000).toStringAsFixed(0)} M';
     } else {
-      return '-₹ $num K';
+      return '₹${num * (-1)} K';
     }
   }
 }

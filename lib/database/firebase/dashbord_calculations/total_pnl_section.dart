@@ -16,6 +16,7 @@ Future<double> getCurrentBalance() async {
       sum += value;
     }
   }
-  print(pieGraphValues(0));
   return sum;
 }
+
+
