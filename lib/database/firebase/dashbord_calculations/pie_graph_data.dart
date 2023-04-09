@@ -3,17 +3,22 @@ import 'package:my_tradebook/database/firebase/common_functions/tradeFundCollect
 
 Future<Map<String, int>> pieGraphValues(int index) async {
   List<DocumentSnapshot> documents = [];
+
+  //Last day
   if (index == 0) {
     final Timestamp dateTime =
-        Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 2)));
+        Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 1)));
     final tradesAndFundCollection = tradeFundCollectionReference();
     final querySnapshot = await tradesAndFundCollection
         .where('date', isGreaterThanOrEqualTo: dateTime)
         .get();
     documents = querySnapshot.docs;
+
+    //This week
   } else if (index == 1) {
     DateTime now = DateTime.now();
-    DateTime startOfWeek = now.subtract(Duration(days: now.weekday % 7));
+    DateTime startOfWeek =
+        now.subtract(Duration(days: now.weekday - DateTime.monday));
     DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
     Timestamp startTimestamp = Timestamp.fromDate(startOfWeek);
     Timestamp endTimestamp = Timestamp.fromDate(endOfWeek);
@@ -23,20 +28,45 @@ Future<Map<String, int>> pieGraphValues(int index) async {
         .where('date', isLessThanOrEqualTo: endTimestamp)
         .get();
     documents = querySnapshot.docs;
+
+    //this quarter
   } else if (index == 2) {
-    final Timestamp dateTime =
-        Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 2)));
+    DateTime now = DateTime.now();
+    int currentMonth = now.month;
+    int startMonth = 4; 
+    int endMonth = 3;
+    int startYear = (currentMonth < startMonth) ? now.year - 1 : now.year;
+    int endYear = (currentMonth > endMonth) ? now.year + 1 : now.year;
+    int yearOffset = (currentMonth >= startMonth) ? 0 : -1;
+    int currentQuarter =
+        ((currentMonth - startMonth + yearOffset) / 3).floor() + 1;
+    DateTime startOfQuarter =
+        DateTime(startYear, startMonth + (currentQuarter - 1) * 3, 1);
+    DateTime endOfQuarter =
+        DateTime(endYear, startMonth + currentQuarter * 3 - 1, 0);
+    Timestamp startTimestamp = Timestamp.fromDate(startOfQuarter);
+    Timestamp endTimestamp = Timestamp.fromDate(endOfQuarter);
     final tradesAndFundCollection = tradeFundCollectionReference();
     final querySnapshot = await tradesAndFundCollection
-        .where('date', isGreaterThanOrEqualTo: dateTime)
+        .where('date', isGreaterThanOrEqualTo: startTimestamp)
+        .where('date', isLessThanOrEqualTo: endTimestamp)
         .get();
     documents = querySnapshot.docs;
+
+    //this FY
   } else {
-    final Timestamp dateTime =
-        Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 2)));
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int startYear = (now.month >= 4) ? currentYear : currentYear - 1;
+    int endYear = startYear + 1;
+    DateTime startOfYear = DateTime(startYear, 4, 1);
+    DateTime endOfYear = DateTime(endYear, 3, 31);
+    Timestamp startTimestamp = Timestamp.fromDate(startOfYear);
+    Timestamp endTimestamp = Timestamp.fromDate(endOfYear);
     final tradesAndFundCollection = tradeFundCollectionReference();
     final querySnapshot = await tradesAndFundCollection
-        .where('date', isGreaterThanOrEqualTo: dateTime)
+        .where('date', isGreaterThanOrEqualTo: startTimestamp)
+        .where('date', isLessThanOrEqualTo: endTimestamp)
         .get();
     documents = querySnapshot.docs;
   }
