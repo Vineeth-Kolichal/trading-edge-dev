@@ -5,9 +5,12 @@ import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_pnl_analysis_graph_description.dart';
 import 'package:my_tradebook/widgets/widget_search_gif.dart';
 
+// ignore: must_be_immutable
 class WidgetPnlAnalysis extends StatelessWidget {
   final int selectedIdex;
-  const WidgetPnlAnalysis({super.key, required this.selectedIdex});
+   List<String> titles = ['last day', 'Weekly', 'Quarterly', 'FY'];
+  WidgetPnlAnalysis({super.key, required this.selectedIdex});
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,13 @@ class WidgetPnlAnalysis extends StatelessWidget {
                       future: pieGraphValues(selectedIdex),
                       builder: (context, snapshot) {
                         if (snapshot.data == null) {
-                          return const WidgetSearchGif();
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const WidgetSearchGif(),
+                              Text('No ${titles[selectedIdex]} data found')
+                            ],
+                          );
                         } else {
                           Map<String, int>? doughNutValue = snapshot.data;
                           if (doughNutValue != null) {
@@ -82,7 +91,12 @@ class WidgetPnlAnalysis extends StatelessWidget {
                               labelPosition: PieLabelPosition.outside,
                             );
                           } else {
-                            return const WidgetSearchGif();
+                            return Column(
+                              children: const [
+                                WidgetSearchGif(),
+                                Text('No data found!')
+                              ],
+                            );
                           }
                         }
                       }),

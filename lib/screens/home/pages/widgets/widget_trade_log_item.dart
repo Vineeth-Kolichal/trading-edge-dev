@@ -69,7 +69,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: difference.inDays < 3,
+                    // visible: difference.inDays < 3,
                     child: PopupMenuButton<PopupItem>(
                       elevation: 4,
                       shape: RoundedRectangleBorder(

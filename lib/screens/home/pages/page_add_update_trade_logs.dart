@@ -91,8 +91,8 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         final DateTime? picked = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate:
-                              DateTime.now().subtract(const Duration(days: 7)),
+                          firstDate: DateTime(2020),
+                          //DateTime.now().subtract(const Duration(days: 7)),
                           lastDate: DateTime.now(),
                         );
                         if (picked != null) {
@@ -263,15 +263,6 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         );
                         Get.back();
                       } else {
-                        print(_selectedDate);
-                        print(type);
-                        print(commentController.text);
-                        print(pnlController.text);
-                        print(swingLotController.text);
-                        print(swingProtController.text);
-                        print(intraLoController.text);
-                        print(intraProController.text);
-
                         await updateTradeLogsAndFund(
                           docId: widget.docId!,
                           date: _selectedDate!,

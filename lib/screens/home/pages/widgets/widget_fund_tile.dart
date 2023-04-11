@@ -65,9 +65,9 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                   ),
                 ),
                 Visibility(
-                  visible: ((widget.type == 'deposite' ||
-                          widget.type == 'withdraw') &&
-                      difference.inDays < 3),
+                  // visible: ((widget.type == 'deposite' ||
+                  //         widget.type == 'withdraw') &&
+                  //     difference.inDays < 3),
                   child: PopupMenuButton<PopupItem>(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
@@ -181,12 +181,11 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                         // color: customPrimaryColor[200],
                       ),
                       message: "₹ ${widget.amount}",
-                      child:
-                          Text(shortenNumber(double.parse(widget.amount)),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              )),
+                      child: Text(shortenNumber(double.parse(widget.amount)),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
                     ),
                   ],
                 )

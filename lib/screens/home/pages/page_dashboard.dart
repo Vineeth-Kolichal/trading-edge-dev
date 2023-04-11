@@ -17,20 +17,6 @@ class PageDashboard extends StatefulWidget {
 }
 
 class _PageDashboardState extends State<PageDashboard> {
-  List<Map<String, dynamic>> chartData = [
-    {'domain': 1, 'measure': 00},
-    {'domain': 2, 'measure': 21},
-    {'domain': 3, 'measure': 55},
-    {'domain': 4, 'measure': 41},
-    {'domain': 5, 'measure': 110},
-    {'domain': 6, 'measure': 17},
-    {'domain': 7, 'measure': 127},
-    {'domain': 8, 'measure': 78},
-    {'domain': 9, 'measure': 89},
-    {'domain': 10, 'measure': 187},
-    {'domain': 11, 'measure': 148},
-    {'domain': 12, 'measure': 127},
-  ];
 
   var _selectedIdex = 0;
   final List<String> pnlTitle = [
@@ -213,7 +199,7 @@ class _PageDashboardState extends State<PageDashboard> {
                 selectedIdex: _selectedIdex,
               ),
               sizedBoxTen,
-              WidgetFundMovement(chartData: chartData),
+              WidgetFundMovement(),
               const SizedBox(
                 height: 10,
               ),

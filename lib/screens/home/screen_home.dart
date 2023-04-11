@@ -434,8 +434,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                               final DateTime? picked = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime.now()
-                                    .subtract(const Duration(days: 7)),
+                                firstDate: DateTime(2020),
+                                // firstDate: DateTime.now()
+                                //     .subtract(const Duration(days: 7)),
                                 lastDate: DateTime.now(),
                               );
                               if (picked != null) {
