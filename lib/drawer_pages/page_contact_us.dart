@@ -10,7 +10,7 @@ class ContactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
-      appBar: WidgetAppbar(title: 'Contact Us'),
+      appBar:const  WidgetAppbar(title: 'Contact Us'),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -81,7 +81,6 @@ class ContactUs extends StatelessWidget {
             ),
             InkWell(
               onTap: () async {
-                //www.instagram.com/vineeth.kolichal/
                 await launchUrl(
                     Uri.https('www.instagram.com', '/vineeth.kolichal'));
               },

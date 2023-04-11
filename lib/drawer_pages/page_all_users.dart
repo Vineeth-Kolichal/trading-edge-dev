@@ -24,7 +24,9 @@ class PageAllUser extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return const Center(child: Text('Something went wrong 😟'));
+              return const Center(
+                child: Text('Something went wrong 😟'),
+              );
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {

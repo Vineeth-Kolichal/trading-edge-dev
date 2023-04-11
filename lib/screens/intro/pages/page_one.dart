@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
 class PageOne extends StatelessWidget {
@@ -21,7 +19,7 @@ class PageOne extends StatelessWidget {
               scale: 4,
             ),
             sizedBoxTen,
-            Text(
+            const Text(
               textAlign: TextAlign.center,
               'Track Your Trading Journey And \n Become A Pro Trader',
               style: TextStyle(fontSize: 15),

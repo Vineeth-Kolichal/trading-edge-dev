@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
 class PageTwo extends StatelessWidget {
   const PageTwo({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +18,7 @@ class PageTwo extends StatelessWidget {
               scale: 4,
             ),
             sizedBoxTen,
-            Text(
+            const Text(
               textAlign: TextAlign.center,
               'View and Analyse your Trading \n Journal using graph',
               style: TextStyle(fontSize: 15),

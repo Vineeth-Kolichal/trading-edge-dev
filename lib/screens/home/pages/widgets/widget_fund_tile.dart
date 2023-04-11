@@ -37,7 +37,6 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
     for (var i = 1; i < dateList.length; i++) {
       dateOut = '$dateOut ${dateList[i]}';
     }
-    final difference = DateTime.now().difference(widget.date);
     return Material(
       elevation: 1,
       borderRadius: BorderRadius.circular(20),

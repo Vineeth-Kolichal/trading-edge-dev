@@ -46,7 +46,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         await googleSignIn.disconnect();
       }
     } catch (e) {
-      print('error sign out $e');
+      ('error sign out $e');
     }
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
-import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
 import 'package:my_tradebook/screens/intro/pages/page_one.dart';
 import 'package:my_tradebook/screens/intro/pages/page_two.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';

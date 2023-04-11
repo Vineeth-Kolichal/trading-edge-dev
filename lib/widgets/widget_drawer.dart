@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,6 @@ import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WidgetDrawer extends StatefulWidget {
   const WidgetDrawer({super.key});
@@ -118,7 +119,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                                     await pickAndUploadImageToFirebaseStorage();
                                 await updateImageUrl(imgurl);
                               } catch (e) {
-                                print('image exception $e');
+                                ('image exception $e');
                               }
                             },
                             child: Container(

@@ -199,7 +199,7 @@ class _PageDashboardState extends State<PageDashboard> {
                 selectedIdex: _selectedIdex,
               ),
               sizedBoxTen,
-              WidgetFundMovement(),
+             const  WidgetFundMovement(),
               const SizedBox(
                 height: 10,
               ),

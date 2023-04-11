@@ -40,7 +40,5 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
   }
 
   @override
-  // ignore: todo
-  // TODO: implement child
   Widget get child => throw UnimplementedError();
 }

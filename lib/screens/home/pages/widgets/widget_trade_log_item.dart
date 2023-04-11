@@ -41,7 +41,6 @@ class WidgetTradeLogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final difference = DateTime.now().difference(date);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Material(

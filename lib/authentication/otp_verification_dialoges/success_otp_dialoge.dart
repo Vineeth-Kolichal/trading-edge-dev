@@ -12,14 +12,14 @@ class _SuccessDialogState extends State<SuccessDialog> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pop();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return const AlertDialog(
       backgroundColor: Colors.transparent,
       title: Center(
         child: SpinKitThreeBounce(

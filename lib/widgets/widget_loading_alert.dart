@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
 class WidgetLoadingAlert extends StatefulWidget {
@@ -23,7 +22,7 @@ class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return const AlertDialog(
       elevation: 0,
       backgroundColor: Colors.transparent,
       title: Center(

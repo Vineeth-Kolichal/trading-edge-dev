@@ -9,7 +9,7 @@ import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 
 class ScreenEnterName extends StatefulWidget {
-  ScreenEnterName({super.key});
+  const ScreenEnterName({super.key});
 
   @override
   State<ScreenEnterName> createState() => _ScreenEnterNameState();
@@ -141,10 +141,11 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                                     imgUrl: imgurl,
                                     contact: currentUser?.phoneNumber);
 
-                                Get.offAll(const ScreenHome(),
-                                    transition: Transition.leftToRightWithFade,
-                                    duration:
-                                        const Duration(milliseconds: 500));
+                                Get.offAll(
+                                  const ScreenHome(),
+                                  transition: Transition.leftToRightWithFade,
+                                  duration: const Duration(milliseconds: 500),
+                                );
                               }
                             },
                             child: const Text(

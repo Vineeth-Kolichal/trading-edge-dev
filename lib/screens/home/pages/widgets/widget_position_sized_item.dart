@@ -9,7 +9,6 @@ import 'package:my_tradebook/functions/function_position_sizing_calculations.dar
 import 'package:my_tradebook/getx_controller_classes/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_trade_log_item.dart';
-import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 
