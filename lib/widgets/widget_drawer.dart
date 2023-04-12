@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +15,7 @@ import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
+import 'package:share_plus/share_plus.dart';
 
 class WidgetDrawer extends StatefulWidget {
   const WidgetDrawer({super.key});
@@ -221,7 +220,9 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             drawerListTileItem(
               leadingIcon: FeatherIcons.share2,
               title: 'Share with friends',
-              onTapFunction: () {},
+              onTapFunction: () {
+                Share.share('com.vineethkolichal.my_tradebook');
+              },
             ),
             Visibility(
               visible: mail == 'vineethchandran5898@gmail.com',
@@ -238,7 +239,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             drawerListTileItem(
               leadingIcon: FeatherIcons.logOut,
               title: 'Logout',
-              onTapFunction: () async {
+              onTapFunction: () {
                 openDialog();
               },
             ),

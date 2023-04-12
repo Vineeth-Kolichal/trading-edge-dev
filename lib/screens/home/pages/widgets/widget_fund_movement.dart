@@ -20,13 +20,46 @@ class WidgetFundMovement extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text(
-              'Fund Movement(Last 10 week)',
-              style: TextStyle(fontWeight: FontWeight.w600),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Fund Movement(Last 10 week)',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Tooltip(
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 94, 92, 92),
+                      fontWeight: FontWeight.w500),
+                  waitDuration: const Duration(milliseconds: 100),
+                  showDuration: const Duration(milliseconds: 5000),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 0.4),
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        whiteColor,
+                        Color.fromARGB(255, 238, 238, 247),
+                      ],
+                    ),
+                    // color: customPrimaryColor[200],
+                  ),
+                  message:
+                      "Only the cash flows of the weeks during\nwhich you took trades are shown in this chart. \nIf you did not take any trades in a particular \nweek, that week will be ignored in the chart.",
+                  child: const Icon(
+                    Icons.info,
+                    size: 17,
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 250,
-             // height: MediaQuery.of(context).size.height * 0.3,
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

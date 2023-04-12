@@ -13,7 +13,7 @@ String shortenNumber(double num) {
     } else if (num <= -1000000) {
       return '₹${(num * (-1) / 1000000).toStringAsFixed(0)} M';
     } else {
-      return '₹${num * (-1)} K';
+      return '₹${num * (-1)}';
     }
   }
 }
