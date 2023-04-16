@@ -80,7 +80,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                     'Made with ❤️ by Vineeth',
                     style: TextStyle(fontSize: 11),
                   ),
-                  Text('Version :', style: TextStyle(fontSize: 11))
+                  Text('Version :1.0.0', style: TextStyle(fontSize: 11))
                 ],
               ),
             ),

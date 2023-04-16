@@ -54,6 +54,7 @@ class WidgetFundMovement extends StatelessWidget {
                   child: const Icon(
                     Icons.info,
                     size: 17,
+                    color: Colors.grey,
                   ),
                 )
               ],

@@ -15,7 +15,7 @@ class PagePositionSizing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    refreshUi();
+    refreshUi(null);
     getSizingData(returnCurrentUserId());
     return Padding(
       padding: const EdgeInsets.all(8.0),

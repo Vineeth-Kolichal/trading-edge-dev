@@ -37,6 +37,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
     for (var i = 1; i < dateList.length; i++) {
       dateOut = '$dateOut ${dateList[i]}';
     }
+    final difference = DateTime.now().difference(widget.date);
     return Material(
       elevation: 1,
       borderRadius: BorderRadius.circular(20),
@@ -64,9 +65,9 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                   ),
                 ),
                 Visibility(
-                  // visible: ((widget.type == 'deposite' ||
-                  //         widget.type == 'withdraw') &&
-                  //     difference.inDays < 3),
+                  visible: ((widget.type == 'deposite' ||
+                          widget.type == 'withdraw') &&
+                      difference.inDays < 3),
                   child: PopupMenuButton<PopupItem>(
                     elevation: 4,
                     shape: RoundedRectangleBorder(

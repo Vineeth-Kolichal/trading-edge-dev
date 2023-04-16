@@ -54,16 +54,17 @@ class _ScreenHomeState extends State<ScreenHome> {
   _changeIndex(int index) {
     setState(() {
       _selectedTabIndex = index;
+      _search = false;
     });
   }
 
   DateTime? _selectedDate;
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+  bool _search = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: customPrimaryColor[50],
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
       key: scaffoldKey,
       drawer: const Drawer(
@@ -72,10 +73,21 @@ class _ScreenHomeState extends State<ScreenHome> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Image.asset(
-          'assets/images/my_trade_book.png',
-          scale: 3,
-        ),
+        title: _search
+            ? TextFormField(
+                onChanged: (value) {
+                  refreshUi(value);
+                },
+                decoration: const InputDecoration(
+                  // border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 5),
+                  hintText: 'Search here...',
+                ),
+              )
+            : Image.asset(
+                'assets/images/my_trade_book.png',
+                scale: 3,
+              ),
         iconTheme: const IconThemeData(color: Colors.black),
         leading: Builder(builder: (context) {
           return IconButton(
@@ -94,6 +106,22 @@ class _ScreenHomeState extends State<ScreenHome> {
         backgroundColor: whiteColor,
         actions: (_selectedTabIndex == 3)
             ? [
+                _search
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _search = false;
+                          });
+                        },
+                        icon: const Icon(Icons.clear))
+                    : IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _search = true;
+                          });
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
                 PopupMenuButton<ClearPopupItem>(
                   elevation: 4,
                   shape: RoundedRectangleBorder(

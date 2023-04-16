@@ -7,7 +7,7 @@ ValueNotifier<List<PositionModel>> positionNotifier = ValueNotifier([]);
 Future<void> addPosition(PositionModel position) async {
   final positionDB = await Hive.openBox<PositionModel>('position_db');
   positionDB.add(position);
-  await refreshUi();
+  await refreshUi(null);
 }
 
 Future<List<PositionModel>> getAllPositions() async {
@@ -25,7 +25,7 @@ Future<List<PositionModel>> getAllPositions() async {
 Future<void> deletePosition(int key) async {
   final positionDB = await Hive.openBox<PositionModel>('position_db');
   positionDB.delete(key);
-  await refreshUi();
+  await refreshUi(null);
 }
 
 Future<void> clearPosition() async {
@@ -38,17 +38,33 @@ Future<void> clearPosition() async {
     userKeys.add(element.key);
   });
   await positionDB.deleteAll(userKeys);
-  refreshUi();
+  refreshUi(null);
+}
+
+Future<List<PositionModel>> search(String query) async {
+  List<PositionModel> data = await getAllPositions();
+  List<PositionModel> results = [];
+  if (query.isNotEmpty) {
+    results = data
+        .where((item) =>
+            item.stockName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return results;
+  } else {
+    return data;
+  }
 }
 
 Future<void> updatePosition(PositionModel positionModel, int key) async {
   final positionDB = await Hive.openBox<PositionModel>('position_db');
   positionDB.put(key, positionModel);
-  refreshUi();
+  refreshUi(null);
 }
 
-Future<void> refreshUi() async {
-  final list = await getAllPositions();
+Future<void> refreshUi(String? query) async {
+  String searchQuery = query ?? '';
+  final list = await search(searchQuery);
+  //final list = await getAllPositions();
   list.sort((first, second) => (second.key).compareTo(first.key));
   positionNotifier.value.clear();
   positionNotifier.value.addAll(list);

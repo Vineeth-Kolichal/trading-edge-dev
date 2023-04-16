@@ -27,7 +27,7 @@ Future<Map<String, int>> pieGraphValues(int index) async {
     'Profit-swing': graphPercentages[0],
     'Loss-swing': graphPercentages[1],
     'Profit-intraday': graphPercentages[2],
-    'Loss-intraday': graphPercentages[2]
+    'Loss-intraday': graphPercentages[3]
   };
   return lastDayValues;
 }
@@ -59,6 +59,10 @@ List<int> putPieGraphpercentages(List<DocumentSnapshot> documents) {
   returnValues.add(percentage(total: totalTrades, value: totalSwingLoss));
   returnValues.add(percentage(total: totalTrades, value: totalIntraProfit));
   returnValues.add(percentage(total: totalTrades, value: totalIntraLoss));
-
+  // print(totalSwingLoss);
+  // print(totalSwingProfit);
+  // print(totalIntraLoss);
+  // print(totalIntraProfit);
+  // print(returnValues);
   return returnValues;
 }
