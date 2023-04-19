@@ -18,7 +18,10 @@ Future<List<Map<String, dynamic>>> lineGraphData() async {
       }
     }
     totalAmountList[k] = sum;
+    print('value of k $k');
     k--;
+
+    print('sum is $sum');
     sum = 0;
   }
   double tenWeekTotal = 0.0;
@@ -27,15 +30,23 @@ Future<List<Map<String, dynamic>>> lineGraphData() async {
       tenWeekTotal = tenWeekTotal + totalAmountList[x];
     }
   }
+  print(totalAmountList);
   double balanceBeforeTenWeek = await getCurrentBalance() - tenWeekTotal;
+  double prevWeekAmt = 0.0;
   for (var i = 0; i < totalAmountList.length; i++) {
     if (totalAmountList[i] != null) {
       if (i == 0) {
         displayAmountList[i] = totalAmountList[i] + balanceBeforeTenWeek;
+        prevWeekAmt = displayAmountList[i];
         // print(totalAmountList[i]);
         // print(displayAmountList);
       } else {
-        displayAmountList[i] = displayAmountList[i - 1] + totalAmountList[i];
+        if (totalAmountList[i] == 0.0) {
+          displayAmountList[i] = 0.0;
+        } else {
+          displayAmountList[i] = prevWeekAmt + totalAmountList[i];
+          prevWeekAmt = displayAmountList[i];
+        }
       }
     }
   }
@@ -51,7 +62,7 @@ Future<List<Map<String, dynamic>>> lineGraphData() async {
       );
     } else {
       chartData.add(
-        {'domain': a.toString(), 'measure': displayAmountList[a - 1]},
+        {'domain': 'Week$a', 'measure': displayAmountList[a - 1]},
       );
     }
   }

@@ -72,7 +72,7 @@ Future<List<DocumentSnapshot<Object?>>> thisFinancialYearData() async {
 Future<List<List<DocumentSnapshot<Object?>>>> lastTenWeeksData() async {
   List<List<DocumentSnapshot<Object?>>> data = [];
   DateTime now = DateTime.now();
-  for (int i = 0; i <= 10; i++) {
+  for (int i = 1; i <= 10; i++) {
     DateTime startOfWeek = now
         .subtract(Duration(days: now.weekday - DateTime.sunday))
         .subtract(Duration(days: i * 7));
@@ -86,9 +86,11 @@ Future<List<List<DocumentSnapshot<Object?>>>> lastTenWeeksData() async {
         .get();
 
     final documents = querySnapshot.docs;
-    if (documents.isNotEmpty) {
-      data.add(documents);
-    }
+    // print("$i th doc length ${documents.length}");
+    //   if (documents.isNotEmpty) {
+    // print('inside');
+    data.add(documents);
+    // }
   }
   return data;
 }

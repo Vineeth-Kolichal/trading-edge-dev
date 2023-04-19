@@ -66,8 +66,6 @@ class WidgetFundMovement extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                
-
                   SizedBox(
                     height: 160,
                     //height: MediaQuery.of(context).size.height * 0.25,
@@ -86,52 +84,52 @@ class WidgetFundMovement extends StatelessWidget {
                           } else {
                             prevVal = double.negativeInfinity;
                             List<Map<String, dynamic>> data = snapshot.data!;
-                            // return // example 1
-                            //     DChartBarCustom(
-                            //   measureLabelStyle: TextStyle(fontSize: 9),
-                            //   showDomainLine: true,
-                            //   showMeasureLine: true,
-                            //   showDomainLabel: true,
-                            //   showMeasureLabel: true,
-                            //   spaceBetweenItem: 8,
-                            //   listData: chartBarItemList(data),
-                            // );
-                            return DChartBar(
-                              data: [
-                                {
-                                  'id': 'Bar',
-                                  'data': snapshot.data,
-                                },
-                              ],
-                              domainLabelPaddingToAxisLine: 16,
-                              yAxisTitle: 'Week',
-                              xAxisTitle: 'Fund',
-                              axisLineTick: 2,
-                              axisLinePointTick: 2,
-                              axisLinePointWidth: 10,
-                              axisLineColor: Colors.black,
-                              measureLabelPaddingToAxisLine: 16,
-                              verticalDirection: false,
-                              barValuePosition: BarValuePosition.auto,
-                              barValueAnchor: BarValueAnchor.end,
-                              barValueColor: whiteColor,
-                              barValueFontSize: 8,
-                              barValue: (barData, index) =>
-                                  '${barData['measure']}',
-                              barColor: (barData, index, id) {
-                                double measure = barData['measure'];
-                                if (measure > prevVal) {
-                                  prevVal = measure;
-                                  return Colors.green;
-                                } else if (measure < prevVal) {
-                                  prevVal = measure;
-                                  return Colors.red;
-                                } else {
-                                  return Colors.green;
-                                }
-                              },
-                              showBarValue: true,
+                            return // example 1
+                                DChartBarCustom(
+                              measureLabelStyle: TextStyle(fontSize: 9),
+                              showDomainLine: true,
+                              showMeasureLine: true,
+                              showDomainLabel: true,
+                              showMeasureLabel: true,
+                              spaceBetweenItem: 8,
+                              listData: chartBarItemList(data),
                             );
+                            // return DChartBar(
+                            //   data: [
+                            //     {
+                            //       'id': 'Bar',
+                            //       'data': snapshot.data,
+                            //     },
+                            //   ],
+                            //   domainLabelPaddingToAxisLine: 16,
+                            //   yAxisTitle: 'Week',
+                            //   xAxisTitle: 'Fund',
+                            //   axisLineTick: 2,
+                            //   axisLinePointTick: 2,
+                            //   axisLinePointWidth: 10,
+                            //   axisLineColor: Colors.black,
+                            //   measureLabelPaddingToAxisLine: 16,
+                            //   verticalDirection: false,
+                            //   barValuePosition: BarValuePosition.auto,
+                            //   barValueAnchor: BarValueAnchor.end,
+                            //   barValueColor: whiteColor,
+                            //   barValueFontSize: 8,
+                            //   barValue: (barData, index) =>
+                            //       '${barData['measure']}',
+                            //   barColor: (barData, index, id) {
+                            //     double measure = barData['measure'];
+                            //     if (measure > prevVal) {
+                            //       prevVal = measure;
+                            //       return Colors.green;
+                            //     } else if (measure < prevVal) {
+                            //       prevVal = measure;
+                            //       return Colors.red;
+                            //     } else {
+                            //       return Colors.green;
+                            //     }
+                            //   },
+                            //   showBarValue: true,
+                            // );
 
                             // return DChartLine(
                             //   includePoints: true,
@@ -163,10 +161,10 @@ class WidgetFundMovement extends StatelessWidget {
     return DChartBarDataCustom(
         value: value,
         labelCustom: Transform.rotate(
-          angle: 5.0,
+          angle: 5.3,
           child: Text(
             label,
-            style: const TextStyle(fontSize: 7),
+            style: const TextStyle(fontSize: 6),
           ),
         ),
         label: label,
