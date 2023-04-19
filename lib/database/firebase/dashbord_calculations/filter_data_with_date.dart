@@ -14,8 +14,7 @@ Future<List<DocumentSnapshot<Object?>>> lastDayData() async {
 
 Future<List<DocumentSnapshot<Object?>>> thisWeekData() async {
   DateTime now = DateTime.now();
-  DateTime startOfWeek =
-      now.subtract(Duration(days: now.weekday - DateTime.monday));
+  DateTime startOfWeek = now.subtract(Duration(days: now.weekday % 7));
   DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
   Timestamp startTimestamp = Timestamp.fromDate(startOfWeek);
   Timestamp endTimestamp = Timestamp.fromDate(endOfWeek);
@@ -40,8 +39,7 @@ Future<List<DocumentSnapshot<Object?>>> thisQuartertData() async {
       ((currentMonth - startMonth + yearOffset) / 3).floor() + 1;
   DateTime startOfQuarter =
       DateTime(startYear, startMonth + (currentQuarter - 1) * 3, 1);
-  DateTime endOfQuarter =
-      DateTime(endYear, startMonth + currentQuarter * 3 - 1, 0);
+  DateTime endOfQuarter = DateTime(endYear, startMonth + currentQuarter * 3, 0);
   Timestamp startTimestamp = Timestamp.fromDate(startOfQuarter);
   Timestamp endTimestamp = Timestamp.fromDate(endOfQuarter);
   final tradesAndFundCollection = tradeFundCollectionReference();
