@@ -74,9 +74,9 @@ Future<List<DocumentSnapshot<Object?>>> thisFinancialYearData() async {
 Future<List<List<DocumentSnapshot<Object?>>>> lastTenWeeksData() async {
   List<List<DocumentSnapshot<Object?>>> data = [];
   DateTime now = DateTime.now();
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i <= 10; i++) {
     DateTime startOfWeek = now
-        .subtract(Duration(days: now.weekday - DateTime.monday))
+        .subtract(Duration(days: now.weekday - DateTime.sunday))
         .subtract(Duration(days: i * 7));
     DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
     Timestamp startTimestamp = Timestamp.fromDate(startOfWeek);
@@ -86,7 +86,7 @@ Future<List<List<DocumentSnapshot<Object?>>>> lastTenWeeksData() async {
         .where('date', isGreaterThanOrEqualTo: startTimestamp)
         .where('date', isLessThanOrEqualTo: endTimestamp)
         .get();
-   
+
     final documents = querySnapshot.docs;
     if (documents.isNotEmpty) {
       data.add(documents);

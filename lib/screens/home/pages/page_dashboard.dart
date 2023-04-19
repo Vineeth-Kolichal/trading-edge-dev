@@ -180,7 +180,10 @@ class _PageDashboardState extends State<PageDashboard> {
                                   future: percentageCalculations(_selectedIdex),
                                   builder: (context, snapshot) {
                                     if (snapshot.data == null) {
-                                      return progress;
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: progress,
+                                      );
                                     } else {
                                       return Text(
                                         "${snapshot.data?.toStringAsFixed(2)}%",

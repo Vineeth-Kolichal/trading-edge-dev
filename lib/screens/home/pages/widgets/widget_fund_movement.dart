@@ -11,6 +11,7 @@ class WidgetFundMovement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double prevVal = double.negativeInfinity;
     return Material(
       color: whiteColor,
       borderRadius: BorderRadius.circular(13),
@@ -50,7 +51,7 @@ class WidgetFundMovement extends StatelessWidget {
                     // color: customPrimaryColor[200],
                   ),
                   message:
-                      "Only the cash flows of the weeks during\nwhich you took trades are shown in this chart. \nIf you did not take any trades in a particular \nweek, that week will be ignored in the chart.",
+                      "👉Only the cash flows of the weeks during\nwhich you took trades are shown in this chart. \nIf you did not take any trades in a particular \nweek, that week will be ignored in the chart.\n👉 In chart Week 10 shows the fund\nmovement of current week",
                   child: const Icon(
                     Icons.info,
                     size: 17,
@@ -60,61 +61,91 @@ class WidgetFundMovement extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 250,
+              height: 210,
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      RotatedBox(
-                          quarterTurns: 3,
-                          child: Icon(Icons.arrow_forward, size: 17)),
-                      RotatedBox(quarterTurns: 3, child: Text('Fund')),
-                    ],
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 200,
-                        //height: MediaQuery.of(context).size.height * 0.25,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: FutureBuilder(
-                            future: lineGraphData(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    WidgetSearchGif(),
-                                    Text('No  data found')
-                                  ],
-                                );
-                              } else {
-                                return DChartLine(
-                                  includePoints: true,
-                                  data: [
-                                    {
-                                      'id': 'Line',
-                                      'data': snapshot.data,
-                                    },
-                                  ],
-                                  lineColor: (lineData, index, id) =>
-                                      customPrimaryColor,
-                                );
-                              }
-                            }),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('Week '),
-                          Icon(Icons.arrow_forward, size: 17),
-                        ],
-                      )
-                    ],
+                
+
+                  SizedBox(
+                    height: 160,
+                    //height: MediaQuery.of(context).size.height * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: FutureBuilder(
+                        future: lineGraphData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                WidgetSearchGif(),
+                                Text('No  data found')
+                              ],
+                            );
+                          } else {
+                            prevVal = double.negativeInfinity;
+                            List<Map<String, dynamic>> data = snapshot.data!;
+                            // return // example 1
+                            //     DChartBarCustom(
+                            //   measureLabelStyle: TextStyle(fontSize: 9),
+                            //   showDomainLine: true,
+                            //   showMeasureLine: true,
+                            //   showDomainLabel: true,
+                            //   showMeasureLabel: true,
+                            //   spaceBetweenItem: 8,
+                            //   listData: chartBarItemList(data),
+                            // );
+                            return DChartBar(
+                              data: [
+                                {
+                                  'id': 'Bar',
+                                  'data': snapshot.data,
+                                },
+                              ],
+                              domainLabelPaddingToAxisLine: 16,
+                              yAxisTitle: 'Week',
+                              xAxisTitle: 'Fund',
+                              axisLineTick: 2,
+                              axisLinePointTick: 2,
+                              axisLinePointWidth: 10,
+                              axisLineColor: Colors.black,
+                              measureLabelPaddingToAxisLine: 16,
+                              verticalDirection: false,
+                              barValuePosition: BarValuePosition.auto,
+                              barValueAnchor: BarValueAnchor.end,
+                              barValueColor: whiteColor,
+                              barValueFontSize: 8,
+                              barValue: (barData, index) =>
+                                  '${barData['measure']}',
+                              barColor: (barData, index, id) {
+                                double measure = barData['measure'];
+                                if (measure > prevVal) {
+                                  prevVal = measure;
+                                  return Colors.green;
+                                } else if (measure < prevVal) {
+                                  prevVal = measure;
+                                  return Colors.red;
+                                } else {
+                                  return Colors.green;
+                                }
+                              },
+                              showBarValue: true,
+                            );
+
+                            // return DChartLine(
+                            //   includePoints: true,
+                            //   data: [
+                            //     {
+                            //       'id': 'Line',
+                            //       'data': snapshot.data,
+                            //     },
+                            //   ],
+                            //   lineColor: (lineData, index, id) =>
+                            //       customPrimaryColor,
+                            // );
+                          }
+                        }),
                   ),
                 ],
               ),
@@ -123,5 +154,38 @@ class WidgetFundMovement extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  DChartBarDataCustom customChartBarItem(
+      {required double value,
+      required double valuePrev,
+      required String label}) {
+    return DChartBarDataCustom(
+        value: value,
+        labelCustom: Transform.rotate(
+          angle: 5.0,
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 7),
+          ),
+        ),
+        label: label,
+        color: (value > valuePrev) ? Colors.green : Colors.red);
+  }
+
+  List<DChartBarDataCustom> chartBarItemList(List<Map<String, dynamic>> data) {
+    List<DChartBarDataCustom> chartList = [];
+    for (var i = 0; i < data.length; i++) {
+      if (i == 0) {
+        chartList.add(customChartBarItem(
+            value: data[i]['measure'], valuePrev: 0, label: data[i]['domain']));
+      } else {
+        chartList.add(customChartBarItem(
+            value: data[i]['measure'],
+            valuePrev: data[i - 1]['measure'],
+            label: data[i]['domain']));
+      }
+    }
+    return chartList;
   }
 }
