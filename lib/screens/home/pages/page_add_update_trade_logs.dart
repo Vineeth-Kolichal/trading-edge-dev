@@ -167,6 +167,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                     ),
                     sizedBoxTen,
                     inputTextFormField(
+                        type: TextInputType.number,
                         isEnabled: true,
                         label: 'Net Realized P&L',
                         controller: pnlController),
@@ -211,6 +212,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
               inputTextFormField(
+                type: TextInputType.number,
                 isEnabled: true,
                 hint: '0',
                 controller: swingProtController,
@@ -218,6 +220,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
               ),
               sizedBoxTen,
               inputTextFormField(
+                  type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
                   controller: swingLotController,
@@ -226,12 +229,14 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
               const Text('Intraday',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
               inputTextFormField(
+                  type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
                   controller: intraProController,
                   sufixItem: 'Profit Trades'),
               sizedBoxTen,
               inputTextFormField(
+                  type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
                   controller: intraLoController,

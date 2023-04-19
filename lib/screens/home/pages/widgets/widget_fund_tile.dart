@@ -220,7 +220,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widgetInputTextFormField(
+                widgetInputTextFormField(type: TextInputType.number,
                     label: 'Amount',
                     isEnabled: true,
                     controller: amountController,

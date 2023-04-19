@@ -277,6 +277,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 widgetInputTextFormField(
+                    type: TextInputType.name,
                     label: 'Stock Name',
                     isEnabled: true,
                     controller: stockNameController,
@@ -286,6 +287,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     widgetInputTextFormField(
+                      type: TextInputType.number,
                       label: 'Entry Price',
                       isEnabled: true,
                       controller: entryPriceController,
@@ -417,6 +419,8 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   void showFundInputBottomSheet() {
     showModalBottomSheet<void>(
+      enableDrag: false,
+      isDismissible: false,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
@@ -445,6 +449,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                         InkWell(
                           onTap: () {
                             initialLabelIndex = null;
+                            dateController.clear();
+                            amountController.clear();
                             Get.back();
                           },
                           child: const Icon(Icons.close),
@@ -457,56 +463,76 @@ class _ScreenHomeState extends State<ScreenHome> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2020),
-                                // firstDate: DateTime.now()
-                                //     .subtract(const Duration(days: 7)),
-                                lastDate: DateTime.now(),
-                              );
-                              if (picked != null) {
-                                final formatter =
-                                    DateFormat.yMMMEd().format(picked);
-                                setState(() {
-                                  _selectedDate = picked;
-                                  dateController.text = formatter;
-                                });
-                              }
-                            },
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Required';
-                                  }
-                                  return null;
-                                },
-                                cursorColor: whiteColor,
-                                enabled: false,
-                                controller: dateController,
-                                decoration: InputDecoration(
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        const BorderSide(color: Colors.grey),
-                                  ),
-                                  labelText: 'Date',
-                                  hintText: 'Select Date',
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 20,
-                                  ),
-                                  suffixIcon: const Icon(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: TextFormField(
+                              onTap: () async {
+                                final DateTime? picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2020),
+                                  // firstDate: DateTime.now()
+                                  //     .subtract(const Duration(days: 7)),
+                                  lastDate: DateTime.now(),
+                                );
+                                if (picked != null) {
+                                  final formatter =
+                                      DateFormat.yMMMEd().format(picked);
+                                  setState(() {
+                                    _selectedDate = picked;
+                                    dateController.text = formatter;
+                                  });
+                                }
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Required';
+                                }
+                                return null;
+                              },
+                              cursorColor: whiteColor,
+                              keyboardType: TextInputType.none,
+                              enabled: true,
+                              controller: dateController,
+                              decoration: InputDecoration(
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
+                                ),
+                                labelText: 'Date',
+                                hintText: 'Select Date',
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 20,
+                                ),
+                                suffixIcon: InkWell(
+                                  onTap: () async {
+                                    final DateTime? picked =
+                                        await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2020),
+                                      // firstDate: DateTime.now()
+                                      //     .subtract(const Duration(days: 7)),
+                                      lastDate: DateTime.now(),
+                                    );
+                                    if (picked != null) {
+                                      final formatter =
+                                          DateFormat.yMMMEd().format(picked);
+                                      setState(() {
+                                        _selectedDate = picked;
+                                        dateController.text = formatter;
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(
                                     Icons.calendar_month_outlined,
                                     color: Colors.grey,
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -547,6 +573,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                           ),
                           sizedBoxTen,
                           inputTextFormField(
+                              type: TextInputType.number,
                               isEnabled: true,
                               controller: amountController,
                               label: 'Amount'),

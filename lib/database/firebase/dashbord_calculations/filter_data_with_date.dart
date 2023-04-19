@@ -86,11 +86,7 @@ Future<List<List<DocumentSnapshot<Object?>>>> lastTenWeeksData() async {
         .get();
 
     final documents = querySnapshot.docs;
-    // print("$i th doc length ${documents.length}");
-    //   if (documents.isNotEmpty) {
-    // print('inside');
     data.add(documents);
-    // }
   }
   return data;
 }

@@ -1,6 +1,6 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:my_tradebook/database/firebase/dashbord_calculations/line_graph_data.dart';
+import 'package:my_tradebook/database/firebase/dashbord_calculations/bar_graph_data.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/widgets/widget_search_gif.dart';
 
@@ -11,7 +11,6 @@ class WidgetFundMovement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double prevVal = double.negativeInfinity;
     return Material(
       color: whiteColor,
       borderRadius: BorderRadius.circular(13),
@@ -82,11 +81,9 @@ class WidgetFundMovement extends StatelessWidget {
                               ],
                             );
                           } else {
-                            prevVal = double.negativeInfinity;
                             List<Map<String, dynamic>> data = snapshot.data!;
-                            return // example 1
-                                DChartBarCustom(
-                              measureLabelStyle: TextStyle(fontSize: 9),
+                            return DChartBarCustom(
+                              measureLabelStyle: const TextStyle(fontSize: 9),
                               showDomainLine: true,
                               showMeasureLine: true,
                               showDomainLabel: true,
@@ -94,54 +91,6 @@ class WidgetFundMovement extends StatelessWidget {
                               spaceBetweenItem: 8,
                               listData: chartBarItemList(data),
                             );
-                            // return DChartBar(
-                            //   data: [
-                            //     {
-                            //       'id': 'Bar',
-                            //       'data': snapshot.data,
-                            //     },
-                            //   ],
-                            //   domainLabelPaddingToAxisLine: 16,
-                            //   yAxisTitle: 'Week',
-                            //   xAxisTitle: 'Fund',
-                            //   axisLineTick: 2,
-                            //   axisLinePointTick: 2,
-                            //   axisLinePointWidth: 10,
-                            //   axisLineColor: Colors.black,
-                            //   measureLabelPaddingToAxisLine: 16,
-                            //   verticalDirection: false,
-                            //   barValuePosition: BarValuePosition.auto,
-                            //   barValueAnchor: BarValueAnchor.end,
-                            //   barValueColor: whiteColor,
-                            //   barValueFontSize: 8,
-                            //   barValue: (barData, index) =>
-                            //       '${barData['measure']}',
-                            //   barColor: (barData, index, id) {
-                            //     double measure = barData['measure'];
-                            //     if (measure > prevVal) {
-                            //       prevVal = measure;
-                            //       return Colors.green;
-                            //     } else if (measure < prevVal) {
-                            //       prevVal = measure;
-                            //       return Colors.red;
-                            //     } else {
-                            //       return Colors.green;
-                            //     }
-                            //   },
-                            //   showBarValue: true,
-                            // );
-
-                            // return DChartLine(
-                            //   includePoints: true,
-                            //   data: [
-                            //     {
-                            //       'id': 'Line',
-                            //       'data': snapshot.data,
-                            //     },
-                            //   ],
-                            //   lineColor: (lineData, index, id) =>
-                            //       customPrimaryColor,
-                            // );
                           }
                         }),
                   ),
