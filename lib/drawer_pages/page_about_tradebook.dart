@@ -19,6 +19,43 @@ class PageAboutTradeBokk extends StatelessWidget {
                   '\t\t\tTradebook is a very useful app for traders that helps them to know about their cash flow in the stock market. The user can view and analyze their trades and determine whether they are currently in a loss or profit.'),
               const Divider(),
               const Text(
+                'How to Use ',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉Firstly, add your capital in the fund section of the 'My TradeBook' app. To do so, click on the plus button below and select the date, deposit option, and enter the capital amount.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉After adding the capital amount, you can add trade details after each trading day. We recommend adding trade logs after receiving the contract note from the broker and including the net realized PNL in the trades log section.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉If you are using multiple broking platforms to trade, add PNL details from all of them to track the correct cash flow.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉Continue this process every trading day to easily track your funds.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉On the dashboard, you can see a doughnut graph and a bar graph. The doughnut graph shows details of the trades you took (swing and intraday).",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉The bar graph shows the 10-week cash flow, with each bar representing a week. If you did not take any trades in a week, the corresponding bar will show zero.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉Green bars indicate a positive cash flow compared to the previous week, while red bars indicate a negative cash flow.",
+              ),
+              sizedBoxTen,
+              const Text(
+                "👉On the dashboard, you can also see the total current balance and the PNL for the last day, current week, current quarter, and current financial year.",
+              ),
+              const Divider(),
+              const Text(
                 'FAQ',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
               ),

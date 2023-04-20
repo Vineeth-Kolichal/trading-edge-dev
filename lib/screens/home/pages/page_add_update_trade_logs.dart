@@ -86,52 +86,50 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          //DateTime.now().subtract(const Duration(days: 7)),
-                          lastDate: DateTime.now(),
-                        );
-                        if (picked != null) {
-                          final formatter = DateFormat.yMMMEd().format(picked);
-                          setState(() {
-                            _selectedDate = picked;
-                            dateController.text = formatter;
-                          });
-                        }
-                      },
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.915,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Fill details';
-                            }
-                            return null;
-                          },
-                          cursorColor: whiteColor,
-                          enabled: false,
-                          onTap: () async {},
-                          controller: dateController,
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            labelText: 'Trade Date',
-                            hintText: 'Select Date',
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            suffixIcon: const Icon(
-                              Icons.calendar_month_outlined,
-                              color: Colors.grey,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.915,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Fill details';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.none,
+                        enabled: true,
+                        onTap: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            //DateTime.now().subtract(const Duration(days: 7)),
+                            lastDate: DateTime.now(),
+                          );
+                          if (picked != null) {
+                            final formatter =
+                                DateFormat.yMMMEd().format(picked);
+                            setState(() {
+                              _selectedDate = picked;
+                              dateController.text = formatter;
+                            });
+                          }
+                        },
+                        controller: dateController,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          labelText: 'Trade Date',
+                          hintText: 'Select Date',
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          suffixIcon: const Icon(
+                            Icons.calendar_month_outlined,
+                            color: Colors.grey,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
