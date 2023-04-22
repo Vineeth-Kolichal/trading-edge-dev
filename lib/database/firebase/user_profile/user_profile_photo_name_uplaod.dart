@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
+import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<String> pickAndUploadImageToFirebaseStorage() async {
@@ -74,7 +75,7 @@ Future<void> updateUserName(String name) async {
     'name': name,
   }).catchError((error) {
     // Handle the error
- String errorMessage = "Error writing data to database: $error";
+    String errorMessage = "Error writing data to database: $error";
     errorSnack(errorMessage);
   });
 }
@@ -90,11 +91,3 @@ Future<bool> checkUserDataExist(String userId) async {
   }
 }
 
-void errorSnack(String errorMessage) {
-  Get.snackbar('Oops..:',errorMessage ,
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      margin: const EdgeInsets.all(10),
-      animationDuration: const Duration(milliseconds: 700),
-      colorText: Colors.white);
-}

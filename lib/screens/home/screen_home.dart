@@ -20,6 +20,7 @@ import 'package:my_tradebook/screens/home/pages/page_position_sizing.dart';
 import 'package:my_tradebook/screens/home/pages/page_trades_log.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_drawer.dart';
+import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -42,7 +43,6 @@ class _ScreenHomeState extends State<ScreenHome> {
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
   int? initialLabelIndex;
   int _selectedTabIndex = 0;
-
 
   final List _pages = [
     const PageDashboard(),
@@ -585,13 +585,18 @@ class _ScreenHomeState extends State<ScreenHome> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await addTradeLoges(context: context,
+                          bool retVal = await addTradeLoges(
+                              context: context,
                               date: _selectedDate!,
                               type: fundType,
                               amount: amountController.text);
+                          if (!retVal) {
+                            errorSnack('Check your internet connectivity');
+                          }
                           dateController.clear();
                           amountController.clear();
                           initialLabelIndex = null;
+
                           Get.back();
                         }
                       },

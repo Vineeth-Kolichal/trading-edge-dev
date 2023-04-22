@@ -15,6 +15,7 @@ import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class WidgetDrawer extends StatefulWidget {
@@ -74,13 +75,30 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: const [
-                  Divider(),
-                  Text(
+                children: [
+                  const Divider(),
+                  const Text(
                     'Made with ❤️ by Vineeth',
                     style: TextStyle(fontSize: 11),
                   ),
-                  Text('Version :1.0.0', style: TextStyle(fontSize: 11))
+                  // Text('Version :1.0.0', style: TextStyle(fontSize: 11))
+                  FutureBuilder<PackageInfo>(
+                    future: PackageInfo.fromPlatform(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<PackageInfo> snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          'Version: ${snapshot.data!.version}',
+                          style: const TextStyle(fontSize: 11),
+                        );
+                      } else {
+                        return const Text(
+                          'Loading...',
+                          style: TextStyle(fontSize: 11),
+                        );
+                      }
+                    },
+                  )
                 ],
               ),
             ),
@@ -221,7 +239,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               leadingIcon: FeatherIcons.share2,
               title: 'Share with friends',
               onTapFunction: () {
-                Share.share('com.vineethkolichal.my_tradebook');
+                Share.share('link will awailable soon..');
               },
             ),
             Visibility(

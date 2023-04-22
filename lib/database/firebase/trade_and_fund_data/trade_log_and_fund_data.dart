@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/functions/check_internet.dart';
+import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
 
 enum EntryType { profit, loss, deposite, withdraw }
 
-Future<void> addTradeLoges(
+Future<bool> addTradeLoges(
     {required DateTime date,
     required EntryType type,
     required String amount,
@@ -19,9 +18,8 @@ Future<void> addTradeLoges(
     int? intraLo}) async {
   bool chekInternet = await checkInternetConnetion();
   if (!chekInternet) {
-    print('is it');
     errorSnack('Please check your internet connectivity');
-    return;
+    return chekInternet;
   }
   final CollectionReference tradesAndFund = FirebaseFirestore.instance
       .collection('users')
@@ -41,7 +39,7 @@ Future<void> addTradeLoges(
       // ignore: body_might_complete_normally_catch_error
     }).catchError((error) {
       // Handle the error
-      print('object');
+
       String errorMessage = "Error writing data to database: $error";
 
       errorSnack(errorMessage);
@@ -64,6 +62,7 @@ Future<void> addTradeLoges(
       errorSnack(errorMessage);
     });
   }
+  return chekInternet;
 }
 
 Future<void> deleteDoc(String id) async {
