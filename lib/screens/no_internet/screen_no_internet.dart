@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:my_tradebook/functions/check_internet.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
@@ -40,6 +41,7 @@ class _ScreenNoInternetState extends State<ScreenNoInternet> {
             sizedBoxTen,
             ElevatedButton(
               onPressed: () async {
+                bool chekInternet = await checkInternetConnetion();
                 await showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -48,7 +50,9 @@ class _ScreenNoInternetState extends State<ScreenNoInternet> {
                     );
                   },
                 );
-                Get.offAll(const ScreenSplash());
+                if (chekInternet) {
+                  Get.offAll(const ScreenSplash());
+                }
               },
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

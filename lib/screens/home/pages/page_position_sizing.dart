@@ -5,6 +5,7 @@ import 'package:my_tradebook/database/local_databse/db_functions/position_db_fuc
 import 'package:my_tradebook/database/local_databse/db_functions/sizing_fuction.dart';
 import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
 import 'package:my_tradebook/database/local_databse/models/sizing/sizing_model.dart';
+import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/home/pages/widgets/widget_position_sized_item.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_search_gif.dart';
@@ -234,7 +235,7 @@ class PagePositionSizing extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: Colors.deepPurple),
+                  side: const BorderSide(color: customPrimaryColor),
                 ),
               ),
             ),

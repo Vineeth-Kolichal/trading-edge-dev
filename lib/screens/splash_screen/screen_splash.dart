@@ -24,24 +24,9 @@ class _ScreenSplashState extends State<ScreenSplash> {
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
-    checkInternetConnetion();
     checkSharedPreferences();
     super.initState();
   }
-
-  Future<void> checkInternetConnetion() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        checkInternet = false;
-      });
-    } else {
-      setState(() {
-        checkInternet = true;
-      });
-    }
-  }
-
   Future<void> checkSharedPreferences() async {
     final SharedPreferences shared = await SharedPreferences.getInstance();
     final bool? isNotNewUser = shared.getBool('not_a_first_user');
@@ -58,11 +43,9 @@ class _ScreenSplashState extends State<ScreenSplash> {
         'assets/images/splash_logo.png',
         scale: 2.2,
       ),
-      nextScreen: checkInternet
-          ? (user == null)
-              ? ((newUser) ? const ScreenIntro() : const ScreenLogin())
-              : const ScreenHome()
-          : const ScreenNoInternet(),
+      nextScreen: (user == null)
+          ? ((newUser) ? const ScreenIntro() : const ScreenLogin())
+          : const ScreenHome(),
       splashTransition: SplashTransition.slideTransition,
     );
   }

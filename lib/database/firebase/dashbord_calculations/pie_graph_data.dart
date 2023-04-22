@@ -59,10 +59,6 @@ List<int> putPieGraphpercentages(List<DocumentSnapshot> documents) {
   returnValues.add(percentage(total: totalTrades, value: totalSwingLoss));
   returnValues.add(percentage(total: totalTrades, value: totalIntraProfit));
   returnValues.add(percentage(total: totalTrades, value: totalIntraLoss));
-  // print(totalSwingLoss);
-  // print(totalSwingProfit);
-  // print(totalIntraLoss);
-  // print(totalIntraProfit);
-  // print(returnValues);
+
   return returnValues;
 }

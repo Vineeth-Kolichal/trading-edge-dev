@@ -42,7 +42,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       IconData(0xf05c5, fontFamily: 'MaterialIcons');
   int? initialLabelIndex;
   int _selectedTabIndex = 0;
-  //bool _isSwitchEnabled = false;
+
 
   final List _pages = [
     const PageDashboard(),
@@ -79,7 +79,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                   refreshUi(value);
                 },
                 decoration: const InputDecoration(
-                  // border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(vertical: 5),
                   hintText: 'Search here...',
                 ),
@@ -110,6 +109,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     ? IconButton(
                         onPressed: () {
                           setState(() {
+                            refreshUi('');
                             _search = false;
                           });
                         },
@@ -230,7 +230,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: Colors.deepPurple),
+                  side: const BorderSide(color: customPrimaryColor),
                 ),
               ),
             ),
@@ -345,7 +345,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: Colors.deepPurple),
+                  side: const BorderSide(color: customPrimaryColor),
                 ),
               ),
             ),
@@ -585,7 +585,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await addTradeLoges(
+                          await addTradeLoges(context: context,
                               date: _selectedDate!,
                               type: fundType,
                               amount: amountController.text);
@@ -632,7 +632,6 @@ class _ScreenHomeState extends State<ScreenHome> {
         enabled: isEnabled,
         controller: controller,
         decoration: InputDecoration(
-            // errorStyle: TextStyle(color: Colors.red),
             hintText: hint,
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

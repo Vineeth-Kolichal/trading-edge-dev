@@ -273,7 +273,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: Colors.deepPurple),
+                  side: const BorderSide(color: customPrimaryColor),
                 ),
               ),
             ),
@@ -346,7 +346,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: const BorderSide(color: Colors.deepPurple),
+                side: const BorderSide(color: customPrimaryColor),
               ),
             ),
           ),
@@ -385,12 +385,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
     final documentRef = FirebaseFirestore.instance
         .collection('users')
         .doc(returnCurrentUserId());
-
     final documentSnapshot = await documentRef.get();
-    setState(() {
-      fieldValue = documentSnapshot['photUrl'];
-    });
-
+    fieldValue = documentSnapshot['photUrl'];
     return fieldValue;
   }
 }

@@ -34,7 +34,7 @@ class WidgetFundMovement extends StatelessWidget {
                   textStyle: const TextStyle(
                       color: Color.fromARGB(255, 94, 92, 92),
                       fontWeight: FontWeight.w500),
-                  waitDuration: const Duration(milliseconds: 100),
+                  waitDuration: const Duration(milliseconds: 0),
                   showDuration: const Duration(milliseconds: 5000),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 0.4),

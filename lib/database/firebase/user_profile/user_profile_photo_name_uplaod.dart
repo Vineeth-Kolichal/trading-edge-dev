@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,6 +36,16 @@ Future<void> addUserProfileToFireStore(
     'name': name,
     'photUrl': imgUrl,
     'contact': contact,
+  }).catchError((error) {
+    // Handle the error
+    String errorMessage = "Error writing data to database: $error";
+
+    Get.snackbar('Oops..:', errorMessage,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        margin: const EdgeInsets.all(10),
+        animationDuration: const Duration(milliseconds: 700),
+        colorText: Colors.white);
   });
 }
 
@@ -42,6 +54,16 @@ Future<void> updateImageUrl(String imgUrl) async {
       FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
   docRef.update({
     'photUrl': imgUrl,
+  }).catchError((error) {
+    // Handle the error
+    String errorMessage = "Error writing data to database: $error";
+
+    Get.snackbar('Oops..:', errorMessage,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        margin: const EdgeInsets.all(10),
+        animationDuration: const Duration(milliseconds: 700),
+        colorText: Colors.white);
   });
 }
 
@@ -50,6 +72,10 @@ Future<void> updateUserName(String name) async {
       FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
   docRef.update({
     'name': name,
+  }).catchError((error) {
+    // Handle the error
+ String errorMessage = "Error writing data to database: $error";
+    errorSnack(errorMessage);
   });
 }
 
@@ -62,4 +88,13 @@ Future<bool> checkUserDataExist(String userId) async {
   } else {
     return false;
   }
+}
+
+void errorSnack(String errorMessage) {
+  Get.snackbar('Oops..:',errorMessage ,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red,
+      margin: const EdgeInsets.all(10),
+      animationDuration: const Duration(milliseconds: 700),
+      colorText: Colors.white);
 }

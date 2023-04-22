@@ -5,10 +5,12 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/database/local_databse/db_functions/check_adapter_registered.dart';
 import 'package:my_tradebook/firebase_options.dart';
+import 'package:my_tradebook/functions/check_internet.dart';
+import 'package:my_tradebook/screens/no_internet/screen_no_internet.dart';
 import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
-
+bool checkInternet = false;
 const loginType = 'LoggedIn';
 const String currentUserId = 'current_user_id';
 const whiteColor = Colors.white;
@@ -19,6 +21,7 @@ Future<void> main() async {
   );
   Hive.initFlutter();
   checkAdapterRegistered();
+  checkInternet = await checkInternetConnetion();
   runApp(const MyTradeBookApp());
 }
 
@@ -36,8 +39,7 @@ class MyTradeBookApp extends StatelessWidget {
           //brightness: Brightness.dark,
           primarySwatch: customPrimaryColor,
         ),
-        //home: ScreenEnterName(),
-        home: const ScreenSplash(),
+        home: checkInternet ? const ScreenSplash() : const ScreenNoInternet(),
       ),
     );
   }

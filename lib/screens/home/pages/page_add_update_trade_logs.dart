@@ -91,7 +91,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Fill details';
+                            return 'Required';
                           }
                           return null;
                         },
@@ -176,7 +176,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         controller: commentController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Fill details';
+                            return 'Required';
                           }
                           return null;
                         },
@@ -246,7 +246,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       if (widget.operation == 'Add') {
-                        await addTradeLoges(
+                        await addTradeLoges(context: context,
                           date: _selectedDate!,
                           type: type,
                           amount: pnlController.text,

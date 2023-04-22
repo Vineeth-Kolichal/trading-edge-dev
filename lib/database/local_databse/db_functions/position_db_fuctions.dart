@@ -57,6 +57,7 @@ Future<List<PositionModel>> search(String query) async {
 
 Future<void> updatePosition(PositionModel positionModel, int key) async {
   final positionDB = await Hive.openBox<PositionModel>('position_db');
+
   positionDB.put(key, positionModel);
   refreshUi(null);
 }

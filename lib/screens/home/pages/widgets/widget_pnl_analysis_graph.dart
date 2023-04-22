@@ -8,9 +8,8 @@ import 'package:my_tradebook/widgets/widget_search_gif.dart';
 // ignore: must_be_immutable
 class WidgetPnlAnalysis extends StatelessWidget {
   final int selectedIdex;
-   List<String> titles = ['last day', 'Weekly', 'Quarterly', 'FY'];
+  List<String> titles = ['last day', 'Weekly', 'Quarterly', 'FY'];
   WidgetPnlAnalysis({super.key, required this.selectedIdex});
- 
 
   @override
   Widget build(BuildContext context) {

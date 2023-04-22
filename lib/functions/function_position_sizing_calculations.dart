@@ -10,19 +10,19 @@ Map<String, String> positionSizingCalculation({
   Map<String, String> calculatedValues = {};
   if (type == TradeType.buy) {
     double targetAmount = entryPrice + ((entryPrice * targetPercentage) / 100);
-    calculatedValues['targetAmount'] = targetAmount.toString();
+    calculatedValues['targetAmount'] = targetAmount.toStringAsFixed(2);
   } else {
     double targetAmount = entryPrice - ((entryPrice * targetPercentage) / 100);
-    calculatedValues['targetAmount'] = targetAmount.toString();
+    calculatedValues['targetAmount'] = targetAmount.toStringAsFixed(2);
   }
   if (type == TradeType.buy) {
     double stoplossAmount =
         entryPrice - ((entryPrice * stoplossPercentage) / 100);
-    calculatedValues['stoplossAmount'] = stoplossAmount.toString();
+    calculatedValues['stoplossAmount'] = stoplossAmount.toStringAsFixed(2);
   } else {
     double stoplossAmount =
         entryPrice + ((entryPrice * stoplossPercentage) / 100);
-    calculatedValues['stoplossAmount'] = stoplossAmount.toString();
+    calculatedValues['stoplossAmount'] = stoplossAmount.toStringAsFixed(2);
   }
 
   calculatedValues['quantity'] =
