@@ -238,7 +238,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
               leadingIcon: FeatherIcons.share2,
               title: 'Share with friends',
               onTapFunction: () {
-                Share.share('link will awailable soon..');
+                Share.share(
+                    'https://play.google.com/store/apps/details?id=com.vineethkolichal.my_tradebook');
               },
             ),
             Visibility(

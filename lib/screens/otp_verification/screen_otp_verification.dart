@@ -178,7 +178,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
       context: context,
       builder: (BuildContext context) {
         return const WidgetLoadingAlert(
-          duration: 8000,
+          duration: 27000,
         );
       },
     );
