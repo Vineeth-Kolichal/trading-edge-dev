@@ -68,8 +68,8 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            color: whiteColor,
-            height: 60,
+            color: Colors.transparent,
+            height: 65,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -177,9 +177,14 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                       ),
                       Row(
                         children: [
-                          Text(
-                            name!,
-                            style: const TextStyle(fontSize: 17),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.62,
+                            child: Text(
+                              name!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(fontSize: 17),
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
@@ -189,10 +194,21 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                               editNameDialoge();
                               scaffoldKey.currentState!.closeDrawer();
                             },
-                            child: const Icon(
-                              Icons.edit,
-                              size: 15,
-                              color: Color.fromARGB(255, 145, 144, 144),
+                            child: Material(
+                              elevation: 4,
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 15,
+                                  color: Color.fromARGB(255, 145, 144, 144),
+                                ),
+                              ),
                             ),
                           )
                         ],

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -192,11 +193,15 @@ class WidgetTradeLogItem extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey)),
                           sizedBoxTen,
-                          Text(
-                            DateFormat.yMMMEd().format(date),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                          SizedBox(
+                            width: double.infinity,
+                            child: AutoSizeText(
+                              DateFormat.yMMMEd().format(date),
+                              maxLines: 1,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -207,7 +212,7 @@ class WidgetTradeLogItem extends StatelessWidget {
               ),
               sizedBoxTen,
               GridView.count(
-                childAspectRatio: 1.8,
+                childAspectRatio: 1.72,
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
                 crossAxisSpacing: 5,

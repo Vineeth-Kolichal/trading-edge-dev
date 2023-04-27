@@ -40,7 +40,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const WidgetSearchGif(),
-                              Text('No ${titles[selectedIdex]} data found')
+                              Text('No ${titles[selectedIdex]} data found🧐')
                             ],
                           );
                         } else {

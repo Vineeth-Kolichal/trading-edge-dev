@@ -83,12 +83,11 @@ class WidgetFundMovement extends StatelessWidget {
                           } else {
                             List<Map<String, dynamic>> data = snapshot.data!;
                             int flag = 0;
-                            data.forEach((element) {
+                            for (var element in data) {
                               if (element['measure'] != 0.0) {
                                 flag = 1;
                               }
-                            });
-
+                            }
                             if (flag == 1) {
                               return DChartBarCustom(
                                 measureLabelStyle: const TextStyle(fontSize: 9),

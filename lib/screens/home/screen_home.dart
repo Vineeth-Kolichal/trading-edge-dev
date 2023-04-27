@@ -23,6 +23,7 @@ import 'package:my_tradebook/widgets/widget_drawer.dart';
 import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
 import 'package:my_tradebook/widgets/widget_loading_alert.dart';
 import 'package:my_tradebook/widgets/widget_text_form_field.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,6 +38,7 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  String release = "";
   final SwitchController controller = Get.put(SwitchController());
   final _formKey = GlobalKey<FormState>();
   static const IconData candlestickChartRounded =
@@ -56,6 +58,29 @@ class _ScreenHomeState extends State<ScreenHome> {
       _selectedTabIndex = index;
       _search = false;
     });
+  }
+
+  @override
+  void initState() {
+    final newVersion = NewVersionPlus(
+        androidId: 'com.vineethkolichal.my_tradebook',
+        androidPlayStoreCountry: "es_ES");
+    basicStatusCheck(newVersion);
+
+    super.initState();
+  }
+
+  basicStatusCheck(NewVersionPlus newVersion) async {
+    final version = await newVersion.getVersionStatus();
+    if (version != null) {
+      release = version.releaseNotes ?? "";
+      setState(() {});
+    }
+    // ignore: use_build_context_synchronously
+    newVersion.showAlertIfNecessary(
+      context: context,
+      launchModeVersion: LaunchModeVersion.external,
+    );
   }
 
   DateTime? _selectedDate;

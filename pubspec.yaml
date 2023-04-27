@@ -50,6 +50,7 @@ dependencies:
   image_picker: ^0.8.7
   intl: ^0.17.0
   intl_phone_field: ^3.1.0
+  new_version_plus: ^0.0.9
   package_info_plus: ^3.1.0
   path_provider: ^2.0.14
   pinput: ^2.2.31
