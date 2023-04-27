@@ -20,7 +20,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SizedBox(
-          height: 270,
+          height: MediaQuery.of(context).size.height * 0.4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -29,7 +29,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
               ),
               SizedBox(
-                height: 200,
+                height: MediaQuery.of(context).size.height * 0.25,
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                   child: FutureBuilder(
@@ -101,7 +101,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
                       }),
                 ),
               ),
-              pnlGraphComponent(),
+              pnlGraphComponent(context),
             ],
           ),
         ),

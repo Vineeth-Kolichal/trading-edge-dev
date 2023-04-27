@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_tradebook/authentication/get_current_user_id.dart';
@@ -96,11 +97,17 @@ class PagePositionSizing extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          const Text(
-                            'Target Amount/Trade',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 80, 78, 78)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: const AutoSizeText(
+                              overflow: TextOverflow.ellipsis,
+                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              maxLines: 1,
+                              'Target Amount/Trade ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 80, 78, 78)),
+                            ),
                           ),
                           sizedBoxTen,
                           Text(
@@ -112,13 +119,20 @@ class PagePositionSizing extends StatelessWidget {
                           ),
                         ],
                       ),
+                      VerticalDivider(),
                       Column(
                         children: [
-                          const Text(
-                            'Target(%)',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 80, 78, 78)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            child: const AutoSizeText(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              'Target(%) ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 80, 78, 78)),
+                            ),
                           ),
                           sizedBoxTen,
                           Text(
@@ -130,13 +144,20 @@ class PagePositionSizing extends StatelessWidget {
                           ),
                         ],
                       ),
+                      VerticalDivider(),
                       Column(
                         children: [
-                          const Text(
-                            'SL(%)',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 80, 78, 78),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.08,
+                            child: const AutoSizeText(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              'SL(%) ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 80, 78, 78),
+                              ),
                             ),
                           ),
                           sizedBoxTen,

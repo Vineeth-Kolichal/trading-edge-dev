@@ -41,6 +41,9 @@ class WidgetTradeLogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 9;
+    final double itemWidth = size.width / 2;
     final difference = DateTime.now().difference(date);
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -128,7 +131,8 @@ class WidgetTradeLogItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8, right: 0),
                   child: GridView.count(
-                    childAspectRatio: 3.2,
+                    childAspectRatio: (itemWidth / itemHeight),
+                    // childAspectRatio: 6.5 / 2,
                     shrinkWrap: true,
                     padding: const EdgeInsets.all(8),
                     crossAxisSpacing: 4,
@@ -212,12 +216,21 @@ class WidgetTradeLogItem extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   gridColumnItem(
-                      title: 'Swing(Profit)', content: swp.toString()),
-                  gridColumnItem(title: 'Swing(Loss)', content: swl.toString()),
+                      context: context,
+                      title: 'Swing(Profit)',
+                      content: swp.toString()),
                   gridColumnItem(
-                      title: 'Intraday(Profit)', content: intp.toString()),
+                      context: context,
+                      content: swl.toString(),
+                      title: 'Swing(Loss)'),
                   gridColumnItem(
-                      title: 'Intraday(Loss)', content: intl.toString()),
+                      context: context,
+                      title: 'Intraday(Profit)',
+                      content: intp.toString()),
+                  gridColumnItem(
+                      context: context,
+                      title: 'Intraday(Loss)',
+                      content: intl.toString()),
                 ],
               ),
               const Divider(),

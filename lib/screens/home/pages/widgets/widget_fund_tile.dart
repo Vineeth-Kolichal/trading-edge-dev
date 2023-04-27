@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -56,7 +57,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Text(
+                  child: AutoSizeText(
+                    maxLines: 1,
                     dateOut,
                     style: const TextStyle(
                       fontSize: 16,
@@ -107,7 +109,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
             ),
             const Divider(),
             GridView.count(
-              childAspectRatio: 3,
+              childAspectRatio: 2.5,
               shrinkWrap: true,
               padding: const EdgeInsets.all(8),
               crossAxisSpacing: 4,
@@ -118,14 +120,16 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Transaction Type',
+                    const AutoSizeText('Transaction Type',
+                        maxLines: 1,
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.grey)),
                     sizedBoxTen,
                     (widget.type == 'profit' || widget.type == 'loss')
-                        ? Text(
+                        ? AutoSizeText(
+                            maxLines: 1,
                             'P&L',
                             style: TextStyle(
                                 fontSize: 16,
@@ -135,7 +139,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                                     : Colors.red),
                           )
                         : (widget.type == 'deposite')
-                            ? const Text(
+                            ? const AutoSizeText(
+                                maxLines: 1,
                                 'Deposit',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -143,7 +148,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                                   color: Colors.green,
                                 ),
                               )
-                            : const Text(
+                            : const AutoSizeText(
+                                maxLines: 1,
                                 'Withdraw',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -156,7 +162,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Transaction Amount',
+                    const AutoSizeText('Transaction Amount',
+                        maxLines: 1,
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -181,7 +188,9 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                         // color: customPrimaryColor[200],
                       ),
                       message: "₹ ${widget.amount}",
-                      child: Text(shortenNumber(double.parse(widget.amount)),
+                      child: AutoSizeText(
+                          shortenNumber(double.parse(widget.amount)),
+                          maxLines: 1,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -220,7 +229,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widgetInputTextFormField(type: TextInputType.number,
+                widgetInputTextFormField(
+                    type: TextInputType.number,
                     label: 'Amount',
                     isEnabled: true,
                     controller: amountController,

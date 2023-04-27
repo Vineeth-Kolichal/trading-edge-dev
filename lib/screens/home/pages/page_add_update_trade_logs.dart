@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
-import 'package:my_tradebook/database/firebase/user_profile/user_profile_photo_name_uplaod.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
 import 'package:my_tradebook/widgets/widget_appbar.dart';
 import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
@@ -268,7 +266,6 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                               : 0,
                         );
                         if (!retVal) {
-                          
                           errorSnack('Check your internet connectivity');
                         }
                         Get.back();

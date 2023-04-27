@@ -1,12 +1,10 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:my_tradebook/screens/home/screen_home.dart';
 import 'package:my_tradebook/screens/intro/screen_intro.dart';
 import 'package:my_tradebook/screens/login/screen_login.dart';
-import 'package:my_tradebook/screens/no_internet/screen_no_internet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSplash extends StatefulWidget {
@@ -27,6 +25,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
     checkSharedPreferences();
     super.initState();
   }
+
   Future<void> checkSharedPreferences() async {
     final SharedPreferences shared = await SharedPreferences.getInstance();
     final bool? isNotNewUser = shared.getBool('not_a_first_user');

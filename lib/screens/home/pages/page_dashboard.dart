@@ -56,7 +56,10 @@ class _PageDashboardState extends State<PageDashboard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             //  mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Current Balance'),
+                              const AutoSizeText(
+                                'Current Balance',
+                                maxLines: 1,
+                              ),
                               sizedBoxTen,
                               FutureBuilder(
                                   future: getCurrentBalance(),
@@ -126,7 +129,8 @@ class _PageDashboardState extends State<PageDashboard> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(pnlTitle[_selectedIdex]),
+                              AutoSizeText(
+                                  maxLines: 1, pnlTitle[_selectedIdex]),
                               sizedBoxTen,
                               FutureBuilder(
                                   future: totalPnlCalculations(_selectedIdex),
@@ -227,8 +231,8 @@ class _PageDashboardState extends State<PageDashboard> {
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.only(left: 7, right: 7),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: choiceChipList(),
                 ),
               ),
@@ -249,23 +253,26 @@ class _PageDashboardState extends State<PageDashboard> {
   List<Widget> choiceChipList() {
     List<Widget> chips = [];
     for (var i = 0; i < _choiceChipNameList.length; i++) {
-      Widget item = ChoiceChip(
-        pressElevation: 0,
-        elevation: 0,
-        backgroundColor: whiteColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        label: Text(
-          _choiceChipNameList[i],
-          style: TextStyle(
-              color: (_selectedIdex == i) ? Colors.white : Colors.black),
+      Widget item = Padding(
+        padding: const EdgeInsets.only(right: 5),
+        child: ChoiceChip(
+          pressElevation: 0,
+          elevation: 0,
+          backgroundColor: whiteColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          label: AutoSizeText(_choiceChipNameList[i],
+              maxLines: 1,
+              style: TextStyle(
+                  color: (_selectedIdex == i) ? Colors.white : Colors.black)),
+          selected: _selectedIdex == i,
+          selectedColor: customPrimaryColor,
+          onSelected: (value) {
+            setState(() {
+              _selectedIdex = i;
+            });
+          },
         ),
-        selected: _selectedIdex == i,
-        selectedColor: customPrimaryColor,
-        onSelected: (value) {
-          setState(() {
-            _selectedIdex = i;
-          });
-        },
       );
       chips.add(item);
     }
