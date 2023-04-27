@@ -163,14 +163,16 @@ class _PageDashboardState extends State<PageDashboard> {
                                         ),
                                         message: "${snapshot.data}",
                                         child: (snapshot.data! >= 0)
-                                            ? Text(
+                                            ? AutoSizeText(
+                                                maxLines: 1,
                                                 '+${shortenNumber(snapshot.data!)}',
                                                 style: const TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w700,
                                                     color: Colors.green),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
+                                                maxLines: 1,
                                                 '-${shortenNumber(snapshot.data!)}',
                                                 style: const TextStyle(
                                                     fontSize: 25,
@@ -247,7 +249,7 @@ class _PageDashboardState extends State<PageDashboard> {
     'Last Day',
     'This week',
     'This Quarter',
-    'This FY'
+    'Current FY'
   ];
 
   List<Widget> choiceChipList() {

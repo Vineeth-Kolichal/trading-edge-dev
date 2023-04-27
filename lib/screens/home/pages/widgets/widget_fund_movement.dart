@@ -82,15 +82,31 @@ class WidgetFundMovement extends StatelessWidget {
                             );
                           } else {
                             List<Map<String, dynamic>> data = snapshot.data!;
-                            return DChartBarCustom(
-                              measureLabelStyle: const TextStyle(fontSize: 9),
-                              showDomainLine: true,
-                              showMeasureLine: true,
-                              showDomainLabel: true,
-                              showMeasureLabel: true,
-                              spaceBetweenItem: 8,
-                              listData: chartBarItemList(data),
-                            );
+                            int flag = 0;
+                            data.forEach((element) {
+                              if (element['measure'] != 0.0) {
+                                flag = 1;
+                              }
+                            });
+
+                            if (flag == 1) {
+                              return DChartBarCustom(
+                                measureLabelStyle: const TextStyle(fontSize: 9),
+                                showDomainLine: true,
+                                showMeasureLine: true,
+                                showDomainLabel: true,
+                                showMeasureLabel: true,
+                                spaceBetweenItem: 8,
+                                listData: chartBarItemList(data),
+                              );
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'No data found to show graph 🧐',
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }
                           }
                         }),
                   ),

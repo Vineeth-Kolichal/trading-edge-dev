@@ -101,8 +101,8 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                           final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate: DateTime(2020),
-                            //DateTime.now().subtract(const Duration(days: 7)),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 7)),
                             lastDate: DateTime.now(),
                           );
                           if (picked != null) {
