@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:my_tradebook/authentication/google_sign_in_authentication.dart';
-import 'package:my_tradebook/database/local_databse/db_functions/check_adapter_registered.dart';
+import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
+import 'package:my_tradebook/services/position_sizing_services/check_adapter_registered.dart';
 import 'package:my_tradebook/firebase_options.dart';
-import 'package:my_tradebook/functions/check_internet.dart';
-import 'package:my_tradebook/screens/no_internet/screen_no_internet.dart';
-import 'package:my_tradebook/screens/splash_screen/screen_splash.dart';
+import 'package:my_tradebook/services/functions/check_internet.dart';
+import 'package:my_tradebook/views/no_internet/screen_no_internet.dart';
+import 'package:my_tradebook/views/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
 bool checkInternet = false;
