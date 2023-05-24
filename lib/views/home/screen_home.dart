@@ -12,7 +12,7 @@ import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/fund_services/fund_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/position_db_fuctions.dart';
-import 'package:my_tradebook/services/position_sizing_services/sizing_fuction.dart';
+import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/home/pages/page_add_update_trade_logs.dart';
@@ -65,6 +65,8 @@ class _ScreenHomeState extends State<ScreenHome> {
   bool _search = false;
   @override
   Widget build(BuildContext context) {
+    PositionServices positionServices = PositionServices();
+    SizingServices sizingServices = SizingServices();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
       key: scaffoldKey,
@@ -77,7 +79,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         title: _search
             ? TextFormField(
                 onChanged: (value) {
-                  refreshUi(value);
+                  positionServices.refreshUi(query: value);
                 },
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 5),
@@ -110,7 +112,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     ? IconButton(
                         onPressed: () {
                           setState(() {
-                            refreshUi('');
+                            positionServices.refreshUi();
                             _search = false;
                           });
                         },
@@ -158,7 +160,8 @@ class _ScreenHomeState extends State<ScreenHome> {
             } else if (_selectedTabIndex == 2) {
               showFundInputBottomSheet();
             } else {
-              SizingModel sm = await returnCurrentUsersSizingData();
+              SizingModel sm =
+                  await sizingServices.returnCurrentUserSizingData();
               if (sm.targetAmount == 0.0 &&
                   sm.targetPercentage == 0.0 &&
                   sm.stoplossPercentage == 0.0) {
@@ -209,6 +212,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 //Position Sizing List Clear function
 
   void openDialog(BuildContext context) {
+    PositionServices positionServices = PositionServices();
     Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -240,7 +244,7 @@ class _ScreenHomeState extends State<ScreenHome> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () async {
-              await clearPosition();
+              await positionServices.clearPosition();
               // ignore: use_build_context_synchronously
               await showDialog(
                 context: context,
@@ -261,6 +265,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 //Add stock dialoge fuction, this function is called from floating action button
 
   void addStock(BuildContext context) {
+    PositionServices positionServices=PositionServices();
     final formKey = GlobalKey<FormState>();
     TextEditingController stockNameController = TextEditingController();
 
@@ -368,7 +373,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   entryPrice: double.parse(entryPriceController.text),
                   type: type,
                 );
-                await addPosition(position);
+                await positionServices. addPosition(position: position);
                 Get.back();
               }
             },

@@ -4,7 +4,7 @@ import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/position_sizing_services/position_db_fuctions.dart';
-import 'package:my_tradebook/services/position_sizing_services/sizing_fuction.dart';
+import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/services/functions/function_position_sizing_calculations.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
@@ -19,6 +19,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PositionServices positionServices = PositionServices();
     return Material(
       elevation: 1,
       color: whiteColor,
@@ -44,7 +45,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
                   splashRadius: 20,
                   onSelected: (PopupItem item) async {
                     if (item == PopupItem.delete) {
-                      await deletePosition(position.key);
+                      await positionServices.deletePosition(key: position.key);
                     } else {
                       updateStock(
                         context: context,
@@ -156,6 +157,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
     required String stockName,
     required String entry,
   }) {
+    PositionServices positionServices = PositionServices();
     final formKey = GlobalKey<FormState>();
     TextEditingController stockNameController = TextEditingController();
 
@@ -263,7 +265,8 @@ class WidgetPositionSizedItem extends StatelessWidget {
                     entryPrice: double.parse(entryPriceController.text),
                     type: type,
                     currentUserId: returnCurrentUserId());
-                await updatePosition(Updatedposition, position.key);
+                await positionServices.updatePosition(
+                    positionModel: Updatedposition, key: position.key);
                 Get.back();
               }
             },

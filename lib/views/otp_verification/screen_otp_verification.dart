@@ -3,7 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/phone_authentication.dart';
 import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
-import 'package:my_tradebook/services/position_sizing_services/sizing_fuction.dart';
+import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/views/enter_name/screen_enter_name.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
@@ -173,6 +173,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
   }
 
   Future<void> veryfyOtpRecieved() async {
+    SizingServices sizingServices = SizingServices();
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -185,7 +186,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
-      await initializeSizing();
+      await sizingServices. initializeSizing();
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),

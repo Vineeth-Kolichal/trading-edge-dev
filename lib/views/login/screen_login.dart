@@ -7,7 +7,7 @@ import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/services/authentication/phone_authentication.dart';
 import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
-import 'package:my_tradebook/services/position_sizing_services/sizing_fuction.dart';
+import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/otp_verification/screen_otp_verification.dart';
 import 'package:my_tradebook/views/widgets/widget_loading_alert.dart';
@@ -191,6 +191,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   }
 
   Future<void> signInWithGoogle() async {
+    SizingServices sizingServices = SizingServices();
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     bool validated = await provider.googleLogin();
     // ignore: use_build_context_synchronously
@@ -211,7 +212,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         await addUserProfileToFireStore(
             name: name!, imgUrl: imagePath, contact: currentUser?.email);
       }
-      await initializeSizing();
+      await sizingServices.initializeSizing();
       Get.offAll(const ScreenHome(),
           transition: Transition.leftToRight,
           duration: const Duration(milliseconds: 1000));

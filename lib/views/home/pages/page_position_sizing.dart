@@ -5,7 +5,7 @@ import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/position_sizing_services/position_db_fuctions.dart';
-import 'package:my_tradebook/services/position_sizing_services/sizing_fuction.dart';
+import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/home/pages/widgets/widget_position_sized_item.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
@@ -17,8 +17,12 @@ class PagePositionSizing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    refreshUi(null);
-    getSizingData(returnCurrentUserId());
+    PositionServices positionServices = PositionServices();
+    SizingServices sizingServices = SizingServices();
+    positionServices.refreshUi();
+    sizingServices.getSizigData(
+      key: returnCurrentUserId(),
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -188,6 +192,7 @@ class PagePositionSizing extends StatelessWidget {
   }
 
   void setTargetAndStoploss() {
+    SizingServices sizingServices = SizingServices();
     final formKey = GlobalKey<FormState>();
     TextEditingController targetAmountController = TextEditingController();
     TextEditingController targetPercentageController = TextEditingController();
@@ -277,7 +282,8 @@ class PagePositionSizing extends StatelessWidget {
                     stopLossPercentageController.text.trim(),
                   ),
                 );
-                addOrUpdateSizing(sizing: sm, key: returnCurrentUserId());
+                sizingServices.addOrUpdateSizing(
+                    sizing: sm, key: returnCurrentUserId());
                 Get.back();
               }
             },
