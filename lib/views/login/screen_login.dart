@@ -213,7 +213,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
             name: name!, imgUrl: imagePath, contact: currentUser?.email);
       }
       await sizingServices.initializeSizing();
-      Get.offAll(const ScreenHome(),
+      Get.offAll(ScreenHome(),
           transition: Transition.leftToRight,
           duration: const Duration(milliseconds: 1000));
     } else {

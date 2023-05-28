@@ -1,30 +1,18 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/intro/screen_intro.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ScreenSplash extends StatefulWidget {
-  const ScreenSplash({super.key});
+class ScreenSplash extends StatelessWidget {
+  ScreenSplash({super.key});
 
-  @override
-  State<ScreenSplash> createState() => _ScreenSplashState();
-}
-
-class _ScreenSplashState extends State<ScreenSplash> {
   late final User? user;
   bool newUser = false;
   bool checkInternet = false;
   String id = '';
-  @override
-  void initState() {
-    user = FirebaseAuth.instance.currentUser;
-    checkSharedPreferences();
-    super.initState();
-  }
 
   Future<void> checkSharedPreferences() async {
     final SharedPreferences shared = await SharedPreferences.getInstance();
@@ -36,16 +24,48 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      duration: 5500,
-      splash: Image.asset(
-        'assets/images/splash_logo.png',
-        scale: 2.2,
+    Size size = MediaQuery.of(context).size;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      user = FirebaseAuth.instance.currentUser;
+      await checkSharedPreferences();
+      Future.delayed(const Duration(milliseconds: 4000), () {
+        if (user == null) {
+          if (newUser) {
+            Get.off(() => ScreenIntro());
+          } else {
+            Get.off(() => const ScreenLogin());
+          }
+        } else {
+          Get.off(() => const ScreenHome());
+        }
+      });
+    });
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                  width: size.width * 0.4,
+                  child: const ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: LinearProgressIndicator(
+                      minHeight: 5,
+                    ),
+                  )),
+            ),
+          ),
+          Center(
+            child: Image.asset(
+              'assets/images/splash_logo.png',
+              scale: 2.2,
+            ),
+          ),
+        ],
       ),
-      nextScreen: (user == null)
-          ? ((newUser) ? const ScreenIntro() : const ScreenLogin())
-          : const ScreenHome(),
-      splashTransition: SplashTransition.slideTransition,
     );
   }
 }

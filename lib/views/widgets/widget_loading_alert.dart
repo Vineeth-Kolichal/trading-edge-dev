@@ -3,26 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
-class WidgetLoadingAlert extends StatefulWidget {
+class WidgetLoadingAlert extends StatelessWidget {
   final int duration;
   const WidgetLoadingAlert({super.key, required this.duration});
 
   @override
-  State<WidgetLoadingAlert> createState() => _WidgetLoadingAlertState();
-}
-
-class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(milliseconds: widget.duration), () {
-      Get.back();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Timer(Duration(milliseconds: duration), () {
+        Get.back();
+      });
+    });
     return const AlertDialog(
+      scrollable: false,
       elevation: 0,
       backgroundColor: Colors.transparent,
       title: Center(

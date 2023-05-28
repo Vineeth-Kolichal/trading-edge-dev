@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
+import 'package:my_tradebook/views/drawer/widgets/drawer_list_tile.dart';
 import 'package:my_tradebook/views/drawer_pages/page_about_tradebook.dart';
 import 'package:my_tradebook/views/drawer_pages/page_all_users.dart';
 import 'package:my_tradebook/views/drawer_pages/page_contact_us.dart';
@@ -207,34 +209,37 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
                 ),
               ),
             ),
-            drawerListTileItem(
+            DrawerListTile(
               leadingIcon: FeatherIcons.book,
               title: 'About My TradeBook',
               onTapFunction: () {
-                Get.to(() => const PageAboutTradeBokk(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                Get.to(
+                  () => const PageAboutTradeBokk(),
+                  transition: Transition.leftToRight,
+                );
               },
             ),
-            drawerListTileItem(
+            DrawerListTile(
               leadingIcon: FeatherIcons.alertCircle,
               title: 'Terms of use',
               onTapFunction: () {
-                Get.to(() => const PageTermsOfUser(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                Get.to(
+                  () => const PageTermsOfUser(),
+                  transition: Transition.leftToRight,
+                );
               },
             ),
-            drawerListTileItem(
+            DrawerListTile(
               leadingIcon: FeatherIcons.mail,
               title: 'Contact us',
               onTapFunction: () {
-                Get.to(() => const ContactUs(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                Get.to(
+                  () => const ContactUs(),
+                  transition: Transition.leftToRight,
+                );
               },
             ),
-            drawerListTileItem(
+            DrawerListTile(
               leadingIcon: FeatherIcons.share2,
               title: 'Share with friends',
               onTapFunction: () {
@@ -244,17 +249,18 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             ),
             Visibility(
               visible: mail == 'vineethchandran5898@gmail.com',
-              child: drawerListTileItem(
+              child: DrawerListTile(
                 leadingIcon: FeatherIcons.users,
                 title: 'View all Users',
                 onTapFunction: () {
-                  Get.to(() => PageAllUser(),
-                      transition: Transition.leftToRight,
-                      duration: const Duration(milliseconds: 300));
+                  Get.to(
+                    () => PageAllUser(),
+                    transition: Transition.leftToRight,
+                  );
                 },
               ),
             ),
-            drawerListTileItem(
+            DrawerListTile(
               leadingIcon: FeatherIcons.logOut,
               title: 'Logout',
               onTapFunction: () {

@@ -1,12 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/pnl_calculations.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/pnl_percentage_calculation.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/total_pnl_section.dart';
 import 'package:my_tradebook/services/functions/function_short_amount.dart';
 import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_fund_movement.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_pnl_analysis_graph.dart';
+import 'package:my_tradebook/views/dashboard/widgets/widget_fund_movement.dart';
+import 'package:my_tradebook/views/dashboard/widgets/widget_pnl_analysis_graph.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_circular_progress.dart';
 
@@ -68,13 +70,15 @@ class _PageDashboardState extends State<PageDashboard> {
                                           currentBalancesnapshot) {
                                     if (currentBalancesnapshot.data == null) {
                                       return const SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 3,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  customPrimaryColor),
+                                        width: 100,
+                                        height: 20,
+                                        child: FadeShimmer(
+                                          millisecondsDelay: 10,
+                                          height: 20,
+                                          width: 150,
+                                          radius: 4,
+                                          highlightColor: Color(0xffF9F9FB),
+                                          baseColor: Color(0xffE6E8EB),
                                         ),
                                       );
                                     }
@@ -136,7 +140,14 @@ class _PageDashboardState extends State<PageDashboard> {
                                   future: totalPnlCalculations(_selectedIdex),
                                   builder: (context, snapshot) {
                                     if (snapshot.data == null) {
-                                      return progress;
+                                      return const FadeShimmer(
+                                        millisecondsDelay: 10,
+                                        height: 20,
+                                        width: 100,
+                                        radius: 4,
+                                        highlightColor: Color(0xffF9F9FB),
+                                        baseColor: Color(0xffE6E8EB),
+                                      );
                                     } else {
                                       return Tooltip(
                                         textStyle: const TextStyle(
@@ -188,7 +199,14 @@ class _PageDashboardState extends State<PageDashboard> {
                                     if (snapshot.data == null) {
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 5),
-                                        child: progress,
+                                        child: const FadeShimmer(
+                                          millisecondsDelay: 10,
+                                          height: 20,
+                                          width: 60,
+                                          radius: 4,
+                                          highlightColor: Color(0xffF9F9FB),
+                                          baseColor: Color(0xffE6E8EB),
+                                        ),
                                       );
                                     } else {
                                       return Text(

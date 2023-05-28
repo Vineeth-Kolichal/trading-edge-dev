@@ -6,14 +6,9 @@ import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class ScreenIntro extends StatefulWidget {
-  const ScreenIntro({super.key});
+class ScreenIntro extends StatelessWidget {
+  ScreenIntro({super.key});
 
-  @override
-  State<ScreenIntro> createState() => _ScreenIntroState();
-}
-
-class _ScreenIntroState extends State<ScreenIntro> {
   final _pageController = PageController(initialPage: 0);
   int pageNumer = 0;
   @override
@@ -59,12 +54,10 @@ class _ScreenIntroState extends State<ScreenIntro> {
                                         borderRadius:
                                             BorderRadius.circular(40))),
                                 onPressed: () {
-                                  setState(() {
-                                    _pageController.nextPage(
-                                        duration:
-                                            const Duration(microseconds: 300),
-                                        curve: Curves.ease);
-                                  });
+                                  _pageController.nextPage(
+                                      duration:
+                                          const Duration(microseconds: 300),
+                                      curve: Curves.ease);
                                 },
                                 child: const Center(
                                     child: Icon(Icons.arrow_forward_ios))),
@@ -104,8 +97,6 @@ class _ScreenIntroState extends State<ScreenIntro> {
   }
 
   void _onPageChanged(int page) {
-    setState(() {
-      pageNumer = page;
-    });
+    pageNumer = page;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:my_tradebook/services/authentication/otp_verification_dialoges/success_otp_dialoge.dart';
+import 'package:my_tradebook/core/constants/constants.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

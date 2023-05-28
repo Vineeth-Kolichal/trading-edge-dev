@@ -11,9 +11,7 @@ import 'package:my_tradebook/views/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
 bool checkInternet = false;
-const loginType = 'LoggedIn';
-const String currentUserId = 'current_user_id';
-const whiteColor = Colors.white;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -39,7 +37,7 @@ class MyTradeBookApp extends StatelessWidget {
           //brightness: Brightness.dark,
           primarySwatch: customPrimaryColor,
         ),
-        home: checkInternet ? const ScreenSplash() : const ScreenNoInternet(),
+        home: checkInternet ? ScreenSplash() : const ScreenNoInternet(),
       ),
     );
   }

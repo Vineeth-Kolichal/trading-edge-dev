@@ -5,14 +5,8 @@ import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/splash_screen/screen_splash.dart';
 import 'package:my_tradebook/views/widgets/widget_loading_alert.dart';
 
-class ScreenNoInternet extends StatefulWidget {
+class ScreenNoInternet extends StatelessWidget {
   const ScreenNoInternet({super.key});
-
-  @override
-  State<ScreenNoInternet> createState() => _ScreenNoInternetState();
-}
-
-class _ScreenNoInternetState extends State<ScreenNoInternet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +36,9 @@ class _ScreenNoInternetState extends State<ScreenNoInternet> {
             ElevatedButton(
               onPressed: () async {
                 bool chekInternet = await checkInternetConnetion();
+
                 await showDialog(
+                  barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) {
                     return const WidgetLoadingAlert(
@@ -51,7 +47,7 @@ class _ScreenNoInternetState extends State<ScreenNoInternet> {
                   },
                 );
                 if (chekInternet) {
-                  Get.offAll(const ScreenSplash());
+                  Get.offAll(ScreenSplash());
                 }
               },
               style: ElevatedButton.styleFrom(

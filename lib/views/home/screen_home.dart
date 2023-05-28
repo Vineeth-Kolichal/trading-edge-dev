@@ -5,23 +5,26 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:my_tradebook/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/core/constants/enumarators.dart';
 import 'package:my_tradebook/models/fund_model/funds_model.dart';
 import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/fund_services/fund_services.dart';
-import 'package:my_tradebook/services/position_sizing_services/position_db_fuctions.dart';
+import 'package:my_tradebook/services/position_sizing_services/position_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
 import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/views/home/pages/page_add_update_trade_logs.dart';
-import 'package:my_tradebook/views/home/pages/page_dashboard.dart';
-import 'package:my_tradebook/views/home/pages/page_fund.dart';
-import 'package:my_tradebook/views/home/pages/page_position_sizing.dart';
-import 'package:my_tradebook/views/home/pages/page_trades_log.dart';
+import 'package:my_tradebook/views/trade_log_add_update_form/page_add_update_trade_logs.dart';
+import 'package:my_tradebook/views/dashboard/screen_dashboard.dart';
+import 'package:my_tradebook/views/fund/page_fund.dart';
+import 'package:my_tradebook/views/position_sizing/page_position_sizing.dart';
+import 'package:my_tradebook/views/trade_logs/page_trades_log.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
-import 'package:my_tradebook/views/widgets/widget_drawer.dart';
+import 'package:my_tradebook/views/home/widgets/widget_bottom_navigation_bar.dart';
+import 'package:my_tradebook/views/drawer/drawer.dart';
 import 'package:my_tradebook/views/widgets/widget_loading_alert.dart';
 import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -29,6 +32,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
 enum ClearPopupItem { clear }
+
+HomeScreenController homeScreenController = Get.put(HomeScreenController());
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -40,10 +45,8 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   final SwitchController controller = Get.put(SwitchController());
   final _formKey = GlobalKey<FormState>();
-  static const IconData candlestickChartRounded =
-      IconData(0xf05c5, fontFamily: 'MaterialIcons');
+
   int? initialLabelIndex;
-  int _selectedTabIndex = 0;
 
   final List _pages = [
     const PageDashboard(),
@@ -52,17 +55,11 @@ class _ScreenHomeState extends State<ScreenHome> {
     const PagePositionSizing()
   ];
   EntryType fundType = EntryType.deposite;
-  _changeIndex(int index) {
-    setState(() {
-      _selectedTabIndex = index;
-      _search = false;
-    });
-  }
 
   DateTime? _selectedDate;
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
-  bool _search = false;
+  //bool _search = false;
   @override
   Widget build(BuildContext context) {
     PositionServices positionServices = PositionServices();
@@ -73,115 +70,120 @@ class _ScreenHomeState extends State<ScreenHome> {
       drawer: const Drawer(
         child: WidgetDrawer(),
       ),
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: _search
-            ? TextFormField(
-                onChanged: (value) {
-                  positionServices.refreshUi(query: value);
-                },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 5),
-                  hintText: 'Search here...',
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: Obx(() {
+          return AppBar(
+            elevation: 0,
+            centerTitle: true,
+            title: homeScreenController.isSearchOpen.value
+                ? TextFormField(
+                    onChanged: (value) {
+                      positionServices.refreshUi(query: value);
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 5),
+                      hintText: 'Search here...',
+                    ),
+                  )
+                : Image.asset(
+                    'assets/images/my_trade_book.png',
+                    scale: 3,
+                  ),
+            iconTheme: const IconThemeData(color: Colors.black),
+            leading: Builder(builder: (context) {
+              return IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.user,
                 ),
-              )
-            : Image.asset(
-                'assets/images/my_trade_book.png',
-                scale: 3,
-              ),
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: const Icon(
-              FontAwesomeIcons.user,
-            ),
-            onPressed: () {
-              if (scaffoldKey.currentState!.isDrawerOpen) {
-                scaffoldKey.currentState!.closeDrawer();
-              } else {
-                scaffoldKey.currentState!.openDrawer();
-              }
-            },
+                onPressed: () {
+                  if (scaffoldKey.currentState!.isDrawerOpen) {
+                    scaffoldKey.currentState!.closeDrawer();
+                  } else {
+                    scaffoldKey.currentState!.openDrawer();
+                  }
+                },
+              );
+            }),
+            backgroundColor: whiteColor,
+            actions: (homeScreenController.tabIndex.value == 3)
+                ? [
+                    homeScreenController.isSearchOpen.value
+                        ? IconButton(
+                            onPressed: () {
+                              positionServices.refreshUi();
+                              homeScreenController.serchOpen(true);
+                              homeScreenController.isSearchOpen.value = false;
+                            },
+                            icon: const Icon(Icons.clear))
+                        : IconButton(
+                            onPressed: () {
+                              homeScreenController.serchOpen(false);
+                              homeScreenController.isSearchOpen.value = true;
+                            },
+                            icon: const Icon(Icons.search),
+                          ),
+                    PopupMenuButton<ClearPopupItem>(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                          side: const BorderSide(width: 0.1),
+                          borderRadius: BorderRadius.circular(15)),
+                      splashRadius: 20,
+                      onSelected: (ClearPopupItem item) async {
+                        openDialog(context);
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<ClearPopupItem>>[
+                        const PopupMenuItem<ClearPopupItem>(
+                          value: ClearPopupItem.clear,
+                          child: Text(
+                            'Clear All',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+                : null,
           );
         }),
-        backgroundColor: whiteColor,
-        actions: (_selectedTabIndex == 3)
-            ? [
-                _search
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            positionServices.refreshUi();
-                            _search = false;
-                          });
-                        },
-                        icon: const Icon(Icons.clear))
-                    : IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _search = true;
-                          });
-                        },
-                        icon: const Icon(Icons.search),
-                      ),
-                PopupMenuButton<ClearPopupItem>(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(width: 0.1),
-                      borderRadius: BorderRadius.circular(15)),
-                  splashRadius: 20,
-                  onSelected: (ClearPopupItem item) async {
-                    openDialog(context);
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<ClearPopupItem>>[
-                    const PopupMenuItem<ClearPopupItem>(
-                      value: ClearPopupItem.clear,
-                      child: Text(
-                        'Clear All',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-              ]
-            : null,
       ),
-      bottomNavigationBar: bottomNavigationBar,
-      floatingActionButton: Visibility(
-        visible: (_selectedTabIndex != 0) ? true : false,
-        child: FloatingActionButton(
-          onPressed: () async {
-            if (_selectedTabIndex == 1) {
-              Get.to(PageAddUpdateTradeLog(operation: 'Add'),
-                  transition: Transition.leftToRight,
-                  duration: const Duration(milliseconds: 350));
-            } else if (_selectedTabIndex == 2) {
-              showFundInputBottomSheet();
-            } else {
-              SizingModel sm =
-                  await sizingServices.returnCurrentUserSizingData();
-              if (sm.targetAmount == 0.0 &&
-                  sm.targetPercentage == 0.0 &&
-                  sm.stoplossPercentage == 0.0) {
-                sizingSettingAlert('required sizing parameters');
-              } else if (sm.stoplossPercentage == 0.0) {
-                sizingSettingAlert('SL percentage');
-              } else if (sm.targetAmount == 0.0) {
-                sizingSettingAlert('Target amount');
-              } else if (sm.targetPercentage == 0.0) {
-                sizingSettingAlert('Target percentage');
+      bottomNavigationBar: const WidgetBottomNavigationBar(),
+      floatingActionButton: Obx(() {
+        return Visibility(
+          visible: (homeScreenController.tabIndex.value != 0) ? true : false,
+          child: FloatingActionButton(
+            onPressed: () async {
+              if (homeScreenController.tabIndex.value == 1) {
+                Get.to(PageAddUpdateTradeLog(operation: 'Add'),
+                    transition: Transition.leftToRight,
+                    duration: const Duration(milliseconds: 350));
+              } else if (homeScreenController.tabIndex.value == 2) {
+                showFundInputBottomSheet();
               } else {
-                // ignore: use_build_context_synchronously
-                addStock(context);
+                SizingModel sm =
+                    await sizingServices.returnCurrentUserSizingData();
+                if (sm.targetAmount == 0.0 &&
+                    sm.targetPercentage == 0.0 &&
+                    sm.stoplossPercentage == 0.0) {
+                  sizingSettingAlert('required sizing parameters');
+                } else if (sm.stoplossPercentage == 0.0) {
+                  sizingSettingAlert('SL percentage');
+                } else if (sm.targetAmount == 0.0) {
+                  sizingSettingAlert('Target amount');
+                } else if (sm.targetPercentage == 0.0) {
+                  sizingSettingAlert('Target percentage');
+                } else {
+                  // ignore: use_build_context_synchronously
+                  addStock(context);
+                }
               }
-            }
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
-      body: _pages[_selectedTabIndex],
+            },
+            child: const Icon(Icons.add),
+          ),
+        );
+      }),
+      body: Obx(() => _pages[homeScreenController.tabIndex.value]),
     );
   }
 
@@ -265,7 +267,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 //Add stock dialoge fuction, this function is called from floating action button
 
   void addStock(BuildContext context) {
-    PositionServices positionServices=PositionServices();
+    PositionServices positionServices = PositionServices();
     final formKey = GlobalKey<FormState>();
     TextEditingController stockNameController = TextEditingController();
 
@@ -373,7 +375,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   entryPrice: double.parse(entryPriceController.text),
                   type: type,
                 );
-                await positionServices. addPosition(position: position);
+                await positionServices.addPosition(position: position);
                 Get.back();
               }
             },
@@ -384,42 +386,6 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 
 //Bottom navigation Bar
-
-  Widget get bottomNavigationBar {
-    return BottomNavigationBar(
-      backgroundColor: whiteColor,
-      currentIndex: _selectedTabIndex,
-      onTap: _changeIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      selectedItemColor: const Color(0xFF648BF8),
-      unselectedItemColor: const Color.fromARGB(255, 131, 129, 129),
-      showUnselectedLabels: true,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(
-            IconData(0xea39, fontFamily: 'MaterialIcons'),
-          ),
-          label: 'Dashboard',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            candlestickChartRounded,
-          ),
-          label: 'Trades Log',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.currency_rupee),
-          label: 'Fund',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FeatherIcons.pieChart),
-          label: 'Position Sizing',
-        ),
-      ],
-    );
-  }
 
 //Fund Add bottom sheet, this fuction is called from floating action buttom
 

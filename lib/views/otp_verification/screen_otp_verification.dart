@@ -4,7 +4,7 @@ import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/phone_authentication.dart';
 import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
-import 'package:my_tradebook/views/enter_name/screen_enter_name.dart';
+import 'package:my_tradebook/views/set_profile/screen_enter_name.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_loading_alert.dart';
@@ -176,6 +176,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     SizingServices sizingServices = SizingServices();
     // ignore: use_build_context_synchronously
     await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return const WidgetLoadingAlert(
@@ -186,7 +187,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
     bool verify = await verifyOtp(_pinController.text);
     if (verify) {
       bool isUserExist = await checkUserDataExist(returnCurrentUserId());
-      await sizingServices. initializeSizing();
+      await sizingServices.initializeSizing();
       Get.snackbar('OTP Verified Successfully!', '',
           snackPosition: SnackPosition.TOP,
           backgroundColor: const Color.fromARGB(255, 3, 182, 12),
@@ -195,7 +196,7 @@ class _ScreenOtpVerificationState extends State<ScreenOtpVerification> {
           colorText: Colors.white);
       await Future.delayed(const Duration(milliseconds: 1000));
       if (isUserExist) {
-        Get.offAll(const ScreenHome(),
+        Get.offAll(ScreenHome(),
             transition: Transition.leftToRightWithFade,
             duration: const Duration(milliseconds: 800));
       } else {

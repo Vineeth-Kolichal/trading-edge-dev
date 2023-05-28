@@ -1,9 +1,18 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:my_tradebook/controllers/trades_logs_controllers/trades_log_screen_controller.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
+import 'package:my_tradebook/core/constants/enumarators.dart';
+import 'package:my_tradebook/models/trade_logs_model/trade_logs_model.dart';
 import 'package:my_tradebook/services/firebase/common_functions/tradeFundCollectionReferences.dart';
-import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:my_tradebook/services/trade_logs_services/trade_logs_services.dart';
+import 'package:my_tradebook/views/trade_logs/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/views/widgets/widget_search_gif.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +22,53 @@ class PageTradesLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TradeLogScreenController tradeLogScreenController =
+        Get.put(TradeLogScreenController());
+    TradeLogServices tradeLogServicestra = TradeLogServices();
+    TradeLogServices().getAllTradeLogs();
+//tradeLogScreenController.getAllTradeLogs();
+    // return GetBuilder<TradeLogScreenController>(
+    //     init: TradeLogScreenController(),
+    //     builder: (controller) {
+    //       if (controller.tradeLogsList.isEmpty) {
+    //         return SingleChildScrollView(
+    //           child: SizedBox(
+    //             height: MediaQuery.of(context).size.height * 0.7,
+    //             width: MediaQuery.of(context).size.width,
+    //             child: Column(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: const [
+    //                 WidgetSearchGif(),
+    //                 Text('No trade entries found! 😧')
+    //               ],
+    //             ),
+    //           ),
+    //         );
+    //       } else {
+    //         return ListView.builder(
+    //           itemBuilder: (ctx, index) {
+    //             TradeLogsModel data = controller.tradeLogsList[index];
+    //            // String docId = data.id;
+    //             if (controller.tradeLogsList.isEmpty) {
+    //               return const Center(child: WidgetSearchGif());
+    //             } else {
+    //               return WidgetTradeLogItem(
+    //                // docId: docId,
+    //                 type: data.type == EntryType.profit ? 'Profit' : 'Loss',
+    //                 amount: double.parse(data.amount),
+    //                 date: data.date,
+    //                 swp: data.swingProfitCount,
+    //                 swl: data.swingLossCount,
+    //                 intp: data.intradayProfitCount,
+    //                 intl: data.intradayLossCount,
+    //                 comments: data.description,
+    //               );
+    //             }
+    //           },
+    //           itemCount: controller.tradeLogsList.length,
+    //         );
+    //       }
+    //     });
     return StreamBuilder(
         stream: tradesAndFund
             .where('type', whereIn: ['profit', 'loss'])

@@ -142,7 +142,7 @@ class _ScreenEnterNameState extends State<ScreenEnterName> {
                                     contact: currentUser?.phoneNumber);
 
                                 Get.offAll(
-                                  const ScreenHome(),
+                                   ScreenHome(),
                                   transition: Transition.leftToRightWithFade,
                                   duration: const Duration(milliseconds: 500),
                                 );

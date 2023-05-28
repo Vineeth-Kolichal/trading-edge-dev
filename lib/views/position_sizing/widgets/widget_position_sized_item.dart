@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/services/position_sizing_services/position_db_fuctions.dart';
+import 'package:my_tradebook/services/position_sizing_services/position_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/services/functions/function_position_sizing_calculations.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
-import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:my_tradebook/views/trade_logs/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
 

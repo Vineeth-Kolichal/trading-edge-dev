@@ -5,4 +5,5 @@ abstract class TradesLogRepositories {
   Future<void> deleteTradeLogItem({required String id});
   Future<void> updateTradeLogs(
       {required String documentId, required TradeLogsModel updatedTradeLog});
+  Future<List<TradeLogsModel>> getAllTradeLogs();
 }

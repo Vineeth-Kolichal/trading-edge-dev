@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/core/constants/enumarators.dart';
 import 'package:my_tradebook/models/fund_model/funds_model.dart';
 import 'package:my_tradebook/services/functions/function_short_amount.dart';
@@ -9,7 +10,7 @@ import 'package:my_tradebook/controllers/class_switch_controller.dart';
 import 'package:my_tradebook/controllers/class_text_controller.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/services/fund_services/fund_services.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:my_tradebook/views/trade_logs/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
 

@@ -1,8 +1,9 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/pie_graph_data.dart';
 import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/views/home/pages/widgets/widget_pnl_analysis_graph_description.dart';
+import 'package:my_tradebook/views/dashboard/widgets/widget_pnl_analysis_graph_description.dart';
 import 'package:my_tradebook/views/widgets/widget_search_gif.dart';
 
 // ignore: must_be_immutable

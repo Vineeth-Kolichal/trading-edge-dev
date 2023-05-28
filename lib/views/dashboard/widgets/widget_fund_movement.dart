@@ -1,5 +1,6 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/bar_graph_data.dart';
 import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/widgets/widget_search_gif.dart';
