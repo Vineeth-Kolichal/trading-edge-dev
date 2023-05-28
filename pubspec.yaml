@@ -33,7 +33,9 @@ dependencies:
   connectivity_plus: ^3.0.3
   cupertino_icons: ^1.0.2
   d_chart: ^2.2.11
+  dartz: ^0.10.1
   fade_shimmer: ^2.2.0
+  firebase_app_check: ^0.1.4+1
   firebase_auth: ^4.3.0
   firebase_core: ^2.8.0
   firebase_storage: ^11.0.16

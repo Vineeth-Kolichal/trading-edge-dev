@@ -57,7 +57,7 @@ class WidgetDrawer extends StatelessWidget {
         ),
         ListView(
           children: [
-            const ProfileSection(),
+            ProfileSection(),
             DrawerListTile(
               leadingIcon: FeatherIcons.book,
               title: 'About My TradeBook',

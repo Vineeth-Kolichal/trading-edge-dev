@@ -3,5 +3,5 @@ class UserProfileModel {
   final String imagePath;
   final String mailOrPhone;
 
-  UserProfileModel(this.name, this.imagePath, this.mailOrPhone);
+  UserProfileModel({required this.name,required  this.imagePath,required this.mailOrPhone});
 }

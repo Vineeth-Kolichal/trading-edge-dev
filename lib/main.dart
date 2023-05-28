@@ -1,8 +1,10 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
+import 'package:my_tradebook/core/recaptcha_key/recaptcha_key.dart';
 import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/services/hive_db_adapter_registration/hive_db_adapter_registration.dart';
 import 'package:my_tradebook/firebase_options.dart';
@@ -12,12 +14,20 @@ import 'package:my_tradebook/views/splash_screen/screen_splash.dart';
 import 'package:provider/provider.dart';
 
 bool checkInternet = false;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Generate an App Check token.
+  await FirebaseAppCheck.instance
+      // Your personal reCaptcha public key goes here:
+      .activate(
+    androidProvider: AndroidProvider.debug,
+    webRecaptchaSiteKey: kWebRecaptchaSiteKey,
+  );
+
   Hive.initFlutter();
   checkAdapterRegistered();
   checkInternet = await checkInternetConnetion();
@@ -43,4 +53,3 @@ class MyTradeBookApp extends StatelessWidget {
     );
   }
 }
-
