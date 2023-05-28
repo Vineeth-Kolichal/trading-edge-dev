@@ -6,6 +6,7 @@ import 'package:my_tradebook/views/intro/screen_intro.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class ScreenSplash extends StatelessWidget {
   ScreenSplash({super.key});
 
@@ -36,7 +37,7 @@ class ScreenSplash extends StatelessWidget {
             Get.off(() => const ScreenLogin());
           }
         } else {
-          Get.off(() => const ScreenHome());
+          Get.off(() =>  ScreenHome());
         }
       });
     });

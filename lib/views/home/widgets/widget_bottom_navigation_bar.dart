@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 
 const IconData candlestickChartRounded =

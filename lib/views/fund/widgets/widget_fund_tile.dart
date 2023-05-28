@@ -1,48 +1,39 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
-import 'package:my_tradebook/core/constants/enumarators.dart';
-import 'package:my_tradebook/models/fund_model/funds_model.dart';
 import 'package:my_tradebook/services/functions/function_short_amount.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
-import 'package:my_tradebook/controllers/class_text_controller.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/services/fund_services/fund_services.dart';
 import 'package:my_tradebook/views/trade_logs/widgets/widget_trade_log_item.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
-import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
 
-class WidgetFundTile extends StatefulWidget {
+import 'update_fund_dialog.dart';
+
+class WidgetFundTile extends StatelessWidget {
   final String type;
   final String amount;
   final DateTime date;
   final String docId;
-  const WidgetFundTile(
+  WidgetFundTile(
       {super.key,
       required this.type,
       required this.amount,
       required this.date,
       required this.docId});
 
-  @override
-  State<WidgetFundTile> createState() => _WidgetFundTileState();
-}
-
-class _WidgetFundTileState extends State<WidgetFundTile> {
-  final SwitchController controller = Get.put(SwitchController());
+  final SwitchController controller = SwitchController();
 
   @override
   Widget build(BuildContext context) {
     FundServices fundServices = FundServices();
     String dateOut = '';
-    final formatter = DateFormat.yMMMEd().format(widget.date);
+    final formatter = DateFormat.yMMMEd().format(date);
     List<String> dateList = formatter.split(' ');
     for (var i = 1; i < dateList.length; i++) {
       dateOut = '$dateOut ${dateList[i]}';
     }
-    final difference = DateTime.now().difference(widget.date);
+    final difference = DateTime.now().difference(date);
     return Material(
       elevation: 1,
       borderRadius: BorderRadius.circular(20),
@@ -71,8 +62,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                   ),
                 ),
                 Visibility(
-                  visible: ((widget.type == 'deposite' ||
-                          widget.type == 'withdraw') &&
+                  visible: ((type == 'deposite' || type == 'withdraw') &&
                       difference.inDays < 3),
                   child: PopupMenuButton<PopupItem>(
                     elevation: 4,
@@ -82,18 +72,18 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                     splashRadius: 20,
                     onSelected: (PopupItem item) async {
                       if (item == PopupItem.delete) {
-                        fundServices.deleteFUnd(documentId: widget.docId);
+                        fundServices.deleteFUnd(documentId: docId);
                       } else {
-                        if (widget.type == 'deposite') {
+                        if (type == 'deposite') {
                           controller.switchValue.value = false;
                         } else {
                           controller.switchValue.value = true;
                         }
                         updateFund(
-                            docId: widget.docId,
+                            docId: docId,
                             context: context,
-                            amount: widget.amount,
-                            date: widget.date);
+                            amount: amount,
+                            date: date);
                       }
                     },
                     itemBuilder: (BuildContext context) =>
@@ -131,18 +121,18 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                             fontWeight: FontWeight.w600,
                             color: Colors.grey)),
                     sizedBoxTen,
-                    (widget.type == 'profit' || widget.type == 'loss')
+                    (type == 'profit' || type == 'loss')
                         ? AutoSizeText(
                             maxLines: 1,
                             'P&L',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: (widget.type == 'profit')
+                                color: (type == 'profit')
                                     ? Colors.green
                                     : Colors.red),
                           )
-                        : (widget.type == 'deposite')
+                        : (type == 'deposite')
                             ? const AutoSizeText(
                                 maxLines: 1,
                                 'Deposit',
@@ -191,9 +181,8 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                         ),
                         // color: customPrimaryColor[200],
                       ),
-                      message: "₹ ${widget.amount}",
-                      child: AutoSizeText(
-                          shortenNumber(double.parse(widget.amount)),
+                      message: "₹ $amount",
+                      child: AutoSizeText(shortenNumber(double.parse(amount)),
                           maxLines: 1,
                           style: const TextStyle(
                             fontSize: 16,
@@ -206,146 +195,6 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
             )
           ]),
         ),
-      ),
-    );
-  }
-
-  void updateFund(
-      {required String docId,
-      required BuildContext context,
-      required String amount,
-      required DateTime date}) {
-    FundServices fundServices = FundServices();
-    final formKey = GlobalKey<FormState>();
-    TextEditingController amountController = TextEditingController();
-    amountController.text = amount;
-    DateTime selectedDate = date;
-    final TextController dateShowController =
-        TextController(initalDate: DateFormat.yMMMEd().format(date));
-
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 5,
-        content: SizedBox(
-          height: 160,
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widgetInputTextFormField(
-                    type: TextInputType.number,
-                    label: 'Amount',
-                    isEnabled: true,
-                    controller: amountController,
-                    width: MediaQuery.of(context).size.width * 0.91),
-                sizedBoxTen,
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate:
-                              DateTime.now().subtract(const Duration(days: 7)),
-                          lastDate: DateTime.now(),
-                        );
-                        if (picked != null) {
-                          final formatter = DateFormat.yMMMEd().format(picked);
-                          selectedDate = picked;
-                          dateShowController.updateText(formatter);
-                        }
-                      },
-                      icon: const Icon(Icons.calendar_month_outlined),
-                    ),
-                    Obx(() => Text(dateShowController.myText.value)),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Deposite',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.green),
-                          ),
-                          Obx(
-                            () => Switch(
-                              activeColor: Colors.red,
-                              inactiveTrackColor:
-                                  const Color.fromARGB(255, 119, 206, 122),
-                              inactiveThumbColor: Colors.green,
-                              value: controller.switchValue.value,
-                              onChanged: (value) =>
-                                  controller.toggleSwitch(value),
-                            ),
-                          ),
-                          const Text(
-                            'Withdraw',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
-            child: const Text("Cancel"),
-            onPressed: () => Get.back(),
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: Colors.deepPurple),
-                ),
-              ),
-            ),
-            child: const Text(
-              "Update",
-              style: TextStyle(color: Colors.black),
-            ),
-            onPressed: () async {
-              EntryType type;
-              if (controller.isEnabled) {
-                type = EntryType.withdraw;
-              } else {
-                type = EntryType.deposite;
-              }
-              if (formKey.currentState!.validate()) {
-                FundModel fundModel = FundModel(
-                    date: selectedDate,
-                    type: type,
-                    amount: amountController.text);
-                fundServices.updateFund(
-                    documentId: docId, updatedFund: fundModel);
-
-                Get.back();
-              }
-            },
-          ),
-        ],
       ),
     );
   }

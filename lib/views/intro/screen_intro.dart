@@ -6,6 +6,7 @@ import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+// ignore: must_be_immutable
 class ScreenIntro extends StatelessWidget {
   ScreenIntro({super.key});
 

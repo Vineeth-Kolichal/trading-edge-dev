@@ -1,16 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/position_sizing_services/position_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/position_sizing/widgets/widget_position_sized_item.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_search_gif.dart';
-import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
+
+import 'widgets/set_sl_target.dart';
 
 class PagePositionSizing extends StatelessWidget {
   const PagePositionSizing({super.key});
@@ -57,9 +56,9 @@ class PagePositionSizing extends StatelessWidget {
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.7,
                           width: MediaQuery.of(context).size.width,
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children: [
                               WidgetSearchGif(),
                               Text('No position items found! 😧')
                             ],
@@ -93,9 +92,14 @@ class PagePositionSizing extends StatelessWidget {
               child: ValueListenableBuilder(
                 valueListenable: sizingNotifier,
                 builder: (BuildContext ctx, SizingModel? sm, Widget? child) {
-                  String targetAmount = '₹${sm?.targetAmount}';
-                  String target = '${sm?.targetPercentage}%';
-                  String stop = '${sm?.stoplossPercentage}%';
+                  String targetAmount =
+                      sm?.targetAmount == null ? '₹0' : '₹${sm?.targetAmount}';
+                  String target = sm?.targetPercentage == null
+                      ? '0%'
+                      : '${sm?.targetPercentage}%';
+                  String stop = sm?.stoplossPercentage == null
+                      ? '0%'
+                      : '${sm?.stoplossPercentage}%';
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -105,7 +109,7 @@ class PagePositionSizing extends StatelessWidget {
                             width: MediaQuery.of(context).size.width * 0.35,
                             child: const AutoSizeText(
                               overflow: TextOverflow.ellipsis,
-                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              presetFontSizes: [13.0, 12.0, 11.0, 8.0],
                               maxLines: 1,
                               'Target Amount/Trade ',
                               style: TextStyle(
@@ -123,7 +127,7 @@ class PagePositionSizing extends StatelessWidget {
                           ),
                         ],
                       ),
-                      VerticalDivider(),
+                      const VerticalDivider(),
                       Column(
                         children: [
                           SizedBox(
@@ -131,7 +135,7 @@ class PagePositionSizing extends StatelessWidget {
                             child: const AutoSizeText(
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              presetFontSizes: [13.0, 12.0, 11.0, 8.0],
                               'Target(%) ',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -148,7 +152,7 @@ class PagePositionSizing extends StatelessWidget {
                           ),
                         ],
                       ),
-                      VerticalDivider(),
+                      const VerticalDivider(),
                       Column(
                         children: [
                           SizedBox(
@@ -156,7 +160,7 @@ class PagePositionSizing extends StatelessWidget {
                             child: const AutoSizeText(
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              presetFontSizes: const [13.0, 12.0, 11.0, 8.0],
+                              presetFontSizes: [13.0, 12.0, 11.0, 8.0],
                               'SL(%) ',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
@@ -191,105 +195,5 @@ class PagePositionSizing extends StatelessWidget {
     );
   }
 
-  void setTargetAndStoploss() {
-    SizingServices sizingServices = SizingServices();
-    final formKey = GlobalKey<FormState>();
-    TextEditingController targetAmountController = TextEditingController();
-    TextEditingController targetPercentageController = TextEditingController();
-    TextEditingController stopLossPercentageController =
-        TextEditingController();
 
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 5,
-        content: SizedBox(
-          height: 160,
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widgetInputTextFormField(
-                  type: TextInputType.number,
-                  label: 'Target Amount',
-                  isEnabled: true,
-                  controller: targetAmountController,
-                  width: 300,
-                ),
-                sizedBoxTen,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    widgetInputTextFormField(
-                      type: TextInputType.number,
-                      label: 'Target(%)',
-                      isEnabled: true,
-                      controller: targetPercentageController,
-                      width: 100,
-                    ),
-                    widgetInputTextFormField(
-                      type: TextInputType.number,
-                      label: 'SL(%)',
-                      isEnabled: true,
-                      controller: stopLossPercentageController,
-                      width: 100,
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-              ),
-            ),
-            child: const Text("Cancel"),
-            onPressed: () => Get.back(),
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: customPrimaryColor),
-                ),
-              ),
-            ),
-            child: const Text(
-              "Confirm",
-              style: TextStyle(color: Colors.black),
-            ),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                SizingModel sm = SizingModel(
-                  targetAmount: double.parse(
-                    targetAmountController.text.trim(),
-                  ),
-                  targetPercentage: double.parse(
-                    targetPercentageController.text.trim(),
-                  ),
-                  stoplossPercentage: double.parse(
-                    stopLossPercentageController.text.trim(),
-                  ),
-                );
-                sizingServices.addOrUpdateSizing(
-                    sizing: sm, key: returnCurrentUserId());
-                Get.back();
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }

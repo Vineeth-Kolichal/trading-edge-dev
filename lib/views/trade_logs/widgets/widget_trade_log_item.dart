@@ -4,7 +4,6 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:intl/intl.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/functions/function_short_amount.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/services/trade_logs_services/trade_logs_services.dart';
 import 'package:my_tradebook/views/trade_log_add_update_form/page_add_update_trade_logs.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';

@@ -6,11 +6,9 @@ import 'package:my_tradebook/services/firebase/dashbord_calculations/pnl_calcula
 import 'package:my_tradebook/services/firebase/dashbord_calculations/pnl_percentage_calculation.dart';
 import 'package:my_tradebook/services/firebase/dashbord_calculations/total_pnl_section.dart';
 import 'package:my_tradebook/services/functions/function_short_amount.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/dashboard/widgets/widget_fund_movement.dart';
 import 'package:my_tradebook/views/dashboard/widgets/widget_pnl_analysis_graph.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
-import 'package:my_tradebook/views/widgets/widget_circular_progress.dart';
 
 class PageDashboard extends StatefulWidget {
   const PageDashboard({super.key});

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/firebase/common_functions/tradeFundCollectionReferences.dart';
-import 'package:my_tradebook/main.dart';
 import 'package:my_tradebook/views/fund/widgets/widget_fund_tile.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/widgets/widget_search_gif.dart';

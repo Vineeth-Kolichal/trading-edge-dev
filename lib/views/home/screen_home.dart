@@ -1,33 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:my_tradebook/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:my_tradebook/core/constants/colors.dart';
-import 'package:my_tradebook/core/constants/enumarators.dart';
-import 'package:my_tradebook/models/fund_model/funds_model.dart';
-import 'package:my_tradebook/models/positions_model/position_model.dart';
 import 'package:my_tradebook/models/sizing_model/sizing_model.dart';
-import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/services/fund_services/fund_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/position_services.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/controllers/class_switch_controller.dart';
-import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/views/home/widgets/position_sizing_clear_alert.dart';
+import 'package:my_tradebook/views/home/widgets/sizing_set_alert.dart';
 import 'package:my_tradebook/views/trade_log_add_update_form/page_add_update_trade_logs.dart';
 import 'package:my_tradebook/views/dashboard/screen_dashboard.dart';
 import 'package:my_tradebook/views/fund/page_fund.dart';
 import 'package:my_tradebook/views/position_sizing/page_position_sizing.dart';
 import 'package:my_tradebook/views/trade_logs/page_trades_log.dart';
-import 'package:my_tradebook/views/login/screen_login.dart';
 import 'package:my_tradebook/views/home/widgets/widget_bottom_navigation_bar.dart';
 import 'package:my_tradebook/views/drawer/drawer.dart';
-import 'package:my_tradebook/views/widgets/widget_loading_alert.dart';
-import 'package:my_tradebook/views/widgets/widget_text_form_field.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'widgets/add_or_withdraw_fund_bottom_sheet.dart';
+import 'widgets/position_sizing_add_stock_alert.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -35,18 +27,10 @@ enum ClearPopupItem { clear }
 
 HomeScreenController homeScreenController = Get.put(HomeScreenController());
 
-class ScreenHome extends StatefulWidget {
-  const ScreenHome({super.key});
+class ScreenHome extends StatelessWidget {
+  ScreenHome({super.key});
 
-  @override
-  State<ScreenHome> createState() => _ScreenHomeState();
-}
-
-class _ScreenHomeState extends State<ScreenHome> {
   final SwitchController controller = Get.put(SwitchController());
-  final _formKey = GlobalKey<FormState>();
-
-  int? initialLabelIndex;
 
   final List _pages = [
     const PageDashboard(),
@@ -54,11 +38,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     PageFund(),
     const PagePositionSizing()
   ];
-  EntryType fundType = EntryType.deposite;
 
-  DateTime? _selectedDate;
-  TextEditingController dateController = TextEditingController();
-  TextEditingController amountController = TextEditingController();
   //bool _search = false;
   @override
   Widget build(BuildContext context) {
@@ -71,7 +51,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: WidgetDrawer(),
       ),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize:const  Size.fromHeight(55),
         child: Obx(() {
           return AppBar(
             elevation: 0,
@@ -130,7 +110,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                           borderRadius: BorderRadius.circular(15)),
                       splashRadius: 20,
                       onSelected: (ClearPopupItem item) async {
-                        openDialog(context);
+                        positionSizingClearAlert(context);
                       },
                       itemBuilder: (BuildContext context) =>
                           <PopupMenuEntry<ClearPopupItem>>[
@@ -148,7 +128,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           );
         }),
       ),
-      bottomNavigationBar: const WidgetBottomNavigationBar(),
+      body: Obx(() => _pages[homeScreenController.tabIndex.value]),
       floatingActionButton: Obx(() {
         return Visibility(
           visible: (homeScreenController.tabIndex.value != 0) ? true : false,
@@ -159,7 +139,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     transition: Transition.leftToRight,
                     duration: const Duration(milliseconds: 350));
               } else if (homeScreenController.tabIndex.value == 2) {
-                showFundInputBottomSheet();
+                showFundInputBottomSheet(context);
               } else {
                 SizingModel sm =
                     await sizingServices.returnCurrentUserSizingData();
@@ -183,439 +163,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           ),
         );
       }),
-      body: Obx(() => _pages[homeScreenController.tabIndex.value]),
-    );
-  }
-
-//Sizing section values updation dialoge
-
-  void sizingSettingAlert(String title) {
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 5,
-        title: const Text('Warning!'),
-        content: Text('Please add $title before adding new data '),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
-            child: const Text("close"),
-            onPressed: () => Get.back(),
-          ),
-        ],
-      ),
-    );
-  }
-
-//Position Sizing List Clear function
-
-  void openDialog(BuildContext context) {
-    PositionServices positionServices = PositionServices();
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 5,
-        title: const Text('Confirm Clear'),
-        content: const Text('Are you sure want to clear'),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
-            child: const Text("Cancel"),
-            onPressed: () => Get.back(),
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: customPrimaryColor),
-                ),
-              ),
-            ),
-            child: const Text(
-              "Confirm",
-              style: TextStyle(color: Colors.black),
-            ),
-            onPressed: () async {
-              await positionServices.clearPosition();
-              // ignore: use_build_context_synchronously
-              await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const WidgetLoadingAlert(
-                    duration: 2000,
-                  );
-                },
-              );
-              Get.back();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-//Add stock dialoge fuction, this function is called from floating action button
-
-  void addStock(BuildContext context) {
-    PositionServices positionServices = PositionServices();
-    final formKey = GlobalKey<FormState>();
-    TextEditingController stockNameController = TextEditingController();
-
-    TextEditingController entryPriceController = TextEditingController();
-
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 5,
-        content: SizedBox(
-          height: 160,
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widgetInputTextFormField(
-                    type: TextInputType.name,
-                    label: 'Stock Name',
-                    isEnabled: true,
-                    controller: stockNameController,
-                    width: MediaQuery.of(context).size.width * 0.91),
-                sizedBoxTen,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    widgetInputTextFormField(
-                      type: TextInputType.number,
-                      label: 'Entry Price',
-                      isEnabled: true,
-                      controller: entryPriceController,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                    ),
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Buy',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.green),
-                          ),
-                          Obx(
-                            () => Switch(
-                              activeColor: Colors.red,
-                              inactiveTrackColor:
-                                  const Color.fromARGB(255, 119, 206, 122),
-                              inactiveThumbColor: Colors.green,
-                              value: controller.switchValue.value,
-                              onChanged: (value) =>
-                                  controller.toggleSwitch(value),
-                            ),
-                          ),
-                          const Text(
-                            'Sell',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
-            child: const Text("Cancel"),
-            onPressed: () => Get.back(),
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: const BorderSide(color: customPrimaryColor),
-                ),
-              ),
-            ),
-            child: const Text(
-              "Confirm",
-              style: TextStyle(color: Colors.black),
-            ),
-            onPressed: () async {
-              TradeType type;
-              if (controller.isEnabled) {
-                type = TradeType.sell;
-              } else {
-                type = TradeType.buy;
-              }
-              if (formKey.currentState!.validate()) {
-                PositionModel position = PositionModel(
-                  currentUserId: returnCurrentUserId(),
-                  stockName: stockNameController.text.toUpperCase().trim(),
-                  entryPrice: double.parse(entryPriceController.text),
-                  type: type,
-                );
-                await positionServices.addPosition(position: position);
-                Get.back();
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-//Bottom navigation Bar
-
-//Fund Add bottom sheet, this fuction is called from floating action buttom
-
-  void showFundInputBottomSheet() {
-    FundServices fundServices = FundServices();
-    showModalBottomSheet<void>(
-      enableDrag: false,
-      isDismissible: false,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      elevation: 1,
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SizedBox(
-                    width: MediaQuery.of(context).size.height,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Add Fund',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            initialLabelIndex = null;
-                            dateController.clear();
-                            amountController.clear();
-                            Get.back();
-                          },
-                          child: const Icon(Icons.close),
-                        )
-                      ],
-                    ),
-                  ),
-                  const Divider(),
-                  Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              onTap: () async {
-                                final DateTime? picked = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now()
-                                      .subtract(const Duration(days: 7)),
-                                  lastDate: DateTime.now(),
-                                );
-                                if (picked != null) {
-                                  final formatter =
-                                      DateFormat.yMMMEd().format(picked);
-                                  setState(() {
-                                    _selectedDate = picked;
-                                    dateController.text = formatter;
-                                  });
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Required';
-                                }
-                                return null;
-                              },
-                              cursorColor: whiteColor,
-                              keyboardType: TextInputType.none,
-                              enabled: true,
-                              controller: dateController,
-                              decoration: InputDecoration(
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey),
-                                ),
-                                labelText: 'Date',
-                                hintText: 'Select Date',
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 20,
-                                ),
-                                suffixIcon: InkWell(
-                                  onTap: () async {
-                                    final DateTime? picked =
-                                        await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2020),
-                                      // firstDate: DateTime.now()
-                                      //     .subtract(const Duration(days: 7)),
-                                      lastDate: DateTime.now(),
-                                    );
-                                    if (picked != null) {
-                                      final formatter =
-                                          DateFormat.yMMMEd().format(picked);
-                                      setState(() {
-                                        _selectedDate = picked;
-                                        dateController.text = formatter;
-                                      });
-                                    }
-                                  },
-                                  child: const Icon(
-                                    Icons.calendar_month_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
-                          sizedBoxTen,
-                          Row(
-                            children: [
-                              ToggleSwitch(
-                                minHeight: 43,
-                                borderWidth: 0.75,
-                                borderColor: const [Colors.grey],
-                                minWidth: 90,
-                                cornerRadius: 10.0,
-                                activeBgColors: const [
-                                  [Colors.green],
-                                  [Colors.red]
-                                ],
-                                activeFgColor: Colors.white,
-                                inactiveBgColor: Colors.white,
-                                inactiveFgColor: Colors.black,
-                                initialLabelIndex: initialLabelIndex,
-                                totalSwitches: 2,
-                                labels: const ['Deposit', 'Withdraw'],
-                                radiusStyle: true,
-                                onToggle: (index) {
-                                  setState(() {
-                                    initialLabelIndex = index;
-                                  });
-                                  if (initialLabelIndex == 0) {
-                                    fundType = EntryType.deposite;
-                                  }
-                                  if (initialLabelIndex == 1) {
-                                    fundType = EntryType.withdraw;
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          sizedBoxTen,
-                          inputTextFormField(
-                              type: TextInputType.number,
-                              isEnabled: true,
-                              controller: amountController,
-                              label: 'Amount'),
-                          sizedBoxTen,
-                        ],
-                      )),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          FundModel fund = FundModel(
-                              date: _selectedDate!,
-                              type: fundType,
-                              amount: amountController.text);
-                          await fundServices.addFund(fund: fund);
-                          dateController.clear();
-                          amountController.clear();
-                          initialLabelIndex = null;
-                          Get.back();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      child: const Text('Add'),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-//common text field widget for add trade and add fund screen
-
-  Widget inputTextFormField(
-      {required bool isEnabled,
-      String? label,
-      String? sufixItem,
-      required TextEditingController controller,
-      TextInputType? type,
-      String? hint}) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Required!';
-          }
-          return null;
-        },
-        keyboardType: type,
-        enabled: isEnabled,
-        controller: controller,
-        decoration: InputDecoration(
-            hintText: hint,
-            disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.grey)),
-            labelText: label,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            suffixText: sufixItem,
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-      ),
+      bottomNavigationBar: const WidgetBottomNavigationBar(),
     );
   }
 }

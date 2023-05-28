@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_tradebook/main.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
+
 
 Widget progress = const SizedBox(
   width: 16,

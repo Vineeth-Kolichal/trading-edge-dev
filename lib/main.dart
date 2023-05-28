@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:my_tradebook/core/constants/colors.dart';
 import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/services/hive_db_adapter_registration/hive_db_adapter_registration.dart';
 import 'package:my_tradebook/firebase_options.dart';
@@ -43,18 +44,3 @@ class MyTradeBookApp extends StatelessWidget {
   }
 }
 
-const MaterialColor customPrimaryColor = MaterialColor(
-  0xFF648BF8, // Set the primary color value
-  <int, Color>{
-    50: Color(0xFFE4E9FB),
-    100: Color(0xFFBBC7F4),
-    200: Color(0xFF8DA3ED),
-    300: Color(0xFF607FE6),
-    400: Color(0xFF3D5CE0),
-    500: Color(0xFF2749DB), // Set the primary color value
-    600: Color(0xFF2042D8),
-    700: Color(0xFF183BD3),
-    800: Color(0xFF1034CF),
-    900: Color(0xFF0027C6),
-  },
-);
