@@ -37,7 +37,7 @@ class ScreenSplash extends StatelessWidget {
             Get.off(() => const ScreenLogin());
           }
         } else {
-          Get.off(() =>  ScreenHome());
+          Get.off(() => ScreenHome());
         }
       });
     });

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ Future<String> pickAndUploadImageToFirebaseStorage() async {
       .ref()
       .child('user_profile_images')
       .child(returnCurrentUserId());
-  final uploadTask = storageRef.putFile(compressedImage!);
+  final uploadTask = storageRef.putFile(File(compressedImage!.path));
   final taskSnapshot = await uploadTask.whenComplete(() {});
   final downloadUrl = await taskSnapshot.ref.getDownloadURL();
   return downloadUrl;

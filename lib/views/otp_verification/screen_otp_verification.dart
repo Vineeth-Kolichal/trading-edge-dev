@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/phone_authentication.dart';
-import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
+import 'package:my_tradebook/services/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/views/set_profile/screen_enter_name.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';

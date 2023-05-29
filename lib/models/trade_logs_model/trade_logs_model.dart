@@ -1,4 +1,3 @@
-
 import 'package:my_tradebook/core/constants/enumarators.dart';
 
 class TradeLogsModel {
@@ -10,29 +9,28 @@ class TradeLogsModel {
   final int swingLossCount;
   final int intradayProfitCount;
   final int intradayLossCount;
-  int? docId;
+  final String? docId;
 
-  TradeLogsModel({
-    required this.date,
-    required this.type,
-    required this.amount,
-    required this.description,
-    required this.swingProfitCount,
-    required this.swingLossCount,
-    required this.intradayProfitCount,
-    required this.intradayLossCount,
-  });
-  factory TradeLogsModel.fromJson(Map<String, dynamic> json) {
+  TradeLogsModel(
+      {required this.date,
+      required this.type,
+      required this.amount,
+      required this.description,
+      required this.swingProfitCount,
+      required this.swingLossCount,
+      required this.intradayProfitCount,
+      required this.intradayLossCount,
+      this.docId});
+  factory TradeLogsModel.fromMap({required Map<String, dynamic> json}) {
     return TradeLogsModel(
-      date: json['date'].toDate(),
-      type: json['type'] == 'profit' ? EntryType.profit : EntryType.loss,
-      amount: json['amount'].toString(),
-      description: json['description'],
-      swingProfitCount: json['swingProfitCount'] ?? 0,
-      swingLossCount: json['swingLossCount'] ?? 0,
-      intradayProfitCount: json['intradayProfitCount'] ?? 0,
-      intradayLossCount: json['intradayLossCount'] ?? 0,
-     // docId:json[]
-    );
+        date: json['date'].toDate(),
+        type: json['type'] == 'profit' ? EntryType.profit : EntryType.loss,
+        amount: json['amount'].toString(),
+        description: json['description'] ?? '',
+        swingProfitCount: json['swing_profit'],
+        swingLossCount: json['swing_loss'],
+        intradayProfitCount: json['intraday_profit'],
+        intradayLossCount: json['intraday_loss'],
+        docId: json['id']);
   }
 }

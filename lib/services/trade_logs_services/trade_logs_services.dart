@@ -1,12 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:my_tradebook/controllers/trades_logs_controllers/trades_log_screen_controller.dart';
 import 'package:my_tradebook/core/constants/enumarators.dart';
 import 'package:my_tradebook/models/trade_logs_model/trade_logs_model.dart';
 import 'package:my_tradebook/repositories/trades_log_repositories/trade_logs_repositores.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/services/firebase/common_functions/tradeFundCollectionReferences.dart';
+
+TradeLogScreenController tradeLogScreenController =
+    Get.put(TradeLogScreenController());
 
 class TradeLogServices extends TradesLogRepositories {
   factory TradeLogServices() {
@@ -71,28 +72,36 @@ class TradeLogServices extends TradesLogRepositories {
   }
 
   @override
-  Future<List<TradeLogsModel>> getAllTradeLogs() async {
+  Future<void> getAllTradeLogs() async {
     List<TradeLogsModel> tradeLogsList = [];
-    CollectionReference tradesAndFund = tradeFundCollectionReference();
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
+    List<TradeLogsModel> tradeLogsListTemp = [];
+    List<Map<String, dynamic>> finalResult = [];
+    CollectionReference reference = FirebaseFirestore.instance
         .collection('users')
         .doc(returnCurrentUserId())
-        .collection('Trades_and_fund')
-        .where('type', whereIn: ['profit', 'loss'])
-        .orderBy('date', descending: true)
-        .get();
-    if (snapshot.docs.isNotEmpty) {
-      for (DocumentSnapshot document in snapshot.docs) {
-        // final result = jsonDecode(document.data());
-        // log('$result');
-        //  document.data();
-        tradeLogsList.add(
-            TradeLogsModel.fromJson(document.data() as Map<String, dynamic>));
+        .collection('Trades_and_fund');
+    reference.snapshots().listen((event) {
+      List<Map<String, dynamic>> result = [];
+      for (var element in event.docs) {
+        var s = element.data() as Map<String, dynamic>;
+        s['id'] = element.id;
+        result.add(s);
       }
-    }
-    print(tradeLogsList);
-    snapshot.docs;
-    return tradeLogsList;
+      finalResult.clear();
+      finalResult.addAll(result
+          .where((element) =>
+              element['type'] == 'profit' || element['type'] == 'loss')
+          .toList());
+      finalResult.sort((a, b) => b['date'].compareTo(a['date']));
+      tradeLogsListTemp.clear();
+      for (var data in finalResult) {
+        TradeLogsModel tradeLogsModel = TradeLogsModel.fromMap(json: data);
+        tradeLogsListTemp.add(tradeLogsModel);
+      }
+      tradeLogsList.clear();
+      tradeLogsList.addAll(tradeLogsListTemp);
+      tradeLogScreenController.addDataToList(tradeLogs: tradeLogsList);
+    });
   }
 
   String getEntryType({required EntryType type}) {

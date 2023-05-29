@@ -6,7 +6,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
 import 'package:my_tradebook/services/authentication/google_sign_in_authentication.dart';
 import 'package:my_tradebook/services/authentication/phone_authentication.dart';
-import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
+import 'package:my_tradebook/services/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/services/position_sizing_services/sizing_services.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/otp_verification/screen_otp_verification.dart';

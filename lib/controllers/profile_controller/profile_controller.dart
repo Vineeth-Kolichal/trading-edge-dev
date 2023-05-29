@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:my_tradebook/models/user_profile_model/user_profile_model.dart';
-import 'package:my_tradebook/services/firebase/user_profile/user_profile_services.dart';
+import 'package:my_tradebook/services/user_profile/user_profile_services.dart';
 
 class ProfileController extends GetxController {
   UserProfileServices userProfileServices = UserProfileServices();

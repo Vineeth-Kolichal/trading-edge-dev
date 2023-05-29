@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_tradebook/services/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/services/firebase/user_profile/user_profile_photo_name_uplaod.dart';
+import 'package:my_tradebook/services/user_profile/user_profile_photo_name_uplaod.dart';
 import 'package:my_tradebook/views/home/screen_home.dart';
 import 'package:my_tradebook/views/login/screen_login.dart';
 

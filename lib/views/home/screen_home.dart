@@ -18,10 +18,13 @@ import 'package:my_tradebook/views/position_sizing/page_position_sizing.dart';
 import 'package:my_tradebook/views/trade_logs/page_trades_log.dart';
 import 'package:my_tradebook/views/home/widgets/widget_bottom_navigation_bar.dart';
 import 'package:my_tradebook/views/drawer/drawer.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'widgets/add_or_withdraw_fund_bottom_sheet.dart';
 import 'widgets/position_sizing_add_stock_alert.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
+String release = "";
+bool newVersionAlert = true;
 
 enum ClearPopupItem { clear }
 
@@ -44,6 +47,16 @@ class ScreenHome extends StatelessWidget {
   Widget build(BuildContext context) {
     PositionServices positionServices = PositionServices();
     SizingServices sizingServices = SizingServices();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final newVersion = NewVersionPlus(
+          androidId: 'com.vineethkolichal.my_tradebook',
+          androidPlayStoreCountry: "es_ES");
+      if (newVersionAlert) {
+        await basicStatusCheck(newVersion, context);
+
+        newVersionAlert = false;
+      }
+    });
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
       key: scaffoldKey,
@@ -51,7 +64,7 @@ class ScreenHome extends StatelessWidget {
         child: WidgetDrawer(),
       ),
       appBar: PreferredSize(
-        preferredSize:const  Size.fromHeight(55),
+        preferredSize: const Size.fromHeight(55),
         child: Obx(() {
           return AppBar(
             elevation: 0,
@@ -164,6 +177,19 @@ class ScreenHome extends StatelessWidget {
         );
       }),
       bottomNavigationBar: const WidgetBottomNavigationBar(),
+    );
+  }
+
+  Future<void> basicStatusCheck(
+      NewVersionPlus newVersion, BuildContext context) async {
+    final version = await newVersion.getVersionStatus();
+    if (version != null) {
+      release = version.releaseNotes ?? "";
+    }
+    // ignore: use_build_context_synchronously
+    newVersion.showAlertIfNecessary(
+      context: context,
+      launchModeVersion: LaunchModeVersion.external,
     );
   }
 }
