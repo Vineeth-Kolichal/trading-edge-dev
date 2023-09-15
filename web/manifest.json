@@ -1,6 +1,6 @@
 {
-    "name": "my_tradebook",
-    "short_name": "my_tradebook",
+    "name": "trading_edge",
+    "short_name": "trading_edge",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

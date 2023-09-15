@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:my_tradebook/widgets/widget_appbar.dart';
+import 'package:trading_edge/views/widgets/widget_appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUs extends StatelessWidget {
@@ -10,7 +10,7 @@ class ContactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 247),
-      appBar:const  WidgetAppbar(title: 'Contact Us'),
+      appBar: const WidgetAppbar(title: 'Contact Us'),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -26,8 +26,8 @@ class ContactUs extends StatelessWidget {
               onTap: () async {
                 await launchUrl(Uri.https('github.com', '/Vineeth-Kolichal'));
               },
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: FaIcon(FontAwesomeIcons.github),
@@ -41,8 +41,8 @@ class ContactUs extends StatelessWidget {
                 await launchUrl(Uri.https(
                     'www.linkedin.com', '/in/vineeth-chandran-kolichal'));
               },
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: FaIcon(FontAwesomeIcons.linkedinIn),
@@ -69,8 +69,8 @@ class ContactUs extends StatelessWidget {
                 );
                 await launchUrl(emailLaunchUri);
               },
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(Icons.mail_outline),
@@ -84,8 +84,8 @@ class ContactUs extends StatelessWidget {
                 await launchUrl(
                     Uri.https('www.instagram.com', '/vineeth.kolichal'));
               },
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: FaIcon(FontAwesomeIcons.instagram),

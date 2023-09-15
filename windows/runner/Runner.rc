@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.vineethkolichal" "\0"
-            VALUE "FileDescription", "my_tradebook" "\0"
+            VALUE "FileDescription", "Trading Edge" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "my_tradebook" "\0"
+            VALUE "InternalName", "Trading Edge" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.vineethkolichal. All rights reserved." "\0"
-            VALUE "OriginalFilename", "my_tradebook.exe" "\0"
-            VALUE "ProductName", "my_tradebook" "\0"
+            VALUE "OriginalFilename", "trading_edge.exe" "\0"
+            VALUE "ProductName", "Trading Edge" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

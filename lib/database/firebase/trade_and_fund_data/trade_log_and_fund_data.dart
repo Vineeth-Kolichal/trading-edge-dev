@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/functions/check_internet.dart';
-import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
+import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/functions/check_internet.dart';
+import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 
 enum EntryType { profit, loss, deposite, withdraw }
 
@@ -23,7 +23,7 @@ Future<bool> addTradeLoges(
   }
   final CollectionReference tradesAndFund = FirebaseFirestore.instance
       .collection('users')
-      .doc(returnCurrentUserId())
+      .doc(CurrentUserData.returnCurrentUserId())
       .collection('Trades_and_fund');
   final Timestamp dateTime = Timestamp.fromDate(date);
   double amt = double.parse(amount);
@@ -35,7 +35,7 @@ Future<bool> addTradeLoges(
       'date': dateTime,
       'type': entryType,
       'amount': amt,
-      // 'description': description,
+     
       // ignore: body_might_complete_normally_catch_error
     }).catchError((error) {
       // Handle the error
@@ -68,7 +68,7 @@ Future<bool> addTradeLoges(
 Future<void> deleteDoc(String id) async {
   final DocumentReference document = FirebaseFirestore.instance
       .collection('users')
-      .doc(returnCurrentUserId())
+      .doc(CurrentUserData.returnCurrentUserId())
       .collection('Trades_and_fund')
       .doc(id);
   await document.delete();
@@ -86,7 +86,7 @@ Future<void> updateTradeLogsAndFund(
     int? intraLo}) async {
   final DocumentReference docTobeUpdated = FirebaseFirestore.instance
       .collection('users')
-      .doc(returnCurrentUserId())
+      .doc(CurrentUserData.returnCurrentUserId())
       .collection('Trades_and_fund')
       .doc(docId);
   final Timestamp dateTime = Timestamp.fromDate(date);

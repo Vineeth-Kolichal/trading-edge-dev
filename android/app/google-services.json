@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:915254355155:android:e2f71d8341c161a193e026",
+        "mobilesdk_app_id": "1:915254355155:android:e02c0ab7d527544493e026",
         "android_client_info": {
-          "package_name": "com.vineethkolichal.my_tradebook"
+          "package_name": "com.appstudiotech.trading_edge"
         }
       },
       "oauth_client": [
         {
-          "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
+          "client_id": "915254355155-5rbqo5qior3gvip47m2kj7919tc2pi8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appstudiotech.trading_edge",
+            "certificate_hash": "21e4082a79a0d3f4dca231bb7b4eca3cd64416b4"
+          }
+        },
+        {
+          "client_id": "915254355155-he965a3mk6h3cjmp4dhcrs5dvbhdhmn8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,109 @@
             {
               "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "915254355155-lrv5vhiqiihdqv0o9nb2m7e29cqoolk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vineethkolichal.myTradebook"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915254355155:android:770812a7b883466593e026",
+        "android_client_info": {
+          "package_name": "com.trigonaldevs.my_tradebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "915254355155-v4f1lnhsh000h9ht79nn2bglbvn9i8vm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trigonaldevs.my_tradebook",
+            "certificate_hash": "afc7b4b5210d4369e2b35e354d23009ce122544f"
+          }
+        },
+        {
+          "client_id": "915254355155-he965a3mk6h3cjmp4dhcrs5dvbhdhmn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm458xHP4s-sS74QwzZGNyOlOMhwxyu5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "915254355155-lrv5vhiqiihdqv0o9nb2m7e29cqoolk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vineethkolichal.myTradebook"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915254355155:android:e2f71d8341c161a193e026",
+        "android_client_info": {
+          "package_name": "com.vineethkolichal.my_tradebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "915254355155-5aq5plc96683hhag3lgkhfb7q2o26d2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vineethkolichal.my_tradebook",
+            "certificate_hash": "8c13afb4209bfb37b2358d504ea7d4cddc74069b"
+          }
+        },
+        {
+          "client_id": "915254355155-lep2nssf8gb7smq4mp3l3afo810enf5l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vineethkolichal.my_tradebook",
+            "certificate_hash": "21e4082a79a0d3f4dca231bb7b4eca3cd64416b4"
+          }
+        },
+        {
+          "client_id": "915254355155-he965a3mk6h3cjmp4dhcrs5dvbhdhmn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm458xHP4s-sS74QwzZGNyOlOMhwxyu5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915254355155-25rhdrsd7ddqccmgqv45jlgfa755qkfo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "915254355155-lrv5vhiqiihdqv0o9nb2m7e29cqoolk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vineethkolichal.myTradebook"
+              }
             }
           ]
         }

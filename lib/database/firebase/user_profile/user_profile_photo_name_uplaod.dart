@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/widgets/widget_error_snackbar.dart';
+import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<String> pickAndUploadImageToFirebaseStorage() async {
@@ -21,7 +21,7 @@ Future<String> pickAndUploadImageToFirebaseStorage() async {
   final storageRef = FirebaseStorage.instance
       .ref()
       .child('user_profile_images')
-      .child(returnCurrentUserId());
+      .child(CurrentUserData.returnCurrentUserId());
   final uploadTask = storageRef.putFile(compressedImage!);
   final taskSnapshot = await uploadTask.whenComplete(() {});
   final downloadUrl = await taskSnapshot.ref.getDownloadURL();
@@ -32,7 +32,7 @@ Future<void> addUserProfileToFireStore(
     {required String name, String? imgUrl, String? contact}) async {
   await FirebaseFirestore.instance
       .collection('users')
-      .doc(returnCurrentUserId())
+      .doc(CurrentUserData.returnCurrentUserId())
       .set({
     'name': name,
     'photUrl': imgUrl,
@@ -52,7 +52,7 @@ Future<void> addUserProfileToFireStore(
 
 Future<void> updateImageUrl(String imgUrl) async {
   final docRef =
-      FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
+      FirebaseFirestore.instance.collection('users').doc(CurrentUserData.returnCurrentUserId());
   docRef.update({
     'photUrl': imgUrl,
   }).catchError((error) {
@@ -70,7 +70,7 @@ Future<void> updateImageUrl(String imgUrl) async {
 
 Future<void> updateUserName(String name) async {
   final docRef =
-      FirebaseFirestore.instance.collection('users').doc(returnCurrentUserId());
+      FirebaseFirestore.instance.collection('users').doc(CurrentUserData.returnCurrentUserId());
   docRef.update({
     'name': name,
   }).catchError((error) {
@@ -90,4 +90,3 @@ Future<bool> checkUserDataExist(String userId) async {
     return false;
   }
 }
-

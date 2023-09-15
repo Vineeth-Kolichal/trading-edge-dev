@@ -1,4 +1,4 @@
-import 'package:my_tradebook/database/local_databse/models/positions/position_model.dart';
+import 'package:trading_edge/models/positions/position_model.dart';
 
 Map<String, String> positionSizingCalculation({
   required TradeType type,

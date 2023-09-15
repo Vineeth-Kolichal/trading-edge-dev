@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_tradebook/database/firebase/dashbord_calculations/filter_data_with_date.dart';
+import 'package:trading_edge/database/firebase/dashbord_calculations/filter_data_with_date.dart';
 
 Future<Map<String, int>> pieGraphValues(int index) async {
   List<DocumentSnapshot> documents = [];

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_tradebook/database/firebase/common_functions/tradeFundCollectionReferences.dart';
+import 'package:trading_edge/database/firebase/common_functions/trade_fund_collection_references.dart';
 
 Future<List<DocumentSnapshot<Object?>>> lastDayData() async {
   final Timestamp dateTime =

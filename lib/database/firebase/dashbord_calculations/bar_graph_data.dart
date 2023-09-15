@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_tradebook/database/firebase/dashbord_calculations/filter_data_with_date.dart';
-import 'package:my_tradebook/database/firebase/dashbord_calculations/total_pnl_section.dart';
+import 'package:trading_edge/database/firebase/dashbord_calculations/filter_data_with_date.dart';
+import 'package:trading_edge/database/firebase/dashbord_calculations/total_pnl_section.dart';
 
 Future<List<Map<String, dynamic>>> lineGraphData() async {
   List totalAmountList = List.generate(10, (index) => null);

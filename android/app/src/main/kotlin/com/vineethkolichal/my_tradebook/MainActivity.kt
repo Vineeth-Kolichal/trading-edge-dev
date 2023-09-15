@@ -1,4 +1,4 @@
-package com.vineethkolichal.my_tradebook
+package com.vineethkolichal.trading_edge
 
 import io.flutter.embedding.android.FlutterActivity
 

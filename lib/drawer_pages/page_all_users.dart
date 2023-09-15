@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:my_tradebook/authentication/get_current_user_id.dart';
-import 'package:my_tradebook/main.dart';
-import 'package:my_tradebook/widgets/widget_appbar.dart';
-import 'package:my_tradebook/widgets/widget_search_gif.dart';
+import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/main.dart';
+import 'package:trading_edge/views/widgets/widget_appbar.dart';
+import 'package:trading_edge/views/widgets/widget_search_gif.dart';
 
 class PageAllUser extends StatelessWidget {
   PageAllUser({super.key});
@@ -43,14 +43,11 @@ class PageAllUser extends StatelessWidget {
                 .cast<QueryDocumentSnapshot<Map<String, dynamic>>>();
 
             if (docs.isEmpty) {
-              return SizedBox(
+              return const SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    WidgetSearchGif(),
-                    Text('No users found! 😧')
-                  ],
+                  children: [WidgetSearchGif(), Text('No users found! 😧')],
                 ),
               );
             } else {
@@ -58,7 +55,7 @@ class PageAllUser extends StatelessWidget {
                 itemBuilder: (ctx, index) {
                   Map<String, dynamic> data = docs[index].data();
                   String docId = docs[index].id;
-                  if (docId != returnCurrentUserId()) {
+                  if (docId != CurrentUserData.returnCurrentUserId()) {
                     return UserTile(
                       name: data['name'],
                       photoUrl: data['photUrl'],

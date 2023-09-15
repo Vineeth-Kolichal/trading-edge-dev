@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vineethkolichal.my_tradebook">
+    package="com.vineethkolichal.trading_edge">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="My TradeBook"
+        android:label="Trading Edge"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

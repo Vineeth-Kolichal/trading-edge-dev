@@ -1,4 +1,4 @@
-# my_tradebook
+# trading_edge
 
 A new Flutter project.
 
