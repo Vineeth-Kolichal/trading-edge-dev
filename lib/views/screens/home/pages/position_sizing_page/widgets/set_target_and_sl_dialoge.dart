@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
@@ -68,7 +68,7 @@ void setTargetAndStoploss(BuildContext context) {
             ),
           ),
           child: const Text("Cancel"),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
           style: ButtonStyle(
@@ -100,7 +100,7 @@ void setTargetAndStoploss(BuildContext context) {
               context.read<PositionSizingViewModel>().addOrUpdateSizing(
                   sizing: sm, key: CurrentUserData.returnCurrentUserId());
 
-              Get.back();
+              Navigator.of(context).pop();
             }
           },
         ),

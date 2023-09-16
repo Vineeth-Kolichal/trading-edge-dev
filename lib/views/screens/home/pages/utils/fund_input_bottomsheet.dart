@@ -45,7 +45,7 @@ void showFundInputBottomSheet(BuildContext context) {
                           // initialLabelIndex = null;
                           dateController.clear();
                           amountController.clear();
-                          Get.back();
+                          Navigator.of(context).pop();
                         },
                         child: const Icon(Icons.close),
                       )
@@ -179,19 +179,19 @@ void showFundInputBottomSheet(BuildContext context) {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        bool retVal = await addTradeLoges(
-                            context: context,
-                            date: selectedDate!,
-                            type: fundType,
-                            amount: amountController.text);
-                        if (!retVal) {
-                          errorSnack('Check your internet connectivity');
-                        }
+                        // bool retVal = await addTradeLoges(
+                        //     context: context,
+                        //     date: selectedDate!,
+                        //     type: fundType,
+                        //     amount: amountController.text);
+                        // if (!retVal) {
+                        //   errorSnack('Check your internet connectivity');
+                        // }
                         dateController.clear();
                         amountController.clear();
                         // initialLabelIndex = null;
 
-                        Get.back();
+                        Navigator.of(context).pop();
                       }
                     },
                     style: ElevatedButton.styleFrom(

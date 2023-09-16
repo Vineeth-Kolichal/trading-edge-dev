@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trading_edge/data/current_user_data.dart';
-import 'package:trading_edge/data/position_sizing/position_sizing_services.dart';
+import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/services/position_sizing/position_sizing_services.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/repositories/position_sizing_repo/position_sizing_repo.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 import 'package:path_provider/path_provider.dart';
 

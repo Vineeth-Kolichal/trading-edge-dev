@@ -1,14 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
+import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
+import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
+import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.dart';
 import 'package:trading_edge/views/widgets/widget_appbar.dart';
 import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 // ignore: must_be_immutable
-class PageAddUpdateTradeLog extends StatefulWidget {
+class AddUpdateTradeLogScreen extends StatefulWidget {
   String? docId;
   String? type;
   DateTime? date;
@@ -20,7 +27,7 @@ class PageAddUpdateTradeLog extends StatefulWidget {
   String? intLo;
   final String operation;
 
-  PageAddUpdateTradeLog(
+  AddUpdateTradeLogScreen(
       {super.key,
       this.docId,
       this.type,
@@ -34,44 +41,38 @@ class PageAddUpdateTradeLog extends StatefulWidget {
       required this.operation});
 
   @override
-  State<PageAddUpdateTradeLog> createState() => _PageAddUpdateTradeLogState();
+  State<AddUpdateTradeLogScreen> createState() =>
+      _AddUpdateTradeLogScreenState();
 }
 
-class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
+class _AddUpdateTradeLogScreenState extends State<AddUpdateTradeLogScreen> {
   @override
   void initState() {
     setState(() {
-      _selectedDate = widget.date;
-      if (widget.date != null) {
-        dateOld = DateFormat.yMMMEd().format(widget.date!);
-      }
-      dateController.text = dateOld ?? '';
-      pnlController.text = widget.pnl ?? '';
-      commentController.text = widget.comment ?? '';
-      swingLotController.text = widget.swlo ?? '';
-      swingProtController.text = widget.swpro ?? '';
-      intraLoController.text = widget.intLo ?? '';
-      intraProController.text = widget.intPro ?? '';
+      // _selectedDate = widget.date;
+      // if (widget.date != null) {
+      //   dateOld = DateFormat.yMMMEd().format(widget.date!);
+      // }
+      // dateController.text = dateOld ?? '';
+      // pnlController.text = widget.pnl ?? '';
+      // commentController.text = widget.comment ?? '';
+      // swingLotController.text = widget.swlo ?? '';
+      // swingProtController.text = widget.swpro ?? '';
+      // intraLoController.text = widget.intLo ?? '';
+      // intraProController.text = widget.intPro ?? '';
     });
     super.initState();
   }
 
   FocusNode focusNode = FocusNode();
-  final _formKey = GlobalKey<FormState>();
-  DateTime? _selectedDate;
-  TextEditingController dateController = TextEditingController();
-  TextEditingController pnlController = TextEditingController();
-  TextEditingController commentController = TextEditingController();
-  TextEditingController swingLotController = TextEditingController();
-  TextEditingController swingProtController = TextEditingController();
-  TextEditingController intraProController = TextEditingController();
-  TextEditingController intraLoController = TextEditingController();
 
   EntryType type = EntryType.profit;
   int? seletedIndex;
   String? dateOld;
+
   @override
   Widget build(BuildContext context) {
+    TradeLogViewModel tlvm = context.read<TradeLogViewModel>();
     return Scaffold(
       appBar: WidgetAppbar(title: '${widget.operation} Trade'),
       body: SingleChildScrollView(
@@ -82,7 +83,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Form(
-                key: _formKey,
+                key: tlvm.formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -109,12 +110,12 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                             final formatter =
                                 DateFormat.yMMMEd().format(picked);
                             setState(() {
-                              _selectedDate = picked;
-                              dateController.text = formatter;
+                              tlvm.selectedDate = picked;
+                              tlvm.dateController.text = formatter;
                             });
                           }
                         },
-                        controller: dateController,
+                        controller: tlvm.dateController,
                         decoration: InputDecoration(
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -168,12 +169,12 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                         type: TextInputType.number,
                         isEnabled: true,
                         label: 'Net Realized P&L',
-                        controller: pnlController),
+                        controller: tlvm.pnlController),
                     sizedBoxTen,
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.915,
                       child: TextFormField(
-                        controller: commentController,
+                        controller: tlvm.commentController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Required';
@@ -213,7 +214,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                 type: TextInputType.number,
                 isEnabled: true,
                 hint: '0',
-                controller: swingProtController,
+                controller: tlvm.swingProtController,
                 sufixItem: 'Profit Trades',
               ),
               sizedBoxTen,
@@ -221,7 +222,7 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                   type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
-                  controller: swingLotController,
+                  controller: tlvm.swingLotController,
                   sufixItem: 'Lose Trades'),
               sizedBoxTen,
               const Text('Intraday',
@@ -230,67 +231,69 @@ class _PageAddUpdateTradeLogState extends State<PageAddUpdateTradeLog> {
                   type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
-                  controller: intraProController,
+                  controller: tlvm.intraProController,
                   sufixItem: 'Profit Trades'),
               sizedBoxTen,
               inputTextFormField(
                   type: TextInputType.number,
                   isEnabled: true,
                   hint: '0',
-                  controller: intraLoController,
+                  controller: tlvm.intraLoController,
                   sufixItem: 'Lose Trades'),
               sizedBoxTen,
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.915,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (tlvm.formKey.currentState!.validate()) {
                       if (widget.operation == 'Add') {
-                        bool retVal = await addTradeLoges(
-                          context: context,
-                          date: _selectedDate!,
-                          type: type,
-                          amount: pnlController.text,
-                          description: commentController.text,
-                          swPro: (swingProtController.text.isNotEmpty)
-                              ? int.parse(swingProtController.text)
-                              : 0,
-                          swLo: (swingLotController.text.isNotEmpty)
-                              ? int.parse(swingLotController.text)
-                              : 0,
-                          intraPro: (intraProController.text.isNotEmpty)
-                              ? int.parse(intraProController.text)
-                              : 0,
-                          intraLo: (intraLoController.text.isNotEmpty)
-                              ? int.parse(intraLoController.text)
-                              : 0,
-                        );
-                        if (!retVal) {
-                          errorSnack('Check your internet connectivity');
-                        }
-                        Get.back();
-                      } else {
-                        await updateTradeLogsAndFund(
-                          docId: widget.docId!,
-                          date: _selectedDate!,
-                          type: type,
-                          amount: pnlController.text,
-                          description: commentController.text,
-                          swPro: (swingProtController.text.isNotEmpty)
-                              ? int.parse(swingProtController.text)
-                              : 0,
-                          swLo: (swingLotController.text.isNotEmpty)
-                              ? int.parse(swingLotController.text)
-                              : 0,
-                          intraPro: (intraProController.text.isNotEmpty)
-                              ? int.parse(intraProController.text)
-                              : 0,
-                          intraLo: (intraLoController.text.isNotEmpty)
-                              ? int.parse(intraLoController.text)
-                              : 0,
-                        );
+                        TradeOrFundModel tradeOrFundModel = TradeOrFundModel(
+                            userId: CurrentUserData.returnCurrentUserId(),
+                            type: type,
+                            amount:
+                                double.parse(tlvm.pnlController.text.trim()),
+                            date: tlvm.selectedDate!,
+                            comments: tlvm.commentController.text,
+                            swingProfit: tlvm.swingProtController.text.isEmpty
+                                ? 0
+                                : int.parse(
+                                    tlvm.swingProtController.text.trim()),
+                            swingLoss: tlvm.swingLotController.text.isEmpty
+                                ? 0
+                                : int.parse(
+                                    tlvm.swingLotController.text.trim()),
+                            intraLoss: tlvm.intraLoController.text.isEmpty
+                                ? 0
+                                : int.parse(tlvm.intraLoController.text.trim()),
+                            intraProfit: tlvm.intraProController.text.isEmpty
+                                ? 0
+                                : int.parse(
+                                    tlvm.intraProController.text.trim()));
+                        tlvm.addTrades(tradeOrFundModel);
 
-                        Get.back();
+                        Navigator.of(context).pop();
+                      } else {
+                        // await updateTradeLogsAndFund(
+                        //   docId: widget.docId!,
+                        //   date: _selectedDate!,
+                        //   type: type,
+                        //   amount: pnlController.text,
+                        //   description: commentController.text,
+                        //   swPro: (swingProtController.text.isNotEmpty)
+                        //       ? int.parse(swingProtController.text)
+                        //       : 0,
+                        //   swLo: (swingLotController.text.isNotEmpty)
+                        //       ? int.parse(swingLotController.text)
+                        //       : 0,
+                        //   intraPro: (intraProController.text.isNotEmpty)
+                        //       ? int.parse(intraProController.text)
+                        //       : 0,
+                        //   intraLo: (intraLoController.text.isNotEmpty)
+                        //       ? int.parse(intraLoController.text)
+                        //       : 0,
+                        // );
+
+                        Navigator.of(context).pop();
                       }
                     }
                   },

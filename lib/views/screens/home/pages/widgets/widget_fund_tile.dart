@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:trading_edge/functions/function_short_amount.dart';
 import 'package:trading_edge/main.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_trade_log_item.dart';
@@ -28,7 +29,6 @@ class WidgetFundTile extends StatefulWidget {
 }
 
 class _WidgetFundTileState extends State<WidgetFundTile> {
-
   @override
   Widget build(BuildContext context) {
     String dateOut = '';
@@ -254,7 +254,6 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                           context
                               .read<FundPageViewModel>()
                               .setDateText(formatter);
-                          
                         }
                       },
                       icon: const Icon(Icons.calendar_month_outlined),
@@ -312,7 +311,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
               borderRadius: BorderRadius.circular(18.0),
             ))),
             child: const Text("Cancel"),
-            onPressed: () => Get.back(),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           ElevatedButton(
             style: ButtonStyle(
@@ -342,7 +341,7 @@ class _WidgetFundTileState extends State<WidgetFundTile> {
                     type: type,
                     amount: amountController.text);
 
-                Get.back();
+                Navigator.of(context).pop();
               }
             },
           ),

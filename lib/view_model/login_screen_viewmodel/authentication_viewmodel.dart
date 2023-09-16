@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:trading_edge/data/authentication/authentication.dart';
-import 'package:trading_edge/data/user_profile_services/userprofile_services.dart';
+import 'package:trading_edge/services/authentication/authentication.dart';
+import 'package:trading_edge/services/user_profile_services/userprofile_services.dart';
 import 'package:trading_edge/repositories/authentication_repo/authentication_repo.dart';
 import 'package:trading_edge/repositories/user_profile_repo/user_profile_repo.dart';
 

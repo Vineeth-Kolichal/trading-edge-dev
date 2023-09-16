@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/functions/function_position_sizing_calculations.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
@@ -236,7 +236,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(18.0),
             ))),
             child: const Text("Cancel"),
-            onPressed: () => Get.back(),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           ElevatedButton(
             style: ButtonStyle(
@@ -269,7 +269,7 @@ class WidgetPositionSizedItem extends StatelessWidget {
                 await context
                     .read<PositionSizingViewModel>()
                     .updatePosition(updatedposition, position.key);
-                Get.back();
+                Navigator.of(context).pop();
               }
             },
           ),

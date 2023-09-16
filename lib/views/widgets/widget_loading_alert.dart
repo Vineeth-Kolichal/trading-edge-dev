@@ -16,7 +16,7 @@ class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
   void initState() {
     super.initState();
     Timer(Duration(milliseconds: widget.duration), () {
-      Get.back();
+      Navigator.of(context).pop();
     });
   }
 

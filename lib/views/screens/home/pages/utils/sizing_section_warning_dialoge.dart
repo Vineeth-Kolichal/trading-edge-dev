@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void sizingSettingAlert(String title) {
+void sizingSettingAlert(String title,BuildContext context) {
   Get.dialog(
     AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -16,7 +16,7 @@ void sizingSettingAlert(String title) {
             borderRadius: BorderRadius.circular(18.0),
           ))),
           child: const Text("close"),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ],
     ),

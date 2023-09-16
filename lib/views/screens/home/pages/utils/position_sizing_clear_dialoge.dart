@@ -20,7 +20,7 @@ void positionSizingListClear(BuildContext context) {
             borderRadius: BorderRadius.circular(18.0),
           ))),
           child: const Text("Cancel"),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
           style: ButtonStyle(
@@ -48,7 +48,7 @@ void positionSizingListClear(BuildContext context) {
                 );
               },
             );
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
       ],

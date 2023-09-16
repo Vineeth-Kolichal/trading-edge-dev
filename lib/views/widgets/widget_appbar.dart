@@ -30,7 +30,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSize {
             Icons.arrow_back,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         );
       }),

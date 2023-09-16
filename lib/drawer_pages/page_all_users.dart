@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/views/widgets/widget_appbar.dart';
 import 'package:trading_edge/views/widgets/widget_search_gif.dart';

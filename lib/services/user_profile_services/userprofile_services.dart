@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/repositories/user_profile_repo/user_profile_repo.dart';
 
 class UserProfileServices implements UserProfileRepo {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
@@ -6,8 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:trading_edge/functions/function_short_amount.dart';
 import 'package:trading_edge/main.dart';
+import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
-import 'package:trading_edge/views/screens/home/pages/page_add_update_trade_logs.dart';
+import 'package:trading_edge/utils/fuctions/entry_type_conversion.dart';
+import 'package:trading_edge/views/screens/add_update_trade_logs_screen/page_add_update_trade_logs.dart';
 import 'widget_grid_item_of_trade_log_item.dart';
 
 enum PopupItem {
@@ -17,26 +22,11 @@ enum PopupItem {
 
 // ignore: must_be_immutable
 class WidgetTradeLogItem extends StatelessWidget {
-  final String type;
-  final double amount;
-  final DateTime date;
-  final int swp;
-  final int swl;
-  final int intp;
-  final int intl;
-  final String comments;
-  final String docId;
-  WidgetTradeLogItem(
-      {super.key,
-      required this.type,
-      required this.amount,
-      required this.date,
-      required this.swp,
-      required this.swl,
-      required this.intp,
-      required this.intl,
-      required this.comments,
-      required this.docId});
+  final TradeOrFundModel tradeOrFundModel;
+  WidgetTradeLogItem({
+    super.key,
+    required this.tradeOrFundModel,
+  });
 
   PopupItem? selectedMenu;
 
@@ -45,7 +35,7 @@ class WidgetTradeLogItem extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 9;
     final double itemWidth = size.width / 2;
-    final difference = DateTime.now().difference(date);
+    final difference = DateTime.now().difference(tradeOrFundModel.date);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Material(
@@ -64,12 +54,14 @@ class WidgetTradeLogItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
-                      toBeginningOfSentenceCase(type)!,
+                      toBeginningOfSentenceCase(entryTypeConvertToString(
+                          type: tradeOrFundModel.type))!,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color:
-                              (type == 'profit') ? Colors.green : Colors.red),
+                          color: (tradeOrFundModel.type == EntryType.profit)
+                              ? Colors.green
+                              : Colors.red),
                     ),
                   ),
                   Visibility(
@@ -82,20 +74,21 @@ class WidgetTradeLogItem extends StatelessWidget {
                       splashRadius: 20,
                       onSelected: (PopupItem item) async {
                         if (item == PopupItem.delete) {
-                          await deleteDoc(docId);
+                          await deleteDoc(tradeOrFundModel.docId!);
                         } else {
-                          Get.to(PageAddUpdateTradeLog(
-                            docId: docId,
-                            operation: 'Update',
-                            pnl: amount.toString(),
-                            comment: comments,
-                            date: date,
-                            swpro: swp.toString(),
-                            swlo: swl.toString(),
-                            intPro: intp.toString(),
-                            intLo: intl.toString(),
-                            type: type,
-                          ));
+                          log(tradeOrFundModel.date.toString());
+                          // Get.to(AddUpdateTradeLogScreen(
+                          //   docId: docId,
+                          //   operation: 'Update',
+                          //   pnl: amount.toString(),
+                          //   comment: comments,
+                          //   date: date,
+                          //   swpro: swp.toString(),
+                          //   swlo: swl.toString(),
+                          //   intPro: intp.toString(),
+                          //   intLo: intl.toString(),
+                          //   type: type,
+                          // ));
                         }
                       },
                       itemBuilder: (BuildContext context) =>
@@ -172,9 +165,9 @@ class WidgetTradeLogItem extends StatelessWidget {
                               ),
                               // color: customPrimaryColor[200],
                             ),
-                            message: "₹ $amount",
+                            message: "₹ ${tradeOrFundModel.amount}",
                             child: Text(
-                              shortenNumber(amount),
+                              shortenNumber(tradeOrFundModel.amount),
                               // amount.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
@@ -196,7 +189,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: AutoSizeText(
-                              DateFormat.yMMMEd().format(date),
+                              DateFormat.yMMMEd().format(tradeOrFundModel.date),
                               maxLines: 1,
                               style: const TextStyle(
                                 fontSize: 14,
@@ -223,19 +216,19 @@ class WidgetTradeLogItem extends StatelessWidget {
                   gridColumnItem(
                       context: context,
                       title: 'Swing(Profit)',
-                      content: swp.toString()),
+                      content: tradeOrFundModel.swingProfit.toString()),
                   gridColumnItem(
                       context: context,
-                      content: swl.toString(),
+                      content: tradeOrFundModel.swingLoss.toString(),
                       title: 'Swing(Loss)'),
                   gridColumnItem(
                       context: context,
                       title: 'Intraday(Profit)',
-                      content: intp.toString()),
+                      content: tradeOrFundModel.intraProfit.toString()),
                   gridColumnItem(
                       context: context,
                       title: 'Intraday(Loss)',
-                      content: intl.toString()),
+                      content: tradeOrFundModel.intraLoss.toString()),
                 ],
               ),
               const Divider(),
@@ -251,7 +244,7 @@ class WidgetTradeLogItem extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        comments,
+                        '${tradeOrFundModel.comments}',
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     )

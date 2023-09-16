@@ -4,30 +4,27 @@ import 'package:provider/provider.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
-import 'package:trading_edge/views/screens/home/pages/widgets/utils/add_stck_dialoge.dart';
-import 'package:trading_edge/views/screens/home/pages/widgets/utils/fund_input_bottomsheet.dart';
-import 'package:trading_edge/views/screens/home/pages/widgets/utils/sizing_section_warning_dialoge.dart';
+import 'package:trading_edge/views/screens/home/pages/utils/add_stck_dialoge.dart';
+import 'package:trading_edge/views/screens/home/pages/utils/fund_input_bottomsheet.dart';
+import 'package:trading_edge/views/screens/home/pages/utils/sizing_section_warning_dialoge.dart';
 
-import '../screens/home/pages/page_add_update_trade_logs.dart';
+import '../screens/add_update_trade_logs_screen/page_add_update_trade_logs.dart';
 
 class FloatingActionButtonWidget extends StatelessWidget {
   const FloatingActionButtonWidget({
     super.key,
-
   });
-
-
 
   @override
   Widget build(BuildContext context) {
-     HomeScreenViewModel homeScreenViewModel =
+    HomeScreenViewModel homeScreenViewModel =
         context.read<HomeScreenViewModel>();
     return Visibility(
       visible: context.watch<HomeScreenViewModel>().index != 0,
       child: FloatingActionButton(
         onPressed: () async {
           if (homeScreenViewModel.index == 1) {
-            Get.to(PageAddUpdateTradeLog(operation: 'Add'),
+            Get.to(AddUpdateTradeLogScreen(operation: 'Add'),
                 transition: Transition.leftToRight,
                 duration: const Duration(milliseconds: 350));
           } else if (homeScreenViewModel.index == 2) {
@@ -40,13 +37,13 @@ class FloatingActionButtonWidget extends StatelessWidget {
             if (sm.targetAmount == 0.0 &&
                 sm.targetPercentage == 0.0 &&
                 sm.stoplossPercentage == 0.0) {
-              sizingSettingAlert('required sizing parameters');
+              sizingSettingAlert('required sizing parameters', context);
             } else if (sm.stoplossPercentage == 0.0) {
-              sizingSettingAlert('SL percentage');
+              sizingSettingAlert('SL percentage', context);
             } else if (sm.targetAmount == 0.0) {
-              sizingSettingAlert('Target amount');
+              sizingSettingAlert('Target amount', context);
             } else if (sm.targetPercentage == 0.0) {
-              sizingSettingAlert('Target percentage');
+              sizingSettingAlert('Target percentage', context);
             } else {
               // ignore: use_build_context_synchronously
               addStock(context);

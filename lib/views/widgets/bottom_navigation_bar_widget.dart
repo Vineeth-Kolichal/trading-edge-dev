@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
@@ -30,22 +31,22 @@ class BottomNavigationBarWidget extends StatelessWidget {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
-                  IconData(0xea39, fontFamily: 'MaterialIcons'),
+                  Iconsax.status_up,
                 ),
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  candlestickChartRounded,
+                  Iconsax.chart_1,
                 ),
                 label: 'Trades Log',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.currency_rupee),
+                icon: Icon(Iconsax.dollar_square),
                 label: 'Fund',
               ),
               BottomNavigationBarItem(
-                icon: Icon(FeatherIcons.pieChart),
+                icon: Icon(Iconsax.graph),
                 label: 'Position Sizing',
               ),
             ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
@@ -90,7 +90,7 @@ void addStock(BuildContext context) {
             borderRadius: BorderRadius.circular(18.0),
           ))),
           child: const Text("Cancel"),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
           style: ButtonStyle(
@@ -121,7 +121,7 @@ void addStock(BuildContext context) {
                 type: type,
               );
               context.read<PositionSizingViewModel>().addPosition(position);
-              Get.back();
+              Navigator.of(context).pop();
             }
           },
         ),

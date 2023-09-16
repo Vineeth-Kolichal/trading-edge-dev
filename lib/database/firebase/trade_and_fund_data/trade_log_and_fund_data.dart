@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:trading_edge/data/current_user_data.dart';
+import 'package:trading_edge/services/current_user_data.dart';
 import 'package:trading_edge/functions/check_internet.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 
-enum EntryType { profit, loss, deposite, withdraw }
+// enum EntryType { profit, loss, deposite, withdraw }
 
 Future<bool> addTradeLoges(
     {required DateTime date,
@@ -28,14 +29,14 @@ Future<bool> addTradeLoges(
   final Timestamp dateTime = Timestamp.fromDate(date);
   double amt = double.parse(amount);
   late String entryType;
-  entryType = getEntryType(type: type);
+  // entryType = getEntryType(type: type);
 
   if (type == EntryType.deposite || type == EntryType.withdraw) {
     await tradesAndFund.add({
       'date': dateTime,
-      'type': entryType,
+      // 'type': entryType,
       'amount': amt,
-     
+
       // ignore: body_might_complete_normally_catch_error
     }).catchError((error) {
       // Handle the error
@@ -47,7 +48,7 @@ Future<bool> addTradeLoges(
   } else {
     await tradesAndFund.add({
       'date': dateTime,
-      'type': entryType,
+      // 'type': entryType,
       'amount': amt,
       'description': description,
       'swing_profit': swPro,
@@ -92,11 +93,11 @@ Future<void> updateTradeLogsAndFund(
   final Timestamp dateTime = Timestamp.fromDate(date);
   double amt = double.parse(amount);
   late String entryType;
-  entryType = getEntryType(type: type);
+  // entryType = getEntryType(type: type);
   if (type == EntryType.deposite || type == EntryType.withdraw) {
     await docTobeUpdated.update({
       'date': dateTime,
-      'type': entryType,
+      //'type': entryType,
       'amount': amt,
     }).catchError((error) {
       // Handle the error
@@ -107,7 +108,7 @@ Future<void> updateTradeLogsAndFund(
   } else {
     await docTobeUpdated.update({
       'date': dateTime,
-      'type': entryType,
+      //'type': entryType,
       'amount': amt,
       'description': description,
       'swing_profit': swPro,
@@ -121,20 +122,4 @@ Future<void> updateTradeLogsAndFund(
       errorSnack(errorMessage);
     });
   }
-}
-
-String getEntryType({required EntryType type}) {
-  if (type == EntryType.profit) {
-    return 'profit';
-  }
-  if (type == EntryType.loss) {
-    return 'loss';
-  }
-  if (type == EntryType.deposite) {
-    return 'deposite';
-  }
-  if (type == EntryType.withdraw) {
-    return 'withdraw';
-  }
-  return '';
 }
