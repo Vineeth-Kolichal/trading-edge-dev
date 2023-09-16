@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:trading_edge/main.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/views/screens/home/screen_home.dart';
 import 'package:trading_edge/views/widgets/custom_text_form_field.dart';
-import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 
 void showFundInputBottomSheet(BuildContext context) {
   TextEditingController dateController = TextEditingController();
@@ -145,20 +143,16 @@ void showFundInputBottomSheet(BuildContext context) {
                               activeFgColor: Colors.white,
                               inactiveBgColor: Colors.white,
                               inactiveFgColor: Colors.black,
-                              initialLabelIndex: 0,
                               totalSwitches: 2,
                               labels: const ['Deposit', 'Withdraw'],
                               radiusStyle: true,
                               onToggle: (index) {
-                                // setState(() {
-                                //   initialLabelIndex = index;
-                                // });
-                                // if (initialLabelIndex == 0) {
-                                //   fundType = EntryType.deposite;
-                                // }
-                                // if (initialLabelIndex == 1) {
-                                //   fundType = EntryType.withdraw;
-                                // }
+                                if (index == 0) {
+                                  fundType = EntryType.deposite;
+                                }
+                                if (index == 1) {
+                                  fundType = EntryType.withdraw;
+                                }
                               },
                             ),
                           ],
@@ -166,7 +160,6 @@ void showFundInputBottomSheet(BuildContext context) {
                         sizedBoxTen,
                         CustomTextFormField(
                           isEnabled: true,
-                          context: context,
                           controller: amountController,
                           label: 'Amount',
                           type: TextInputType.number,

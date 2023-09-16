@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';

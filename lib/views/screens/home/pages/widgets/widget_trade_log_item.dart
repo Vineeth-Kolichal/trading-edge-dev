@@ -1,18 +1,16 @@
-import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:intl/intl.dart';
-import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
-import 'package:trading_edge/functions/function_short_amount.dart';
+import 'package:provider/provider.dart';
+import 'package:trading_edge/utils/functions/function_short_amount.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
-import 'package:trading_edge/utils/fuctions/entry_type_conversion.dart';
-import 'package:trading_edge/views/screens/add_update_trade_logs_screen/page_add_update_trade_logs.dart';
+import 'package:trading_edge/utils/functions/entry_type_conversion.dart';
+import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.dart';
+import 'package:trading_edge/views/screens/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
 import 'widget_grid_item_of_trade_log_item.dart';
 
 enum PopupItem {
@@ -20,15 +18,12 @@ enum PopupItem {
   delete,
 }
 
-// ignore: must_be_immutable
 class WidgetTradeLogItem extends StatelessWidget {
   final TradeOrFundModel tradeOrFundModel;
-  WidgetTradeLogItem({
+  const WidgetTradeLogItem({
     super.key,
     required this.tradeOrFundModel,
   });
-
-  PopupItem? selectedMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -74,21 +69,16 @@ class WidgetTradeLogItem extends StatelessWidget {
                       splashRadius: 20,
                       onSelected: (PopupItem item) async {
                         if (item == PopupItem.delete) {
-                          await deleteDoc(tradeOrFundModel.docId!);
+                          context
+                              .read<TradeLogViewModel>()
+                              .deleteTradeLog(tradeOrFundModel.docId!);
                         } else {
-                          log(tradeOrFundModel.date.toString());
-                          // Get.to(AddUpdateTradeLogScreen(
-                          //   docId: docId,
-                          //   operation: 'Update',
-                          //   pnl: amount.toString(),
-                          //   comment: comments,
-                          //   date: date,
-                          //   swpro: swp.toString(),
-                          //   swlo: swl.toString(),
-                          //   intPro: intp.toString(),
-                          //   intLo: intl.toString(),
-                          //   type: type,
-                          // ));
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddUpdateTradeLogScreen(
+                              tradeModel: tradeOrFundModel,
+                            ),
+                          ));
+
                         }
                       },
                       itemBuilder: (BuildContext context) =>

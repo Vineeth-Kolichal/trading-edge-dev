@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/main.dart';
-import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {

@@ -8,7 +8,7 @@ import 'package:trading_edge/views/screens/home/pages/utils/add_stck_dialoge.dar
 import 'package:trading_edge/views/screens/home/pages/utils/fund_input_bottomsheet.dart';
 import 'package:trading_edge/views/screens/home/pages/utils/sizing_section_warning_dialoge.dart';
 
-import '../screens/add_update_trade_logs_screen/page_add_update_trade_logs.dart';
+import '../screens/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
 
 class FloatingActionButtonWidget extends StatelessWidget {
   const FloatingActionButtonWidget({
@@ -24,7 +24,7 @@ class FloatingActionButtonWidget extends StatelessWidget {
       child: FloatingActionButton(
         onPressed: () async {
           if (homeScreenViewModel.index == 1) {
-            Get.to(AddUpdateTradeLogScreen(operation: 'Add'),
+            Get.to(const AddUpdateTradeLogScreen(),
                 transition: Transition.leftToRight,
                 duration: const Duration(milliseconds: 350));
           } else if (homeScreenViewModel.index == 2) {

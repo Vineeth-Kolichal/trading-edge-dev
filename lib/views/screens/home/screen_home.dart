@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:provider/provider.dart';
-import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';

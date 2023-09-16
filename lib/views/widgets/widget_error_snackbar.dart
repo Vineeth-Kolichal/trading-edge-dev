@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
 
-void errorSnack(String errorMessage) {
-  Get.snackbar('Oops..', errorMessage,
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      margin: const EdgeInsets.all(10),
-      animationDuration: const Duration(milliseconds: 700),
-      colorText: Colors.white);
-}
+// void errorSnack(String errorMessage) {
+//   Get.snackbar('Oops..', errorMessage,
+//       snackPosition: SnackPosition.TOP,
+//       backgroundColor: Colors.red,
+//       margin: const EdgeInsets.all(10),
+//       animationDuration: const Duration(milliseconds: 700),
+//       colorText: Colors.white);
+// }

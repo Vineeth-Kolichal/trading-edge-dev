@@ -4,7 +4,7 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
     required this.isEnabled,
-    required this.context,
+   
     this.label,
     this.sufixItem,
     required this.controller,
@@ -12,7 +12,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hint,
   });
   final bool isEnabled;
-  final BuildContext context;
+ 
   final String? label;
   final String? sufixItem;
   final TextEditingController controller;

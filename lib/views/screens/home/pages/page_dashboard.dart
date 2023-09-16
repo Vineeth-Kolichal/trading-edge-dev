@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trading_edge/database/firebase/dashbord_calculations/pnl_calculations.dart';
 import 'package:trading_edge/database/firebase/dashbord_calculations/pnl_percentage_calculation.dart';
 import 'package:trading_edge/database/firebase/dashbord_calculations/total_pnl_section.dart';
-import 'package:trading_edge/functions/function_short_amount.dart';
+import 'package:trading_edge/utils/functions/function_short_amount.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_fund_movement.dart';

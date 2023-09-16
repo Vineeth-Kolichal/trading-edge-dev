@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
-import 'package:trading_edge/repositories/trade_or_fund_repo/trade_or_fund_repo.dart';
-import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/data/repositories/trade_or_fund_repo/trade_or_fund_repo.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
 
 class TradeFundServices implements TradeOrFundRepository {
   @override

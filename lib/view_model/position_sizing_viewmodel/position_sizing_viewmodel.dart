@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trading_edge/services/current_user_data.dart';
-import 'package:trading_edge/services/position_sizing/position_sizing_services.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
+import 'package:trading_edge/data/services/position_sizing/position_sizing_services.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
-import 'package:trading_edge/repositories/position_sizing_repo/position_sizing_repo.dart';
+import 'package:trading_edge/data/repositories/position_sizing_repo/position_sizing_repo.dart';
 
 class PositionSizingViewModel extends ChangeNotifier {
   PositionSizingRepo positionSizingRepo = PositionSizingServices();

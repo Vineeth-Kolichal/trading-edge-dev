@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:trading_edge/views/routes/routes.dart';
+import 'package:trading_edge/app/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashViewModel extends ChangeNotifier {

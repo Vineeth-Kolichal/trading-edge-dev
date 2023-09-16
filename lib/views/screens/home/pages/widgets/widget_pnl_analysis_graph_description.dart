@@ -5,7 +5,7 @@ Widget pnlGraphComponent(BuildContext context) {
   return SizedBox(
     height: MediaQuery.of(context).size.height * 0.054,
     width: MediaQuery.of(context).size.width,
-    child: ListView(children: [
+    child: ListView(physics: const NeverScrollableScrollPhysics(), children: [
       pnlGraphRow('Intraday', const Color.fromARGB(255, 121, 241, 110),
           const Color.fromARGB(255, 245, 126, 117), context),
       sizedBoxTen,

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:trading_edge/services/current_user_data.dart';
-import 'package:trading_edge/functions/check_internet.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
+import 'package:trading_edge/utils/functions/check_internet.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
-import 'package:trading_edge/views/widgets/widget_error_snackbar.dart';
 
 // enum EntryType { profit, loss, deposite, withdraw }
 
@@ -19,7 +18,7 @@ Future<bool> addTradeLoges(
     int? intraLo}) async {
   bool chekInternet = await checkInternetConnetion();
   if (!chekInternet) {
-    errorSnack('Please check your internet connectivity');
+   
     return chekInternet;
   }
   final CollectionReference tradesAndFund = FirebaseFirestore.instance
@@ -43,7 +42,7 @@ Future<bool> addTradeLoges(
 
       String errorMessage = "Error writing data to database: $error";
 
-      errorSnack(errorMessage);
+    
     });
   } else {
     await tradesAndFund.add({
@@ -60,7 +59,7 @@ Future<bool> addTradeLoges(
       // Handle the error
       String errorMessage = "Error writing data to database: $error";
 
-      errorSnack(errorMessage);
+      
     });
   }
   return chekInternet;
@@ -103,7 +102,7 @@ Future<void> updateTradeLogsAndFund(
       // Handle the error
       String errorMessage = "Error writing data to database: $error";
 
-      errorSnack(errorMessage);
+     
     });
   } else {
     await docTobeUpdated.update({
@@ -119,7 +118,7 @@ Future<void> updateTradeLogsAndFund(
       // Handle the error
       String errorMessage = "Error writing data to database: $error";
 
-      errorSnack(errorMessage);
+    
     });
   }
 }

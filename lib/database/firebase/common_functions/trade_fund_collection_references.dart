@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
 
 CollectionReference tradeFundCollectionReference() {
   final CollectionReference tradesAndFund = FirebaseFirestore.instance

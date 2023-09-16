@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:trading_edge/repositories/authentication_repo/authentication_repo.dart';
+import 'package:trading_edge/data/repositories/authentication_repo/authentication_repo.dart';
 
 class AutheticationServices implements AuthenticationRepo {
   final googleSignIn = GoogleSignIn();

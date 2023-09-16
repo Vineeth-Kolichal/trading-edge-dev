@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 class WidgetAppbar extends StatelessWidget implements PreferredSize {
   @override

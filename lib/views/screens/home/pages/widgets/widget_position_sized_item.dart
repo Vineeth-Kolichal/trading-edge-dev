@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/services/current_user_data.dart';
-import 'package:trading_edge/functions/function_position_sizing_calculations.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
+import 'package:trading_edge/utils/functions/function_position_sizing_calculations.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
-import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:trading_edge/views/widgets/widget_text_form_field.dart';
 
 class WidgetPositionSizedItem extends StatelessWidget {
   final PositionModel position;
-  WidgetPositionSizedItem({super.key, required this.position});
+  const WidgetPositionSizedItem({super.key, required this.position});
 
   @override
   Widget build(BuildContext context) {

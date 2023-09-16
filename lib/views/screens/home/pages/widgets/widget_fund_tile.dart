@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/database/firebase/trade_and_fund_data/trade_log_and_fund_data.dart';
-import 'package:trading_edge/functions/function_short_amount.dart';
+import 'package:trading_edge/utils/functions/function_short_amount.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';

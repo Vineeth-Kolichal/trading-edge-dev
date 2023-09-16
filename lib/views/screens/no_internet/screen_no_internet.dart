@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:trading_edge/functions/check_internet.dart';
+import 'package:trading_edge/utils/functions/check_internet.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/views/screens/splash_screen/screen_splash.dart';
 import 'package:trading_edge/views/widgets/widget_loading_alert.dart';

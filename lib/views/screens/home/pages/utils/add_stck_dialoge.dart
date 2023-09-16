@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/services/current_user_data.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
-import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
-import 'package:trading_edge/views/screens/home/screen_home.dart';
 import 'package:trading_edge/views/widgets/widget_text_form_field.dart';
 
 void addStock(BuildContext context) {

@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
-import 'package:trading_edge/repositories/trade_or_fund_repo/trade_or_fund_repo.dart';
-import 'package:trading_edge/services/current_user_data.dart';
-import 'package:trading_edge/services/trade_fund_services/trade_fund_services.dart';
+import 'package:trading_edge/data/repositories/trade_or_fund_repo/trade_or_fund_repo.dart';
+import 'package:trading_edge/data/services/trade_fund_services/trade_fund_services.dart';
+import 'package:trading_edge/utils/constants/const_values.dart';
 
 class TradeLogViewModel extends ChangeNotifier {
+  EntryType type = EntryType.profit;
   bool isLoading = true;
   List<TradeOrFundModel> tradeLogList = [];
   TradeOrFundRepository tradeOrFundRepository = TradeFundServices();
@@ -18,6 +19,18 @@ class TradeLogViewModel extends ChangeNotifier {
   TextEditingController swingProtController = TextEditingController();
   TextEditingController intraProController = TextEditingController();
   TextEditingController intraLoController = TextEditingController();
+
+  void setValuesForUpdateScreen(TradeOrFundModel tradeOrFundModel) {
+
+    final dateOld = DateFormat.yMMMEd().format(tradeOrFundModel.date);
+    dateController.text = dateOld;
+    pnlController.text = tradeOrFundModel.amount.toString() ;
+    commentController.text = tradeOrFundModel.comments?? '';
+    swingLotController.text = tradeOrFundModel.swingLoss.toString() ;
+    swingProtController.text = tradeOrFundModel.swingProfit.toString();
+    intraLoController.text = tradeOrFundModel.intraLoss.toString();
+    intraProController.text = tradeOrFundModel.intraProfit.toString() ;
+  }
 
   Future<void> addTrades(TradeOrFundModel tradeOrFundModel) async {
     tradeOrFundRepository.addTradeLogOrFund(tradeOrFundModel: tradeOrFundModel);

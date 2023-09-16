@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:trading_edge/services/position_sizing/position_sizing_services.dart';
+import 'package:trading_edge/data/services/position_sizing/position_sizing_services.dart';
 import 'package:trading_edge/firebase_options.dart';
-import 'package:trading_edge/functions/check_internet.dart';
+import 'package:trading_edge/utils/functions/check_internet.dart';
 import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';
 import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
@@ -14,7 +14,7 @@ import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.
 import 'package:trading_edge/view_model/user_profile_viewmodel/user_profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'views/routes/app_route_generate.dart';
+import 'app/routes/app_route_generate.dart';
 
 bool checkInternet = false;
 const loginType = 'LoggedIn';

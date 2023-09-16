@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/main.dart';
-import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
 import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_trade_log_item.dart';
 import 'package:trading_edge/views/widgets/widget_search_gif.dart';

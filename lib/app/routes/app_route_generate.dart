@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trading_edge/views/routes/routes.dart';
+import 'package:trading_edge/app/routes/routes.dart';
 import 'package:trading_edge/views/screens/home/screen_home.dart';
 import 'package:trading_edge/views/screens/intro/screen_intro.dart';
 import 'package:trading_edge/views/screens/login/screen_login.dart';
@@ -25,7 +25,7 @@ class AppRouteGenerate {
         );
       case Routes.otpVerify:
         return MaterialPageRoute(
-          builder: (ctx) => const ScreenOtpVerification(phoneNumber: ''),
+          builder: (ctx) =>  ScreenOtpVerification(phoneNumber: ''),
         );
 
       default:
