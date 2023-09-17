@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:trading_edge/utils/constants/colors.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/utils/snackbar/error_snackbar.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/authentication_viewmodel/authentication_viewmodel.dart';
 import 'package:trading_edge/app/routes/routes.dart';
 import 'package:pinput/pinput.dart';
 
@@ -60,10 +62,10 @@ class ScreenOtpVerification extends StatelessWidget {
                                   .verifyOtp(
                                 value,
                               )
-                                  .then((value) {
-                                if (value) {
+                                  .then((nextScreen) {
+                                if (nextScreen != null) {
                                   Navigator.of(context)
-                                      .pushReplacementNamed(Routes.home);
+                                      .pushReplacementNamed(nextScreen);
                                 } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(errorSnackbar());
@@ -90,36 +92,49 @@ class ScreenOtpVerification extends StatelessWidget {
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              await context
-                                  .read<AuthenticationViewModel>()
-                                  .verifyOtp(
-                                    authViewmodel.pinController.text,
-                                  )
-                                  .then((value) {
-                                if (value) {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(Routes.home);
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(errorSnackbar());
-                                }
-                              });
-                            }
-                          },
-                          child: const Text(
-                            'Verify Phone Number',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                        child: Selector<AuthenticationViewModel, bool>(
+                            selector: (p0, p1) => p1.isLoading,
+                            builder: (context, isLoading, _) {
+                              if (isLoading) {
+                                return Center(
+                                  child: LoadingAnimationWidget.inkDrop(
+                                      color: customPrimaryColor, size: 25),
+                                  // child: CircularProgressIndicator(
+                                  //   strokeWidth: 2,
+                                  // ),
+                                );
+                              }
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    await context
+                                        .read<AuthenticationViewModel>()
+                                        .verifyOtp(
+                                          authViewmodel.pinController.text,
+                                        )
+                                        .then((nextScreen) {
+                                      if (nextScreen != null) {
+                                        Navigator.of(context)
+                                            .pushReplacementNamed(nextScreen);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(errorSnackbar());
+                                      }
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  'Verify Phone Number',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              );
+                            }),
                       ),
                     ),
                     sizedBoxTen,

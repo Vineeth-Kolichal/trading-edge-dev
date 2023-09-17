@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:trading_edge/app/routes/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';
 
 import 'utils/logout_dialoge.dart';
 import 'widgets/drawer_header_section.dart';
@@ -68,15 +70,13 @@ class WidgetDrawer extends StatelessWidget {
               title: 'Terms of use',
               onTapFunction: () {
                 Navigator.of(context).pushNamed(Routes.termsOfUse);
-               
               },
             ),
             DrawerListTileItem(
               leadingIcon: Iconsax.sms_tracking,
               title: 'Contact us',
               onTapFunction: () {
-                 Navigator.of(context).pushNamed(Routes.contactUs);
-                
+                Navigator.of(context).pushNamed(Routes.contactUs);
               },
             ),
             DrawerListTileItem(
@@ -91,6 +91,11 @@ class WidgetDrawer extends StatelessWidget {
               leadingIcon: Iconsax.logout,
               title: 'Logout',
               onTapFunction: () {
+                context
+                    .read<HomeScreenViewModel>()
+                    .scaffoldKey
+                    .currentState!
+                    .closeDrawer();
                 logoutDialoge(context);
               },
             ),

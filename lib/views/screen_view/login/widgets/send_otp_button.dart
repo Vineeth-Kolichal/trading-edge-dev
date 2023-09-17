@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/authentication_viewmodel/authentication_viewmodel.dart';
 import 'package:trading_edge/views/screen_view/otp_verification/screen_otp_verification.dart';
 
 class SendOtpButton extends StatelessWidget {

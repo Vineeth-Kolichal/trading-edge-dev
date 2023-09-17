@@ -7,7 +7,7 @@ import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/models/sizing/sizing_model.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
-import 'package:trading_edge/views/screen_view/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:trading_edge/views/screen_view/home/pages/trade_logs_page/widgets/widget_trade_log_item.dart';
 import 'package:trading_edge/views/widgets/widget_text_form_field.dart';
 
 class WidgetPositionSizedItem extends StatelessWidget {

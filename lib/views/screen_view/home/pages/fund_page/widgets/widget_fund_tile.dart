@@ -9,7 +9,7 @@ import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/views/screen_view/home/pages/fund_page/utils/update_fund_dialoge.dart';
-import 'package:trading_edge/views/screen_view/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:trading_edge/views/screen_view/home/pages/trade_logs_page/widgets/widget_trade_log_item.dart';
 
 class WidgetFundTile extends StatelessWidget {
   final TradeOrFundModel tradeOrFundModel;

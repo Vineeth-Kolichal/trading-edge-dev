@@ -10,6 +10,7 @@ import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/utils/functions/entry_type_conversion.dart';
 import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.dart';
 import 'package:trading_edge/views/screen_view/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
+
 import 'widget_grid_item_of_trade_log_item.dart';
 
 enum PopupItem {

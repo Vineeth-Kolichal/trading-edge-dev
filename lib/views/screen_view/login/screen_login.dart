@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/authentication_viewmodel/authentication_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'widgets/google_signin_button.dart';
 import 'widgets/or_divider.dart';

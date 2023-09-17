@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeScreenViewModel extends ChangeNotifier {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   int index = 0;
@@ -8,6 +9,9 @@ class HomeScreenViewModel extends ChangeNotifier {
   void changePage(int index) {
     this.index = index;
     notifyListeners();
+    if (index != 3 && isSearch) {
+      searchOpen();
+    }
   }
 
   void searchOpen() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/utils/snackbar/error_snackbar.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/authentication_viewmodel/authentication_viewmodel.dart';
 import 'package:trading_edge/app/routes/routes.dart';
 
 class GoogleSignInButton extends StatelessWidget {

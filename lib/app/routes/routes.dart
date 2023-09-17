@@ -7,4 +7,5 @@ class Routes {
   static const String termsOfUse = '/terms-of-use';
   static const String contactUs = '/contact-us';
   static const String addOrUpdateTradeLogScreen = '/add-or-update-trade-log';
+  static const String enterNameScreen = '/enter-name-screen';
 }

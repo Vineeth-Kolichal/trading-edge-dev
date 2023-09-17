@@ -5,6 +5,7 @@ import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart
 
 class FundPageViewModel extends ChangeNotifier {
   TradeOrFundRepository tradeOrFundRepository = TradeFundServices();
+  final formKey = GlobalKey<FormState>();
   List<TradeOrFundModel> allTrasaction = [];
   bool isLoading = true;
   bool switchValue = false;

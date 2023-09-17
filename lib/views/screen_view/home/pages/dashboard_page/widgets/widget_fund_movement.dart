@@ -1,7 +1,8 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:trading_edge/database/firebase/dashbord_calculations/bar_graph_data.dart';
+import 'package:provider/provider.dart';
 import 'package:trading_edge/utils/constants/colors.dart';
+import 'package:trading_edge/view_model/dashboard_page_viewmodel/dashboard_page_viewmodel.dart';
 import 'package:trading_edge/views/widgets/no_data_animation.dart';
 
 class WidgetFundMovement extends StatelessWidget {
@@ -11,10 +12,11 @@ class WidgetFundMovement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: whiteColor,
-      borderRadius: BorderRadius.circular(13),
-      elevation: 1,
+    return Container(
+      decoration: BoxDecoration(
+        color: whiteColor,
+        borderRadius: BorderRadius.circular(13),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(top: 12, bottom: 5, right: 5, left: 5),
         child: Column(
@@ -69,10 +71,12 @@ class WidgetFundMovement extends StatelessWidget {
                     height: 160,
                     //height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.85,
-                    child: FutureBuilder(
-                        future: lineGraphData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
+                    child: Selector<DashboardPageViewModel,
+                            List<Map<String, dynamic>>>(
+                        selector: (p0, p1) => p1.barChartData,
+                        // future: lineGraphData(),
+                        builder: (context, barChartData, _) {
+                          if (barChartData.isEmpty) {
                             return const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -81,9 +85,8 @@ class WidgetFundMovement extends StatelessWidget {
                               ],
                             );
                           } else {
-                            List<Map<String, dynamic>> data = snapshot.data!;
                             int flag = 0;
-                            for (var element in data) {
+                            for (var element in barChartData) {
                               if (element['measure'] != 0.0) {
                                 flag = 1;
                               }
@@ -96,14 +99,15 @@ class WidgetFundMovement extends StatelessWidget {
                                 showDomainLabel: true,
                                 showMeasureLabel: true,
                                 spaceBetweenItem: 8,
-                                listData: chartBarItemList(data),
+                                listData: chartBarItemList(barChartData),
                               );
                             } else {
-                              return const Center(
-                                child: Text(
-                                  'No data found to show graph 🧐',
-                                  textAlign: TextAlign.center,
-                                ),
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  NoDataAnimation(),
+                                  Text('No  data found')
+                                ],
                               );
                             }
                           }

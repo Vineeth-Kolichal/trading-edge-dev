@@ -1,15 +1,16 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:trading_edge/data/services/position_sizing/position_sizing_services.dart';
 import 'package:trading_edge/models/user_model/user_model.dart';
 import 'package:trading_edge/data/services/current_user_data.dart';
 import 'package:trading_edge/data/repositories/user_profile_repo/user_profile_repo.dart';
 
 class UserProfileServices implements UserProfileRepo {
+  @override
   Future<bool> checkUserDataExist(String userId) async {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
@@ -23,6 +24,7 @@ class UserProfileServices implements UserProfileRepo {
 
   @override
   Future<void> addUserProfileToFireStore({required UserModel userModel}) async {
+    await PositionSizingServices().initializeSizing();
     await FirebaseFirestore.instance
         .collection('users')
         .doc(CurrentUserData.returnCurrentUserId())
@@ -77,17 +79,16 @@ class UserProfileServices implements UserProfileRepo {
       'photUrl': imgUrl,
     }).catchError((error) {});
   }
-@override
-Future<void> updateUserName(String name) async {
-  final docRef =
-      FirebaseFirestore.instance.collection('users').doc(CurrentUserData.returnCurrentUserId());
-  docRef.update({
-    'name': name,
-  }).catchError((_) {
-  
-   
-  });
-}
+
+  @override
+  Future<void> updateUserName(String name) async {
+    final docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(CurrentUserData.returnCurrentUserId());
+    docRef.update({
+      'name': name,
+    }).catchError((_) {});
+  }
 
   @override
   Future<UserModel> getuserProfileDetails() async {

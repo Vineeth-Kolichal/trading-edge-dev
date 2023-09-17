@@ -4,6 +4,7 @@ import 'package:trading_edge/views/screen_view/add_update_trade_logs_screen/add_
 import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_about.dart';
 import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_contact_us.dart';
 import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_terms_of_user.dart';
+import 'package:trading_edge/views/screen_view/enter_name/screen_enter_name.dart';
 import 'package:trading_edge/views/screen_view/home/screen_home.dart';
 import 'package:trading_edge/views/screen_view/intro/screen_intro.dart';
 import 'package:trading_edge/views/screen_view/login/screen_login.dart';
@@ -46,6 +47,10 @@ class AppRouteGenerate {
       case Routes.addOrUpdateTradeLogScreen:
         return MaterialPageRoute(
           builder: (ctx) => const AddUpdateTradeLogScreen(),
+        );
+      case Routes.enterNameScreen:
+        return MaterialPageRoute(
+          builder: (ctx) => const ScreenEnterName(),
         );
 
       default:

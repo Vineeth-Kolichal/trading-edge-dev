@@ -10,10 +10,10 @@ import 'package:trading_edge/utils/constants/colors.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
-import 'package:trading_edge/views/screen_view/home/screen_home.dart';
 import 'package:trading_edge/views/widgets/custom_text_form_field.dart';
 
 void showFundInputBottomSheet(BuildContext context) {
+  EntryType fundType = EntryType.deposite;
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   DateTime? selectedDate;
@@ -59,7 +59,7 @@ void showFundInputBottomSheet(BuildContext context) {
                 ),
                 const Divider(),
                 Form(
-                    key: formKey,
+                    key: context.read<FundPageViewModel>().formKey,
                     child: Column(
                       children: [
                         SizedBox(
@@ -176,7 +176,11 @@ void showFundInputBottomSheet(BuildContext context) {
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (formKey.currentState!.validate()) {
+                      if (context
+                          .read<FundPageViewModel>()
+                          .formKey
+                          .currentState!
+                          .validate()) {
                         TradeOrFundModel tradeOrFundModel = TradeOrFundModel(
                           userId: CurrentUserData.returnCurrentUserId(),
                           type: fundType,

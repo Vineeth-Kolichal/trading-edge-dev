@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^0.8.7
   intl: ^0.17.0
   intl_phone_field: ^3.1.0
+  loading_animation_widget: ^1.2.0+4
   lottie: ^2.6.0
   new_version_plus: ^0.0.9
   package_info_plus: ^3.1.0

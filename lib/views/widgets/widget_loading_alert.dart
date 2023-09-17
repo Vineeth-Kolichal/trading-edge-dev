@@ -2,25 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class WidgetLoadingAlert extends StatefulWidget {
+class WidgetLoadingAlert extends StatelessWidget {
   final int duration;
   const WidgetLoadingAlert({super.key, required this.duration});
 
   @override
-  State<WidgetLoadingAlert> createState() => _WidgetLoadingAlertState();
-}
-
-class _WidgetLoadingAlertState extends State<WidgetLoadingAlert> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(milliseconds: widget.duration), () {
-      Navigator.of(context).pop();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Timer(Duration(milliseconds: duration), () {
+        Navigator.of(context).pop();
+      });
+    });
     return const AlertDialog(
       elevation: 0,
       backgroundColor: Colors.transparent,

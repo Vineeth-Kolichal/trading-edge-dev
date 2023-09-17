@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/app/routes/routes.dart';
 import 'package:trading_edge/utils/constants/colors.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/authentication_viewmodel/authentication_viewmodel.dart';
 import 'package:trading_edge/views/widgets/widget_loading_alert.dart';
 
 void logoutDialoge(BuildContext context) {

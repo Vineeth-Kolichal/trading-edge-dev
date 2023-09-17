@@ -29,11 +29,11 @@ class ScreenEnterName extends StatelessWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 80,
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(70)),
+                      borderRadius: BorderRadius.circular(10)),
                   elevation: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -45,8 +45,8 @@ class ScreenEnterName extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 235, 232, 232),
                             borderRadius: BorderRadius.circular(10)),
-                        height: 60,
-                        width: 60,
+                        height: 80,
+                        width: 80,
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
                             child: Selector<UserProfileViewModel, String>(
@@ -135,8 +135,6 @@ class ScreenEnterName extends StatelessWidget {
                                     .addUserProfileToFireStore(userModel);
                                 Navigator.of(context)
                                     .pushReplacementNamed(Routes.home);
-
-                               
                               }
                             },
                             child: const Text(

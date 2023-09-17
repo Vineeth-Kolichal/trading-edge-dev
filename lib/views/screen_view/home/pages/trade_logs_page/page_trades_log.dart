@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_edge/utils/constants/colors.dart';
 import 'package:trading_edge/view_model/trade_log_viewmodel/trade_log_viewmodel.dart';
-import 'package:trading_edge/views/screen_view/home/pages/widgets/widget_trade_log_item.dart';
+import 'package:trading_edge/views/screen_view/home/pages/trade_logs_page/widgets/widget_trade_log_item.dart';
 import 'package:trading_edge/views/widgets/no_data_animation.dart';
 
 class PageTradesLog extends StatelessWidget {

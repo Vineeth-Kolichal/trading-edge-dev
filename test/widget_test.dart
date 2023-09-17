@@ -13,7 +13,7 @@ import 'package:trading_edge/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyTradeBookApp());
+    await tester.pumpWidget(const TradingEdgeApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

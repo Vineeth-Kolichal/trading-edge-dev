@@ -7,4 +7,5 @@ abstract class UserProfileRepo {
   Future<String> pickAndUploadImageToFirebaseStorage();
   Future<UserModel> getuserProfileDetails();
   Future<void> updateUserName(String name);
+  Future<bool> checkUserDataExist(String userId);
 }
