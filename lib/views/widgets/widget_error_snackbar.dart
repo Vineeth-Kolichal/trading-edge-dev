@@ -4,7 +4,7 @@
 // void errorSnack(String errorMessage) {
 //   Get.snackbar('Oops..', errorMessage,
 //       snackPosition: SnackPosition.TOP,
-//       backgroundColor: Colors.red,
+//       backgroundColor: redTextColor,
 //       margin: const EdgeInsets.all(10),
 //       animationDuration: const Duration(milliseconds: 700),
 //       colorText: Colors.white);

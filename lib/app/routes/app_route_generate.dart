@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:trading_edge/app/routes/routes.dart';
-import 'package:trading_edge/views/screens/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_about.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_contact_us.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_terms_of_user.dart';
-import 'package:trading_edge/views/screens/home/screen_home.dart';
-import 'package:trading_edge/views/screens/intro/screen_intro.dart';
-import 'package:trading_edge/views/screens/login/screen_login.dart';
-import 'package:trading_edge/views/screens/otp_verification/screen_otp_verification.dart';
-import 'package:trading_edge/views/screens/splash_screen/screen_splash.dart';
+import 'package:trading_edge/views/screen_view/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
+import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_about.dart';
+import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_contact_us.dart';
+import 'package:trading_edge/views/screen_view/drawer_item_screens/screen_terms_of_user.dart';
+import 'package:trading_edge/views/screen_view/home/screen_home.dart';
+import 'package:trading_edge/views/screen_view/intro/screen_intro.dart';
+import 'package:trading_edge/views/screen_view/login/screen_login.dart';
+import 'package:trading_edge/views/screen_view/otp_verification/screen_otp_verification.dart';
+import 'package:trading_edge/views/screen_view/splash_screen/screen_splash.dart';
 
 class AppRouteGenerate {
   Route onGenerateRoute(RouteSettings routeSettings) {

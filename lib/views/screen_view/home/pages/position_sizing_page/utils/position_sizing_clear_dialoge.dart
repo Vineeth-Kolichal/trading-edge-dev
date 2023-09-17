@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_edge/app/routes/routes.dart';
 import 'package:trading_edge/utils/constants/colors.dart';
-import 'package:trading_edge/view_model/login_screen_viewmodel/authentication_viewmodel.dart';
+import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
 import 'package:trading_edge/views/widgets/widget_loading_alert.dart';
 
-void logoutDialoge(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
+void positionSizingListClear(BuildContext context) {
+  showDialog(context: context,builder: (context) => 
+    AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 5,
-      title: const Text('Confirm Logout'),
-      content: const Text('Are you sure want to logout?'),
+      title: const Text('Confirm Clear'),
+      content: const Text('Are you sure want to clear'),
       actions: [
         ElevatedButton(
           style: ButtonStyle(
@@ -38,12 +36,18 @@ void logoutDialoge(BuildContext context) {
             style: TextStyle(color: Colors.black),
           ),
           onPressed: () async {
-            final provider = context.read<AuthenticationViewModel>();
-            await provider.signOut();
-            const WidgetLoadingAlert(duration: 3000);
-            Future.delayed(const Duration(microseconds: 100), (() {
-              Navigator.of(context).pushReplacementNamed(Routes.login);
-            }));
+            await context.read<PositionSizingViewModel>().clearPositions();
+
+            // ignore: use_build_context_synchronously
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const WidgetLoadingAlert(
+                  duration: 2000,
+                );
+              },
+            );
+            Navigator.of(context).pop();
           },
         ),
       ],

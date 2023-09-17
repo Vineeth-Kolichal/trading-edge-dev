@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:trading_edge/app/routes/routes.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_about.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_contact_us.dart';
-import 'package:trading_edge/views/screens/drawer_item_screens/screen_terms_of_user.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 

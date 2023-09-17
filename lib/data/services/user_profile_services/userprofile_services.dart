@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,7 +98,6 @@ Future<void> updateUserName(String name) async {
             .get();
     Map<String, dynamic> userData =
         currentUserDoc.data() as Map<String, dynamic>;
-    log(userData.toString());
     return UserModel(
         name: userData['name'],
         imagePath: userData['photUrl'],
