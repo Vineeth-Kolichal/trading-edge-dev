@@ -1,4 +1,3 @@
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,10 +32,11 @@ class WidgetTradeLogItem extends StatelessWidget {
     final difference = DateTime.now().difference(tradeOrFundModel.date);
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Material(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(20),
-        elevation: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Padding(
@@ -78,7 +78,6 @@ class WidgetTradeLogItem extends StatelessWidget {
                               tradeModel: tradeOrFundModel,
                             ),
                           ));
-
                         }
                       },
                       itemBuilder: (BuildContext context) =>

@@ -1,15 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:trading_edge/data/services/current_user_data.dart';
 import 'package:trading_edge/main.dart';
+import 'package:trading_edge/models/trade_or_fund_model/trade_or_fund_model.dart';
 import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
+import 'package:trading_edge/view_model/fund_page_viewmodel/fund_page_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/screen_home.dart';
 import 'package:trading_edge/views/widgets/custom_text_form_field.dart';
 
 void showFundInputBottomSheet(BuildContext context) {
   TextEditingController dateController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+  DateTime? selectedDate;
   showModalBottomSheet<void>(
     enableDrag: false,
     isDismissible: false,
@@ -69,10 +76,8 @@ void showFundInputBottomSheet(BuildContext context) {
                               if (picked != null) {
                                 final formatter =
                                     DateFormat.yMMMEd().format(picked);
-                                // setState(() {
-                                //   _selectedDate = picked;
-                                //   dateController.text = formatter;
-                                // });
+                                selectedDate = picked;
+                                dateController.text = formatter;
                               }
                             },
                             validator: (value) {
@@ -110,10 +115,9 @@ void showFundInputBottomSheet(BuildContext context) {
                                   if (picked != null) {
                                     final formatter =
                                         DateFormat.yMMMEd().format(picked);
-                                    // setState(() {
-                                    //   _selectedDate = picked;
-                                    //   dateController.text = formatter;
-                                    // });
+                                    selectedDate = picked;
+                                    dateController.text = formatter;
+                                    log(selectedDate.toString());
                                   }
                                 },
                                 child: const Icon(
@@ -131,6 +135,7 @@ void showFundInputBottomSheet(BuildContext context) {
                         Row(
                           children: [
                             ToggleSwitch(
+                              initialLabelIndex: null,
                               minHeight: 43,
                               borderWidth: 0.75,
                               borderColor: const [Colors.grey],
@@ -172,17 +177,18 @@ void showFundInputBottomSheet(BuildContext context) {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        // bool retVal = await addTradeLoges(
-                        //     context: context,
-                        //     date: selectedDate!,
-                        //     type: fundType,
-                        //     amount: amountController.text);
-                        // if (!retVal) {
-                        //   errorSnack('Check your internet connectivity');
-                        // }
+                        TradeOrFundModel tradeOrFundModel = TradeOrFundModel(
+                          userId: CurrentUserData.returnCurrentUserId(),
+                          type: fundType,
+                          amount: double.parse(amountController.text.trim()),
+                          date: selectedDate!,
+                        );
+                        context
+                            .read<FundPageViewModel>()
+                            .addFund(tradeOrFundModel);
+
                         dateController.clear();
                         amountController.clear();
-                        // initialLabelIndex = null;
 
                         Navigator.of(context).pop();
                       }

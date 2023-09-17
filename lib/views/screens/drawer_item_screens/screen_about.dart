@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:trading_edge/utils/constants/constant_widgets.dart';
 import 'package:trading_edge/views/widgets/widget_appbar.dart';
 
-class PageAboutTradeBokk extends StatelessWidget {
-  const PageAboutTradeBokk({super.key});
+class PageAboutTradingEdge extends StatelessWidget {
+  const PageAboutTradingEdge({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -17,10 +17,9 @@ class WidgetPositionSizedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 1,
-      color: whiteColor,
-      borderRadius: BorderRadius.circular(20),
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: whiteColor),
       child: Column(
         children: [
           Padding(

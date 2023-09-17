@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:trading_edge/models/positions/position_model.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_position_sized_item.dart';
-import 'package:trading_edge/views/widgets/widget_search_gif.dart';
+import 'package:trading_edge/views/widgets/no_data_animation.dart';
 
 class PositionSizingListSection extends StatelessWidget {
   const PositionSizingListSection({
@@ -23,8 +23,7 @@ class PositionSizingListSection extends StatelessWidget {
               if (positionSizing.positionList.isNotEmpty) {
                 return ListView.separated(
                   itemBuilder: (context, index) {
-                    PositionModel position =
-                        positionSizing.positionList[index];
+                    PositionModel position = positionSizing.positionList[index];
                     return WidgetPositionSizedItem(
                       position: position,
                     );
@@ -44,7 +43,7 @@ class PositionSizingListSection extends StatelessWidget {
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        WidgetSearchGif(),
+                        NoDataAnimation(),
                         Text('No position items found! 😧')
                       ],
                     ),

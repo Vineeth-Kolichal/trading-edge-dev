@@ -2,7 +2,7 @@ import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:trading_edge/database/firebase/dashbord_calculations/bar_graph_data.dart';
 import 'package:trading_edge/main.dart';
-import 'package:trading_edge/views/widgets/widget_search_gif.dart';
+import 'package:trading_edge/views/widgets/no_data_animation.dart';
 
 class WidgetFundMovement extends StatelessWidget {
   const WidgetFundMovement({
@@ -76,7 +76,7 @@ class WidgetFundMovement extends StatelessWidget {
                             return const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                WidgetSearchGif(),
+                                NoDataAnimation(),
                                 Text('No  data found')
                               ],
                             );

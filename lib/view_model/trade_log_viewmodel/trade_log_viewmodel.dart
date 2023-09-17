@@ -21,15 +21,14 @@ class TradeLogViewModel extends ChangeNotifier {
   TextEditingController intraLoController = TextEditingController();
 
   void setValuesForUpdateScreen(TradeOrFundModel tradeOrFundModel) {
-
     final dateOld = DateFormat.yMMMEd().format(tradeOrFundModel.date);
     dateController.text = dateOld;
-    pnlController.text = tradeOrFundModel.amount.toString() ;
-    commentController.text = tradeOrFundModel.comments?? '';
-    swingLotController.text = tradeOrFundModel.swingLoss.toString() ;
+    pnlController.text = tradeOrFundModel.amount.toString();
+    commentController.text = tradeOrFundModel.comments ?? '';
+    swingLotController.text = tradeOrFundModel.swingLoss.toString();
     swingProtController.text = tradeOrFundModel.swingProfit.toString();
     intraLoController.text = tradeOrFundModel.intraLoss.toString();
-    intraProController.text = tradeOrFundModel.intraProfit.toString() ;
+    intraProController.text = tradeOrFundModel.intraProfit.toString();
   }
 
   Future<void> addTrades(TradeOrFundModel tradeOrFundModel) async {

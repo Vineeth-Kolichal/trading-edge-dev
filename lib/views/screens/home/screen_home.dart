@@ -7,14 +7,14 @@ import 'package:trading_edge/utils/constants/const_values.dart';
 import 'package:trading_edge/view_model/home_screen_viewmodel/home_screen_viewmodel.dart';
 import 'package:trading_edge/view_model/position_sizing_viewmodel/position_sizing_viewmodel.dart';
 import 'package:trading_edge/views/screens/home/pages/page_dashboard.dart';
-import 'package:trading_edge/views/screens/home/pages/page_fund.dart';
+import 'package:trading_edge/views/screens/home/pages/fund_page/page_fund.dart';
 import 'package:trading_edge/views/screens/home/pages/position_sizing_page/page_position_sizing.dart';
 import 'package:trading_edge/views/screens/home/pages/page_trades_log.dart';
 import 'package:trading_edge/views/widgets/bottom_navigation_bar_widget.dart';
 import 'package:trading_edge/views/widgets/floating_action_button_widget.dart';
 import 'package:trading_edge/views/drawer_view/drawer_view.dart';
 
-import 'pages/utils/position_sizing_clear_dialoge.dart';
+import 'pages/position_sizing_page/utils/position_sizing_clear_dialoge.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
 final formKey = GlobalKey<FormState>();

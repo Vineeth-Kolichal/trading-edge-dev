@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trading_edge/database/firebase/dashbord_calculations/pie_graph_data.dart';
 import 'package:trading_edge/main.dart';
 import 'package:trading_edge/views/screens/home/pages/widgets/widget_pnl_analysis_graph_description.dart';
-import 'package:trading_edge/views/widgets/widget_search_gif.dart';
+import 'package:trading_edge/views/widgets/no_data_animation.dart';
 
 // ignore: must_be_immutable
 class WidgetPnlAnalysis extends StatelessWidget {
@@ -39,7 +39,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const WidgetSearchGif(),
+                              const NoDataAnimation(),
                               Text('No ${titles[selectedIdex]} data found🧐')
                             ],
                           );
@@ -92,7 +92,7 @@ class WidgetPnlAnalysis extends StatelessWidget {
                           } else {
                             return const Column(
                               children: [
-                                WidgetSearchGif(),
+                                NoDataAnimation(),
                                 Text('No data found!')
                               ],
                             );

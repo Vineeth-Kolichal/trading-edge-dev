@@ -6,4 +6,5 @@ abstract class TradeOrFundRepository {
   Future<void> updateTradeLogsOrFund(
       {required TradeOrFundModel tradeOrFundModel, required String id});
   Future<List<TradeOrFundModel>> getTradeLogData();
+  Future<List<TradeOrFundModel>> getTransactions();
 }

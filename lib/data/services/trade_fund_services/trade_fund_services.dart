@@ -52,4 +52,20 @@ class TradeFundServices implements TradeOrFundRepository {
     }
     return tradeLogList;
   }
+  @override
+  Future<List<TradeOrFundModel>> getTransactions() async {
+    List<TradeOrFundModel> transactionList = [];
+    final CollectionReference tradesAndFund =
+        FirebaseFirestore.instance.collection('trades_and_fund');
+    final QuerySnapshot<Object?> querySnapshot = await tradesAndFund.get();
+    for (var i = querySnapshot.docs.length - 1; i >= 0; i--) {
+      Map<String, dynamic> dataMap =
+          querySnapshot.docs[i].data() as Map<String, dynamic>;
+      dataMap['docId'] = querySnapshot.docs[i].id;
+      if (dataMap['userId'] == CurrentUserData.returnCurrentUserId() ) {
+        transactionList.add(TradeOrFundModel.fromMap(dataMap));
+      }
+    }
+    return transactionList;
+  }
 }

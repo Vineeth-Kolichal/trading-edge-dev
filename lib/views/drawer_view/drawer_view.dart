@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:trading_edge/app/routes/routes.dart';
 import 'package:trading_edge/views/screens/drawer_item_screens/screen_about.dart';
 import 'package:trading_edge/views/screens/drawer_item_screens/screen_contact_us.dart';
 import 'package:trading_edge/views/screens/drawer_item_screens/screen_terms_of_user.dart';
@@ -63,27 +64,23 @@ class WidgetDrawer extends StatelessWidget {
               leadingIcon: Iconsax.scroll,
               title: 'About Trading Edge',
               onTapFunction: () {
-                Get.to(() => const PageAboutTradeBokk(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                Navigator.of(context).pushNamed(Routes.aboutTradingEdge);
               },
             ),
             DrawerListTileItem(
               leadingIcon: Iconsax.info_circle,
               title: 'Terms of use',
               onTapFunction: () {
-                Get.to(() => const PageTermsOfUser(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                Navigator.of(context).pushNamed(Routes.termsOfUse);
+               
               },
             ),
             DrawerListTileItem(
               leadingIcon: Iconsax.sms_tracking,
               title: 'Contact us',
               onTapFunction: () {
-                Get.to(() => const ContactUs(),
-                    transition: Transition.leftToRight,
-                    duration: const Duration(milliseconds: 300));
+                 Navigator.of(context).pushNamed(Routes.contactUs);
+                
               },
             ),
             DrawerListTileItem(
@@ -107,4 +104,3 @@ class WidgetDrawer extends StatelessWidget {
     );
   }
 }
-

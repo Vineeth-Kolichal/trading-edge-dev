@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class WidgetSearchGif extends StatelessWidget {
-  const WidgetSearchGif({super.key});
+class NoDataAnimation extends StatelessWidget {
+  const NoDataAnimation({super.key});
 
   @override
   Widget build(BuildContext context) {

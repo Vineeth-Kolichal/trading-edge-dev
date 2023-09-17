@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:trading_edge/app/routes/routes.dart';
+import 'package:trading_edge/views/screens/add_update_trade_logs_screen/add_update_trade_logs_screen.dart';
+import 'package:trading_edge/views/screens/drawer_item_screens/screen_about.dart';
+import 'package:trading_edge/views/screens/drawer_item_screens/screen_contact_us.dart';
+import 'package:trading_edge/views/screens/drawer_item_screens/screen_terms_of_user.dart';
 import 'package:trading_edge/views/screens/home/screen_home.dart';
 import 'package:trading_edge/views/screens/intro/screen_intro.dart';
 import 'package:trading_edge/views/screens/login/screen_login.dart';
@@ -21,11 +25,27 @@ class AppRouteGenerate {
         );
       case Routes.home:
         return MaterialPageRoute(
-          builder: (ctx) =>  const ScreenHome(),
+          builder: (ctx) => const ScreenHome(),
         );
       case Routes.otpVerify:
         return MaterialPageRoute(
-          builder: (ctx) =>  ScreenOtpVerification(phoneNumber: ''),
+          builder: (ctx) => ScreenOtpVerification(phoneNumber: ''),
+        );
+      case Routes.aboutTradingEdge:
+        return MaterialPageRoute(
+          builder: (ctx) => const PageAboutTradingEdge(),
+        );
+      case Routes.termsOfUse:
+        return MaterialPageRoute(
+          builder: (ctx) => const TermsOfUseScreen(),
+        );
+      case Routes.contactUs:
+        return MaterialPageRoute(
+          builder: (ctx) => const ContactUs(),
+        );
+      case Routes.addOrUpdateTradeLogScreen:
+        return MaterialPageRoute(
+          builder: (ctx) => const AddUpdateTradeLogScreen(),
         );
 
       default:
